@@ -1,7 +1,6 @@
 package handler;
 
 import lombok.extern.log4j.Log4j2;
-import model.dofus.RetroDofusMap;
 import model.packet.NewMapPacket;
 import model.packet.ResourceUpdatePacket;
 import service.MapService;

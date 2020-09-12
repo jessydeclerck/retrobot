@@ -1,3 +1,4 @@
+import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
 import lombok.extern.log4j.Log4j2;
 import org.pcap4j.core.BpfProgram;
@@ -11,9 +12,10 @@ import org.pcap4j.util.NifSelector;
 import java.io.IOException;
 
 @Log4j2
-public class HelloWorld {
+public class RetroBot {
 
     public static void main( String[] args ) {
+        NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.32.1");
         PcapNetworkInterface device = null;
 
         try {

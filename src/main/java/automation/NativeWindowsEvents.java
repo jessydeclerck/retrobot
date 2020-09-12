@@ -10,7 +10,6 @@ public class NativeWindowsEvents {
 
     public static final int WM_LBUTTONUP = 514;
     public static final int WM_LBUTTONDOWN = 513;
-    final static String winTitle = "Dopeultiko-[HOG] - Dofus Retro v1.32.1";
     final static User32 user32 = Native.load("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
     public static WinDef.HWND hwnd;
 
@@ -26,7 +25,7 @@ public class NativeWindowsEvents {
         user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
     }
 
-    public static void prepareForAutomation(){
+    public static void prepareForAutomation(String winTitle){
         hwnd = user32.FindWindow(null, winTitle);
         /**
          * i = x
@@ -35,7 +34,7 @@ public class NativeWindowsEvents {
          * i3 = hauteur
          * i4 = yolo
          */
-        user32.SetWindowPos(hwnd, hwnd, 300, 300, 300, 300, 300);
+        user32.SetWindowPos(hwnd, hwnd, 300, 300, 961, 768, 300);
     }
 
 }

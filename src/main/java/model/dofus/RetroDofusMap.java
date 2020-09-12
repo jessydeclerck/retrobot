@@ -90,5 +90,4 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
         return new Dimensions(15, 17);
     }
 
-
 }
