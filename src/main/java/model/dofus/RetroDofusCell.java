@@ -12,10 +12,8 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
     private int ordonnee;
 
     public RetroDofusCell(RetroDofusMap map, CellData data, int id) {
-
         super(map, data, id);
         initCoordonnees();
-
     }
 
     private void initCoordonnees() {
@@ -26,18 +24,21 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
             if(i == 0 && id < width) {
                 this.setAbscisse(id*2);
                 this.setOrdonnee(i);
+                return;
             }
             if (isPair(i)) {
                 id = id - width;
                 if (id < impairWidth){
                     this.setAbscisse(id*2+1);
                     this.setOrdonnee(i+1);
+                    return;
                 }
             } else {
                 id = id - impairWidth;
                 if (id < width)
                     this.setAbscisse(id*2);
                     this.setOrdonnee(i+1);
+                    return;
             }
         }
     }
