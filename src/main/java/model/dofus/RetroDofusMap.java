@@ -87,7 +87,7 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
 
     @Override
     public Dimensions dimensions() {
-        return new Dimensions(15, 17);
+        return new Dimensions(this.getWidth(), this.getHeight());
     }
 
 }
