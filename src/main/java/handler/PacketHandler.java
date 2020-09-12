@@ -33,6 +33,9 @@ public class PacketHandler {
             if ("GDM".equals(packetId)) {
                 RetroDofusMap retroDofusMap = mapService.getRetroDofusMap(getMapId(dofusPackets));
                 log.info("Coordonnées : {},{}", retroDofusMap.getX(), retroDofusMap.getY());
+                retroDofusMap.getRessources().forEach(retroRessourceCell -> {
+                    log.info("Ressource cell id : {} - Position : {},{}", retroRessourceCell.id(), retroRessourceCell.getAbscisse(), retroRessourceCell.getOrdonnee());
+                });
             }
             if ("GDF".equals(packetId)) {
                 log.info(gamePacket);

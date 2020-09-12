@@ -1,7 +1,6 @@
 package model.dofus;
 
 import fr.arakne.utils.maps.DofusMap;
-import fr.arakne.utils.maps.constant.CellMovement;
 import fr.arakne.utils.maps.serializer.CellData;
 import fr.arakne.utils.maps.serializer.DefaultMapDataSerializer;
 import fr.arakne.utils.value.Dimensions;
@@ -35,9 +34,12 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
     @Getter
     final private List<RetroTriggerCell> triggers = new ArrayList<>();
 
+    @Getter
+    final private List<RetroRessourceCell> ressources = new ArrayList<>();
+
     /**
      * interactive 1.29 GDF|cell_id|etat_id
-     *
+     * <p>
      * statut 1: disponible
      * statut 2: en attente
      * statut 3: no disponible
@@ -57,6 +59,12 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
                     triggers.add(this.getTriggerCell(triggerDto.getCell()))
             );
         }
+        for (int i = 0; i < cells.length; i++) {
+            CellData cell = cells[i];
+            if (cell.layer2().interactive()) {
+                ressources.add(this.getRessourceCell(i));
+            }
+        }
     }
 
     @Override
@@ -71,6 +79,10 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
 
     public RetroTriggerCell getTriggerCell(int id) {
         return new RetroTriggerCell(this, cells[id], id);
+    }
+
+    public RetroRessourceCell getRessourceCell(int id) {
+        return new RetroRessourceCell(this, cells[id], id);
     }
 
     @Override
