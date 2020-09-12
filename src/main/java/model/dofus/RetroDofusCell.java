@@ -35,10 +35,11 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
                 }
             } else {
                 id = id - impairWidth;
-                if (id < width)
+                if (id < width){
                     this.setAbscisse(id*2);
                     this.setOrdonnee(i+1);
                     return;
+                }
             }
         }
     }
