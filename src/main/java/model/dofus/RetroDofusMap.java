@@ -1,6 +1,7 @@
 package model.dofus;
 
 import fr.arakne.utils.maps.DofusMap;
+import fr.arakne.utils.maps.constant.CellMovement;
 import fr.arakne.utils.maps.serializer.CellData;
 import fr.arakne.utils.maps.serializer.DefaultMapDataSerializer;
 import fr.arakne.utils.value.Dimensions;
@@ -34,6 +35,15 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
     @Getter
     final private List<RetroTriggerCell> triggers = new ArrayList<>();
 
+    /**
+     * interactive 1.29 GDF|cell_id|etat_id
+     *
+     * statut 1: disponible
+     * statut 2: en attente
+     * statut 3: no disponible
+     * statut 4: rechargé - Si vous êtes sur la carte, vous recevrez le 4
+     */
+
     public RetroDofusMap(MapDto mapDto) {
         this.id = mapDto.getId();
         this.x = mapDto.getAbscissa();
@@ -41,13 +51,11 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
         this.width = mapDto.getWidth();
         this.height = mapDto.getHeight();
         DefaultMapDataSerializer serializer = new DefaultMapDataSerializer();
-        log.info(id);
         this.cells = serializer.deserialize(mapDto.getData().getValue());
         if (!mapDto.getData().getValue().isBlank()) { //exclude maps without data value
             mapDto.getTriggers().forEach(triggerDto ->
                     triggers.add(this.getTriggerCell(triggerDto.getCell()))
             );
-
         }
     }
 
