@@ -14,9 +14,17 @@ import java.util.stream.Collectors;
 @Log4j2
 public class MapService {
 
+    private static final MapService instance = new MapService();
+
+    public static final MapService getInstance() {
+        return instance;
+    }
+
     private final Map<Integer, RetroDofusMap> maps;
 
-    public MapService(){
+    private  RetroDofusMap currentMap;
+
+    private MapService(){
         log.info("Start");
         MapsDto mapsDto = null;
         try {
@@ -32,8 +40,13 @@ public class MapService {
         log.info("Init done");
     }
 
-    public RetroDofusMap getRetroDofusMap(int id) {
-        return maps.get(id);
+    public RetroDofusMap setRetroDofusMap(int id) {
+        this.currentMap = maps.get(id);
+        return currentMap;
+    }
+
+    public RetroDofusMap getCurrentMap(){
+        return this.currentMap;
     }
 
 }
