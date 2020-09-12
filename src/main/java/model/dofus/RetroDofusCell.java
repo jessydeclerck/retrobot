@@ -14,12 +14,36 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
     public RetroDofusCell(RetroDofusMap map, CellData data, int id) {
 
         super(map, data, id);
-
-        abscisse = id % map.getWidth();
-
-        ordonnee =  id / map.getWidth();
+        initCoordonnees();
 
     }
 
+    private void initCoordonnees() {
+        int id = this.id();
+        int width = this.map().getWidth();
+        int impairWidth = width - 1;
+        for (int i = 0; true; i++) {
+            if(i == 0 && id < width) {
+                this.setAbscisse(id*2);
+                this.setOrdonnee(i);
+            }
+            if (isPair(i)) {
+                id = id - width;
+                if (id < impairWidth){
+                    this.setAbscisse(id*2+1);
+                    this.setOrdonnee(i+1);
+                }
+            } else {
+                id = id - impairWidth;
+                if (id < width)
+                    this.setAbscisse(id*2);
+                    this.setOrdonnee(i+1);
+            }
+        }
+    }
+
+    private boolean isPair(int i) {
+        return i % 2 == 0;
+    }
 
 }
