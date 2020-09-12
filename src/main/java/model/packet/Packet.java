@@ -2,5 +2,7 @@ package model.packet;
 
 public interface Packet {
 
-    public String getFullPacket();
+    String getFullPacket();
+
+    String toString();
 }

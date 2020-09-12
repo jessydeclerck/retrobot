@@ -5,9 +5,11 @@ import service.MapService;
 
 public class ResourceUpdatePacket implements Packet {
 
+    private static MapService mapService = MapService.getInstance();
+
     /**
      * GDF|162;2;0
-     * GDF : package name
+     * GDF : Packet name
      * 162 : cellID
      * 2 : status
      * 0 : ???
@@ -19,11 +21,8 @@ public class ResourceUpdatePacket implements Packet {
 
     private ResourceStatus status;
 
-    private MapService mapService;
-
-    public ResourceUpdatePacket(String fullPacket, MapService mapService){
+    public ResourceUpdatePacket(String fullPacket){
         this.fullPacket = fullPacket;
-        this.mapService = mapService;
         String[] parsedPacket = fullPacket.split("\\|")[1].split(";");
         this.cellId = Integer.parseInt(parsedPacket[0]);
         this.status = ResourceStatus.labelOfStatus(parsedPacket[1]);
@@ -58,7 +57,7 @@ enum ResourceStatus {
 
     public final String status;
 
-    private ResourceStatus(String status) {
+    ResourceStatus(String status) {
         this.status = status;
     }
 
