@@ -13,15 +13,13 @@ public class NativeWindowsEvents {
     final static String winTitle = "Dopeultiko-[HOG] - Dofus Retro v1.32.1";
 
     public static void clic(int x, int y) {
-        final User32 user32 = Native.loadLibrary("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
+        final User32 user32 = Native.load("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
 
         WinDef.HWND hwnd = user32.FindWindow(null, winTitle);
-        //user32.SetForegroundWindow(hwnd);
+
         long param = x + (y << 16);
         WinDef.LPARAM lparam = new WinDef.LPARAM(param);
         WinDef.WPARAM wparam = new WinDef.WPARAM(0);
-
-        //user32.FindWindowEx()
 
         user32.SendMessage(hwnd, WM_LBUTTONDOWN, wparam, lparam);
         user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
