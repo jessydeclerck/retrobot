@@ -12,9 +12,14 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
     private int ordonnee;
 
     public RetroDofusCell(RetroDofusMap map, CellData data, int id) {
-        super(map, data, id);
-    }
 
+        super(map, data, id);
+
+        abscisse = id % map.getWidth();
+
+        ordonnee =  id / map.getWidth();
+
+    }
 
 
 }
