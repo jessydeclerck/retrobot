@@ -22,8 +22,6 @@ public class MapService {
 
     private final Map<Integer, RetroDofusMap> maps;
 
-    private RetroDofusMap currentMap;
-
     private MapService(){
         log.info("Start");
         MapsDto mapsDto = null;
@@ -40,13 +38,8 @@ public class MapService {
         log.info("Init done");
     }
 
-    public RetroDofusMap setRetroDofusMap(int id) {
-        this.currentMap = maps.get(id);
-        return currentMap;
-    }
-
-    public RetroDofusMap getCurrentMap(){
-        return this.currentMap;
+    public RetroDofusMap getRetroDofusMap(int id) {
+        return maps.get(id);
     }
 
 }

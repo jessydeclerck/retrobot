@@ -4,7 +4,7 @@ import lombok.Getter;
 import model.dofus.RetroDofusMap;
 import service.MapService;
 
-public class NewMapPacket implements Packet {
+public class MapPacketData extends PacketData {
 
     private static MapService mapService = MapService.getInstance();
 
@@ -16,15 +16,14 @@ public class NewMapPacket implements Packet {
      * 7e3b4646573b7b7971: ???
      */
 
-    private String fullPacket;
-
     @Getter
     private RetroDofusMap map;
 
-    public NewMapPacket(String packet) {
-        fullPacket = packet;
+    public MapPacketData(String packet) {
+        super(packet);
         String[] parsedPacket = packet.split("\\|");
-        this.map = mapService.setRetroDofusMap(Integer.parseInt(parsedPacket[1]));
+        int mapId = Integer.parseInt(parsedPacket[1]);
+        this.map = mapService.getRetroDofusMap(mapId);
     }
 
     @Override

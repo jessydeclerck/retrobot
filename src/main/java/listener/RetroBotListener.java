@@ -30,7 +30,6 @@ public class RetroBotListener implements PacketListener {
         if (dofusPackets.isBlank()) {
             return;
         }
-        log.info(dofusPackets);
         packetHandler.handlePacket(dofusPackets);
     }
 

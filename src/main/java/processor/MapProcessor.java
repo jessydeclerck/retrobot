@@ -1,25 +1,30 @@
 package processor;
 
-import async.RetroTaskQueue;
-import async.event.RecolterTaskEvent;
 import lombok.extern.log4j.Log4j2;
-import model.packet.NewMapPacket;
+import model.packet.MapPacketData;
+import state.MapState;
 import utils.TimeUtils;
 
 @Log4j2
 public class MapProcessor extends PacketProcessor {
 
+    private final MapState mapState = MapState.getInstance();
+
     public MapProcessor() {
     }
 
     public void processPacket(String dofusPacket) {
-        NewMapPacket newMapPacket = new NewMapPacket(dofusPacket);
-        log.info(newMapPacket.toString());
+        MapPacketData mapPacketData = new MapPacketData(dofusPacket);
+        log.info(mapPacketData.toString());
         TimeUtils.sleep(1000);
-        newMapPacket.getMap().getRessources().forEach(retroRessourceCell -> {
-            log.info("Ressource cell id : {} - Position : {},{}", retroRessourceCell.id(), retroRessourceCell.getAbscisse(), retroRessourceCell.getOrdonnee());
-            RetroTaskQueue.getInstance().addTask(new RecolterTaskEvent(retroRessourceCell.getWindowRelativeX(), retroRessourceCell.getWindowRelativeY()));
-        });
+        mapState.setCurrentMap(mapPacketData.getMap());
+        mapState.addAvailableRessources(mapPacketData.getMap().getRessources());
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            log.error(e);
+        }
+        mapState.startRecolte();
     }
 
     @Override

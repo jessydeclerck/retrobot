@@ -6,7 +6,8 @@ public enum RessourceStatus {
     AVAILABLE("1"),
     BUSY("2"),
     GONE("3"),
-    BACK("4");
+    NOT_AVAILABLE("4"),
+    BACK("5");
 
     public final String status;
 

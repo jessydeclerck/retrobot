@@ -25,6 +25,19 @@ public class NativeWindowsEvents {
         user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
     }
 
+    public static void clic(double x, double y) {
+        int roundedX = (int) Math.round(x);
+        int roundedY = (int) Math.round(y);
+        long param = roundedX + (roundedY << 16);
+        WinDef.LPARAM lparam = new WinDef.LPARAM(param);
+        WinDef.WPARAM wparam = new WinDef.WPARAM(0);
+
+
+
+        user32.SendMessage(hwnd, WM_LBUTTONDOWN, wparam, lparam);
+        user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
+    }
+
     public static void prepareForAutomation(String winTitle){
         hwnd = user32.FindWindow(null, winTitle);
         /**

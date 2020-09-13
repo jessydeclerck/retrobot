@@ -1,3 +1,4 @@
+import async.RetroTaskConsumerRunner;
 import async.RetroTaskEventConsumer;
 import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
@@ -41,7 +42,7 @@ public class RetroBot {
             log.error(e);
         }
         // Create a listener that defines what to do with the received packets
-        new Thread(new RetroTaskEventConsumer()).start();
+        RetroTaskConsumerRunner.getInstance().startEventConsumer();
         PacketListener listener = new RetroBotListener();
         // Tell the handle to loop using the listener we created
         try {

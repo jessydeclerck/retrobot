@@ -16,10 +16,12 @@ public class RetroTaskEventConsumer implements Runnable {
             try {
                 log.info("Waiting for a task");
                 RecolterTaskEvent event = taskQueue.take();
+                log.info("Processing task {} : {}", event.getRessourceCell().id(), event);
                 event.execute();
             } catch (InterruptedException e) {
                 log.error("Queue task has beeen interrupted", e);
             }
         }
     }
+
 }

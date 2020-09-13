@@ -51,11 +51,11 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
         return i % 2 == 0;
     }
 
-    public int getWindowRelativeX() {
+    public double getWindowRelativeX() {
         return this.getAbscisse() * X_UNIT; //TODO handle larger maps
     }
 
-    public int getWindowRelativeY() {
+    public double getWindowRelativeY() {
         return this.getOrdonnee() * Y_UNIT;
     }
 
