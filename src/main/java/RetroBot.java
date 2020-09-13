@@ -1,3 +1,4 @@
+import async.RetroTaskEventConsumer;
 import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +41,7 @@ public class RetroBot {
             log.error(e);
         }
         // Create a listener that defines what to do with the received packets
+        new Thread(new RetroTaskEventConsumer()).start();
         PacketListener listener = new RetroBotListener();
         // Tell the handle to loop using the listener we created
         try {

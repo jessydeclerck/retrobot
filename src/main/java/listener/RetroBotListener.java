@@ -21,10 +21,16 @@ public class RetroBotListener implements PacketListener {
     @Override
     public void gotPacket(Packet packet) {
         IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
-        String dofusPackets = new String(ipV4Packet.getPayload().getPayload().getRawData(), StandardCharsets.UTF_8);
+        String dofusPackets = null;
+        try {
+            dofusPackets = new String(ipV4Packet.getPayload().getPayload().getRawData(), StandardCharsets.UTF_8);
+        }catch (NullPointerException ignored){
+            return;
+        }
         if (dofusPackets.isBlank()) {
             return;
         }
+        log.info(dofusPackets);
         packetHandler.handlePacket(dofusPackets);
     }
 

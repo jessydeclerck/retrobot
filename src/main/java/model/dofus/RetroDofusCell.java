@@ -4,6 +4,9 @@ import fr.arakne.utils.maps.AbstractCellDataAdapter;
 import fr.arakne.utils.maps.serializer.CellData;
 import lombok.Data;
 
+import static automation.PixelConstants.X_UNIT;
+import static automation.PixelConstants.Y_UNIT;
+
 @Data
 public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
 
@@ -46,6 +49,14 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
 
     private boolean isPair(int i) {
         return i % 2 == 0;
+    }
+
+    public int getWindowRelativeX() {
+        return this.getAbscisse() * X_UNIT; //TODO handle larger maps
+    }
+
+    public int getWindowRelativeY() {
+        return this.getOrdonnee() * Y_UNIT;
     }
 
 }

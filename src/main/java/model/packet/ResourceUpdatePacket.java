@@ -1,8 +1,10 @@
 package model.packet;
 
+import lombok.Getter;
 import model.dofus.RetroRessourceCell;
 import service.MapService;
 
+@Getter
 public class ResourceUpdatePacket implements Packet {
 
     private static MapService mapService = MapService.getInstance();
@@ -19,13 +21,13 @@ public class ResourceUpdatePacket implements Packet {
 
     private int cellId;
 
-    private ResourceStatus status;
+    private RessourceStatus status;
 
     public ResourceUpdatePacket(String fullPacket){
         this.fullPacket = fullPacket;
         String[] parsedPacket = fullPacket.split("\\|")[1].split(";");
         this.cellId = Integer.parseInt(parsedPacket[0]);
-        this.status = ResourceStatus.labelOfStatus(parsedPacket[1]);
+        this.status = RessourceStatus.labelOfStatus(parsedPacket[1]);
     }
 
     @Override
@@ -44,30 +46,6 @@ public class ResourceUpdatePacket implements Packet {
                 + retroRessourceCell.getOrdonnee()
                 + " is now "
                 + status;
-    }
-
-}
-
-enum ResourceStatus {
-
-    AVAILABLE("1"),
-    BUSY("2"),
-    GONE("3"),
-    BACK("4");
-
-    public final String status;
-
-    ResourceStatus(String status) {
-        this.status = status;
-    }
-
-    public static ResourceStatus labelOfStatus(String status) {
-        for (ResourceStatus e : values()) {
-            if (e.status.equals(status)) {
-                return e;
-            }
-        }
-        return null;
     }
 
 }

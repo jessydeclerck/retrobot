@@ -16,13 +16,13 @@ public class MapService {
 
     private static final MapService instance = new MapService();
 
-    public static final MapService getInstance() {
+    synchronized public static final MapService getInstance() {
         return instance;
     }
 
     private final Map<Integer, RetroDofusMap> maps;
 
-    private  RetroDofusMap currentMap;
+    private RetroDofusMap currentMap;
 
     private MapService(){
         log.info("Start");
