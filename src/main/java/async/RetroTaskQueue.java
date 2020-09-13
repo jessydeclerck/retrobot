@@ -4,14 +4,14 @@ import async.event.RecolterTaskEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Log4j2
 public class RetroTaskQueue {
 
     @Getter
-    private final BlockingDeque<RecolterTaskEvent> taskQueue = new LinkedBlockingDeque<>();
+    private final BlockingQueue<RecolterTaskEvent> taskQueue = new LinkedBlockingQueue<>();
 
     private static final RetroTaskQueue instance = new RetroTaskQueue();
 

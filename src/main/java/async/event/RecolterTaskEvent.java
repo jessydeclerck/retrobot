@@ -25,12 +25,14 @@ public class RecolterTaskEvent {
 
     private final RetroRessourceCell ressourceCell;
 
+    private int processCount = 0; //number of time we tried to process this event
 
     public RecolterTaskEvent(RetroRessourceCell ressourceCell) {
         this.ressourceCell = ressourceCell;
     }
 
     public void execute() {
+        processCount++;
         if (!isStateOk()) {
             RetroTaskQueue.getInstance().addTask(this);
             return;
