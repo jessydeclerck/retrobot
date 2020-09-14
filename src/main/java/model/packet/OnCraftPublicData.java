@@ -5,11 +5,11 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Data
-public class EnterNewMapData extends PacketData{
+public class OnCraftPublicData extends PacketData{
 
     private int playerId;
 
-    public EnterNewMapData(String fullPacket) {
+    public OnCraftPublicData(String fullPacket) {
         super(fullPacket);
         playerId = Integer.parseInt(fullPacket.split("\\+")[1].split("\\|")[0]);
     }

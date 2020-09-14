@@ -1,6 +1,5 @@
 package processor;
 
-import model.packet.EnterNewMapData;
 import model.packet.StartsToPlayFightData;
 
 public class StartsToPlayFightProcessor extends PacketProcessor{

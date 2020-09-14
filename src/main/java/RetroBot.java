@@ -1,5 +1,4 @@
 import async.RetroTaskConsumerRunner;
-import async.RetroTaskEventConsumer;
 import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
 import lombok.extern.log4j.Log4j2;
@@ -16,7 +15,7 @@ import java.io.IOException;
 @Log4j2
 public class RetroBot {
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.32.1");
         PcapNetworkInterface device = null;
 

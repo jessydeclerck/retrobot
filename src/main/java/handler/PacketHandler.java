@@ -36,9 +36,9 @@ public class PacketHandler {
         this.addPacketProcessor(new JoinCombatProcessor());
         this.addPacketProcessor(new TurnBeginsProcessor());
         this.addPacketProcessor(new PlayerCoordinatesStartFightProcessor());
-        this.addPacketProcessor(new EntersNewMapProcessor());
+        this.addPacketProcessor(new OnCraftPublicProcessor());
         this.addPacketProcessor(new StartsToPlayFightProcessor());
-        this.addPacketProcessor(new StartsLandingOnCellProcessor());
+        //this.addPacketProcessor(new StartsLandingOnCellProcessor());
         this.addPacketProcessor(new NewMessageProcessor());
         this.addPacketProcessor(new CharacterFightingProcessor());
     }
