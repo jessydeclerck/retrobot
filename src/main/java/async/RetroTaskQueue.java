@@ -22,18 +22,22 @@ public class RetroTaskQueue {
 
     public void addTask(RecolterTaskEvent task) {
         if (!taskQueue.contains(task)) {
-            log.info("Adding task {} : {}", task.getRessourceCell().id(), task);
+            log.debug("Adding task {} : {}", task.getRessourceCell().id(), task);
             taskQueue.add(task);
         }
     }
 
     public void removeTask(RecolterTaskEvent task) {
-        log.info("Removing task {} : {}", task.getRessourceCell().id(), task);
+        log.debug("Removing task {} : {}", task.getRessourceCell().id(), task);
         taskQueue.remove(task);
     }
 
     public void removeMapTask(RetroDofusMap dofusMap) {
         taskQueue.removeIf(event -> event.getRessourceCell().map().equals(dofusMap));
+    }
+
+    public void removeAll() {
+        taskQueue.clear();
     }
 
 }

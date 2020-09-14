@@ -4,10 +4,13 @@ import lombok.extern.log4j.Log4j2;
 import processor.CharacterMovementProcessor;
 import processor.GatheringFinishedProcessor;
 import processor.GoingToGatherProcessor;
+import processor.JoinCombatProcessor;
 import processor.MapProcessor;
 import processor.PacketProcessor;
+import processor.PlayerCoordinatesStartFightProcessor;
 import processor.PlayerDataProcessor;
 import processor.RessourceProcessor;
+import processor.TurnBeginsProcessor;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,12 +42,15 @@ public class PacketHandler {
         this.addPacketProcessor(new PlayerDataProcessor());
         this.addPacketProcessor(new GoingToGatherProcessor());
         this.addPacketProcessor(new CharacterMovementProcessor());
+        this.addPacketProcessor(new JoinCombatProcessor());
+        this.addPacketProcessor(new TurnBeginsProcessor());
+        this.addPacketProcessor(new PlayerCoordinatesStartFightProcessor());
     }
 
     public void handlePacket(String dofusPackets) {
         List<String> gamePackets = List.of(dofusPackets.split("\0"));
         gamePackets.forEach(gamePacket -> {
-            //log.info(gamePacket);
+            log.info(gamePacket);
             if (gamePacket.length() < 3) return;
             String packetId = getPacketId(gamePacket);
             Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> packetProcessor.processPacket(gamePacket));

@@ -10,7 +10,7 @@ public class GatheringFinishedProcessor extends PacketProcessor{
     @Override
     public void processPacket(String dofusPacket) {
         GatheringFinishedData gatheringFinishedData = new GatheringFinishedData(dofusPacket);
-        log.info("Gathered qty : {}", gatheringFinishedData.getGatheredQty());
+        log.debug("Gathered qty : {}", gatheringFinishedData.getGatheredQty());
         CharacterState.getInstance().setGathering(false);
     }
 

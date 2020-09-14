@@ -13,6 +13,7 @@ public class CharacterState {
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
     private RetroDofusCell currentCellTarget;
+    private RetroDofusCell currentFightCell;
 
     private static final CharacterState instance = new CharacterState();
 
@@ -20,6 +21,12 @@ public class CharacterState {
         return instance;
     }
 
+    public void setFighting(boolean fighting) {
+        if (fighting) {
+            MapState.getInstance().stopRecolte();
+        }
+        this.fighting = fighting;
+    }
 
 
 }

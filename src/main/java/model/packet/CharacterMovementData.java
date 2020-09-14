@@ -16,7 +16,7 @@ public class CharacterMovementData extends PacketData {
         String lastCellInfo = movementData.substring(movementData.length() - 4);
         this.targetCellId = getCellId(lastCellInfo);
         //TODO current cell when gathering might not be the last one
-        log.info("Character targetedCell : {}", targetCellId);
+        log.debug("Character targetedCell : {}", targetCellId);
     }
 
     private int getCellId(String lastCellInfo) {

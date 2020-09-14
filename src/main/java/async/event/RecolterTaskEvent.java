@@ -36,7 +36,7 @@ public class RecolterTaskEvent {
 
     public void execute() {
         if(!isCoherent()){
-            log.info("Incoherent task, discarding");
+            log.debug("Incoherent task, discarding");
             return;
         }
         processCount++;
@@ -62,7 +62,7 @@ public class RecolterTaskEvent {
             return false;
         }
         if (ressourceCell.equals(characterState.getCurrentCellTarget())) {
-            log.info("La prochaine ressource est trop proche du personnage");
+            log.debug("La prochaine ressource est trop proche du personnage");
             return false;
         }
         return true;
@@ -82,7 +82,7 @@ public class RecolterTaskEvent {
         long startTime = System.currentTimeMillis();
         while (characterState.isGathering()) {
             if ((System.currentTimeMillis() - startTime) > 20000) {
-                log.info("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
+                log.debug("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
                 RetroTaskQueue.getInstance().addTask(this);
                 break;
             }

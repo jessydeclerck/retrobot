@@ -1,6 +1,7 @@
 package model.dofus;
 
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
+import fr.arakne.utils.maps.CoordinateCell;
 import fr.arakne.utils.maps.serializer.CellData;
 import lombok.Data;
 

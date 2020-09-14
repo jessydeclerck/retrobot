@@ -41,12 +41,16 @@ public class MapState {
         });
     }
 
+    public void stopRecolte() {
+        RetroTaskQueue.getInstance().removeAll();
+    }
+
     public void setUnavailableRessource(int cellId) {
         RetroRessourceCell unavailableRessourceCell = availableRessources.get(cellId);
         if (unavailableRessourceCell == null) return;
         availableRessources.remove(cellId);
         unavailableRessources.put(cellId, unavailableRessourceCell);
-        log.info("Ressource indisponible : {}", unavailableRessourceCell.id());
+        log.debug("Ressource indisponible : {}", unavailableRessourceCell.id());
         logAvailableRessources();
         RetroTaskQueue.getInstance().removeTask(new RecolterTaskEvent(unavailableRessourceCell));
     }
@@ -63,7 +67,7 @@ public class MapState {
     private void logAvailableRessources() {
         this.availableRessources.keySet().stream().forEach(key -> {
             RetroRessourceCell ressourceCell = availableRessources.get(key);
-            log.info("Ressource disponible : {}", ressourceCell.id());
+            log.debug("Ressource disponible : {}", ressourceCell.id());
         });
     }
 

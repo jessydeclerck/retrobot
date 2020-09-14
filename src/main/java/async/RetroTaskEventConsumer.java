@@ -14,7 +14,7 @@ public class RetroTaskEventConsumer implements Runnable {
     public void run() {
         while (true) {
             try {
-                log.info("Waiting for a task");
+                log.debug("Waiting for a task");
                 RecolterTaskEvent event = taskQueue.take();
                 log.info("Processing task {} : {}", event.getRessourceCell().id(), event);
                 event.execute();
