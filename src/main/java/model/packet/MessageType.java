@@ -5,13 +5,14 @@ public enum MessageType {
     DEFAULT(""),
     // TODO : Guild code
     GUILD("??"),
+    PRIVATE_TOWARD("T"),
+    PRIVATE_FROM("F"),
     TEAM("#"),
     RECRUITMENT ("?"),
     TRADE(":"),
     // TODO : PVP Code
     PVP("??"),
-    // TODO : Party code
-    PARTY("??"),
+    PARTY("$"),
     UNKNOWN("not Found");
 
     public final String type;
