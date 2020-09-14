@@ -1,16 +1,7 @@
 package handler;
 
 import lombok.extern.log4j.Log4j2;
-import processor.CharacterMovementProcessor;
-import processor.GatheringFinishedProcessor;
-import processor.GoingToGatherProcessor;
-import processor.JoinCombatProcessor;
-import processor.MapProcessor;
-import processor.PacketProcessor;
-import processor.PlayerCoordinatesStartFightProcessor;
-import processor.PlayerDataProcessor;
-import processor.RessourceProcessor;
-import processor.TurnBeginsProcessor;
+import processor.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +36,10 @@ public class PacketHandler {
         this.addPacketProcessor(new JoinCombatProcessor());
         this.addPacketProcessor(new TurnBeginsProcessor());
         this.addPacketProcessor(new PlayerCoordinatesStartFightProcessor());
+        this.addPacketProcessor(new EntersNewMapProcessor());
+        this.addPacketProcessor(new StartsToPlayFightProcessor());
+        this.addPacketProcessor(new StartsLandingOnCellProcessor());
+        this.addPacketProcessor(new EndsLandingOnCellProcessor());
     }
 
     public void handlePacket(String dofusPackets) {
