@@ -1,6 +1,7 @@
 package handler;
 
 import lombok.extern.log4j.Log4j2;
+import processor.CharacterMovementProcessor;
 import processor.GatheringFinishedProcessor;
 import processor.GoingToGatherProcessor;
 import processor.MapProcessor;
@@ -37,6 +38,7 @@ public class PacketHandler {
         this.addPacketProcessor(new GatheringFinishedProcessor());
         this.addPacketProcessor(new PlayerDataProcessor());
         this.addPacketProcessor(new GoingToGatherProcessor());
+        this.addPacketProcessor(new CharacterMovementProcessor());
     }
 
     public void handlePacket(String dofusPackets) {

@@ -1,6 +1,5 @@
 package state;
 
-import async.RetroTaskConsumerRunner;
 import async.RetroTaskQueue;
 import async.event.RecolterTaskEvent;
 import lombok.Data;
@@ -8,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dofus.RetroDofusMap;
 import model.dofus.RetroRessourceCell;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,9 +25,9 @@ public class MapState {
         return instance;
     }
 
-    public void addAvailableRessources(List<RetroRessourceCell> ressourcesCells){
+    public void addAvailableRessources(List<RetroRessourceCell> ressourcesCells) {
         ressourcesCells.forEach(ressourceCell -> {
-            if (availableRessources.containsKey(ressourceCell.id())){
+            if (availableRessources.containsKey(ressourceCell.id())) {
                 return;
             }
             availableRessources.put(ressourceCell.id(), ressourceCell);
@@ -41,9 +41,9 @@ public class MapState {
         });
     }
 
-    public void setUnavailableRessource(int cellId){
+    public void setUnavailableRessource(int cellId) {
         RetroRessourceCell unavailableRessourceCell = availableRessources.get(cellId);
-        if(unavailableRessourceCell == null) return;
+        if (unavailableRessourceCell == null) return;
         availableRessources.remove(cellId);
         unavailableRessources.put(cellId, unavailableRessourceCell);
         log.info("Ressource indisponible : {}", unavailableRessourceCell.id());
@@ -51,9 +51,9 @@ public class MapState {
         RetroTaskQueue.getInstance().removeTask(new RecolterTaskEvent(unavailableRessourceCell));
     }
 
-    public void setAvailableRessource(int cellId){
+    public void setAvailableRessource(int cellId) {
         RetroRessourceCell availableRessourceCell = unavailableRessources.get(cellId);
-        if(availableRessourceCell == null) return;
+        if (availableRessourceCell == null) return;
         unavailableRessources.remove(cellId);
         unavailableRessources.put(cellId, availableRessourceCell);
         //log.info("Ressource disponible : {}, {}", availableRessourceCell.getWindowRelativeX(), availableRessourceCell.getWindowRelativeY());
@@ -65,6 +65,27 @@ public class MapState {
             RetroRessourceCell ressourceCell = availableRessources.get(key);
             log.info("Ressource disponible : {}", ressourceCell.id());
         });
+    }
+
+    public void setCurrentMap(RetroDofusMap newMap) {
+        if(currentMap == null) {
+            this.currentMap = newMap;
+            return;
+        }
+        CharacterState characterState = CharacterState.getInstance();
+        if (currentMap != newMap) {
+            currentMap.getTriggers().stream().filter(t -> t.id() == characterState.getCurrentCellTarget().id())
+                    .findFirst().ifPresent(t -> characterState.setCurrentCellTarget(newMap.get(t.getNextCellId())));
+            log.info("New map character cell id : {}", characterState.getCurrentCellTarget().id());
+        }
+        this.resetMapState();
+        this.currentMap = newMap;
+    }
+
+    public void resetMapState() {
+        this.availableRessources = new HashMap<>();
+        this.unavailableRessources = new HashMap<>();
+        RetroTaskQueue.getInstance().removeMapTask(this.currentMap);
     }
 
 }

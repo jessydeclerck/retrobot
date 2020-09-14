@@ -2,6 +2,10 @@ package model.packet;
 
 import lombok.Getter;
 
+import static model.packet.RessourceStatus.BUSY;
+import static model.packet.RessourceStatus.GONE;
+import static model.packet.RessourceStatus.NOT_AVAILABLE;
+
 @Getter
 public class RessourceUpdateData {
 
@@ -9,11 +13,19 @@ public class RessourceUpdateData {
 
     private final RessourceStatus ressourceStatus;
 
-    private boolean available;
+    private boolean unknwon;
 
-    public RessourceUpdateData(int cellId, RessourceStatus ressourceStatus, boolean available) {
+    public RessourceUpdateData(int cellId, RessourceStatus ressourceStatus, boolean unknown) {
         this.cellId = cellId;
         this.ressourceStatus = ressourceStatus;
-        this.available = available;
+        this.unknwon = unknown;
     }
+
+    public boolean isAvailable() {
+        if (BUSY.equals(ressourceStatus) || GONE.equals(ressourceStatus) || NOT_AVAILABLE.equals(ressourceStatus)) { //TODO to test
+            return false;
+        }
+        return true;
+    }
+
 }

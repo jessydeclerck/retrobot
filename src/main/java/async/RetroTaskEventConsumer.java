@@ -21,6 +21,10 @@ public class RetroTaskEventConsumer implements Runnable {
             } catch (InterruptedException e) {
                 log.error("Queue task has beeen interrupted", e);
             }
+            //reordering
+            List<RecolterTaskEvent> remainingTasks = new ArrayList<>(taskQueue);
+            taskQueue.removeAll(remainingTasks);
+            taskQueue.addAll(remainingTasks);
         }
     }
 

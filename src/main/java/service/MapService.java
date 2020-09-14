@@ -22,7 +22,7 @@ public class MapService {
 
     private final Map<Integer, RetroDofusMap> maps;
 
-    private MapService(){
+    private MapService() {
         log.info("Start");
         MapsDto mapsDto = null;
         try {

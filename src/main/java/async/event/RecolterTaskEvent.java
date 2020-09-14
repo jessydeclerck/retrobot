@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dofus.RetroRessourceCell;
 import service.RecolteService;
 import state.CharacterState;
+import state.MapState;
 import utils.TimeUtils;
 
 @Log4j2
@@ -21,6 +22,8 @@ public class RecolterTaskEvent {
     @EqualsAndHashCode.Exclude
     private final CharacterState characterState = CharacterState.getInstance();
     @EqualsAndHashCode.Exclude
+    private final MapState mapState = MapState.getInstance();
+    @EqualsAndHashCode.Exclude
     private final RecolteService recolteService = RecolteService.getInstance();
 
     private final RetroRessourceCell ressourceCell;
@@ -32,6 +35,10 @@ public class RecolterTaskEvent {
     }
 
     public void execute() {
+        if(!isCoherent()){
+            log.info("Incoherent task, discarding");
+            return;
+        }
         processCount++;
         if (!isStateOk()) {
             RetroTaskQueue.getInstance().addTask(this);
@@ -42,9 +49,20 @@ public class RecolterTaskEvent {
         resetState();
     }
 
+    private boolean isCoherent() {
+        if (mapState.getCurrentMap().equals(ressourceCell.map())) {
+            return true;
+        }
+        //TODO find a way to check if ressource still available
+        return false;
+    }
+
     private boolean isStateOk() {
         if (characterState.isFighting() || characterState.isGathering() || characterState.isMoving()) {
-            RetroTaskQueue.getInstance().addTask(this);
+            return false;
+        }
+        if (ressourceCell.equals(characterState.getCurrentCellTarget())) {
+            log.info("La prochaine ressource est trop proche du personnage");
             return false;
         }
         return true;

@@ -1,17 +1,18 @@
 package async;
 
 import async.event.RecolterTaskEvent;
+import async.event.TaskPriorityComparator;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import model.dofus.RetroDofusMap;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 @Log4j2
 public class RetroTaskQueue {
 
     @Getter
-    private final BlockingQueue<RecolterTaskEvent> taskQueue = new LinkedBlockingQueue<>();
+    private final PriorityBlockingQueue<RecolterTaskEvent> taskQueue = new PriorityBlockingQueue<>(10, new TaskPriorityComparator());
 
     private static final RetroTaskQueue instance = new RetroTaskQueue();
 
@@ -27,8 +28,12 @@ public class RetroTaskQueue {
     }
 
     public void removeTask(RecolterTaskEvent task) {
-            log.info("Removing task {} : {}", task.getRessourceCell().id(), task);
+        log.info("Removing task {} : {}", task.getRessourceCell().id(), task);
         taskQueue.remove(task);
+    }
+
+    public void removeMapTask(RetroDofusMap dofusMap) {
+        taskQueue.removeIf(event -> event.getRessourceCell().map().equals(dofusMap));
     }
 
 }

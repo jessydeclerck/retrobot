@@ -1,6 +1,7 @@
 package state;
 
 import lombok.Data;
+import model.dofus.RetroDofusCell;
 import model.dofus.RetroRessourceCell;
 
 @Data
@@ -11,6 +12,7 @@ public class CharacterState {
     private boolean moving;
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
+    private RetroDofusCell currentCellTarget;
 
     private static final CharacterState instance = new CharacterState();
 

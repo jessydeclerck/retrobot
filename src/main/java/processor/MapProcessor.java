@@ -24,6 +24,7 @@ public class MapProcessor extends PacketProcessor {
         } catch (InterruptedException e) {
             log.error(e);
         }
+        mapState.getCurrentMap().getTriggers().forEach(retroTriggerCell -> log.info("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
         mapState.startRecolte();
     }
 

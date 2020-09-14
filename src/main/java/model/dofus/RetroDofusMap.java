@@ -56,7 +56,7 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
         this.cells = serializer.deserialize(mapDto.getData().getValue());
         if (!mapDto.getData().getValue().isBlank()) { //exclude maps without data value
             mapDto.getTriggers().forEach(triggerDto ->
-                    triggers.add(this.getTriggerCell(triggerDto.getCell()))
+                    triggers.add(this.getTriggerCell(triggerDto.getCell(), triggerDto.getNextMap(), triggerDto.getNextCell()))
             );
         }
         for (int i = 0; i < cells.length; i++) {
@@ -77,8 +77,8 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
         return new RetroDofusCell(this, cells[id], id);
     }
 
-    public RetroTriggerCell getTriggerCell(int id) {
-        return new RetroTriggerCell(this, cells[id], id);
+    public RetroTriggerCell getTriggerCell(int id, int nextMapId, int nextCellId) {
+        return new RetroTriggerCell(this, cells[id], id, nextMapId, nextCellId);
     }
 
     public RetroRessourceCell getRessourceCell(int id) {
