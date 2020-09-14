@@ -40,6 +40,7 @@ public class PacketHandler {
         this.addPacketProcessor(new StartsToPlayFightProcessor());
         this.addPacketProcessor(new StartsLandingOnCellProcessor());
         this.addPacketProcessor(new NewMessageProcessor());
+        this.addPacketProcessor(new CharacterFightingProcessor());
     }
 
     public void handlePacket(String dofusPackets) {
