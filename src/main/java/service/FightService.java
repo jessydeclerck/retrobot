@@ -8,6 +8,7 @@ import fr.arakne.utils.maps.path.Pathfinder;
 import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroDofusCell;
 import state.MapState;
+import utils.TimeUtils;
 
 @Slf4j
 public class FightService {
@@ -35,11 +36,7 @@ public class FightService {
         log.info("Calculating path from player cell {} to monster cell {}", playerCell.id(), monsterCell.id());
         Path<RetroDofusCell> path = calculatePath(playerCell, monsterCell);
         RetroDofusCell targetCell = path.target();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            log.error("", e);
-        }
+        TimeUtils.sleep(500);
         log.info("Player movement towards cell {}", targetCell.id());
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
         NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY()); //TODO refacto externalize

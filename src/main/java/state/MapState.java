@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MapState {
 
     private static final MapState instance = new MapState();
+    private final CharacterState characterState = CharacterState.getInstance();
+    private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
     private RetroDofusMap currentMap;
     private Map<Integer, RetroRessourceCell> availableRessources = new ConcurrentHashMap<>();
     private Map<Integer, RetroRessourceCell> unavailableRessources = new ConcurrentHashMap<>();
@@ -36,13 +38,12 @@ public class MapState {
     }
 
     public void startRecolte() {
-        availableRessources.forEach((integer, ressourceCell) -> {
-            RetroTaskQueue.getInstance().addTask(new RecolterTaskEvent(ressourceCell));
-        });
+        characterState.setGathering(false); //interrompt l'exécution de la recolte en cours
+        availableRessources.forEach((integer, ressourceCell) -> retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell)));
     }
 
     public void stopRecolte() {
-        RetroTaskQueue.getInstance().removeAll();
+        retroTaskQueue.removeAll();
     }
 
     public void setUnavailableRessource(int cellId) {
@@ -52,7 +53,7 @@ public class MapState {
         unavailableRessources.put(cellId, unavailableRessourceCell);
         log.debug("Ressource indisponible : {}", unavailableRessourceCell.id());
         logAvailableRessources();
-        RetroTaskQueue.getInstance().removeTask(new RecolterTaskEvent(unavailableRessourceCell));
+        retroTaskQueue.removeTask(new RecolterTaskEvent(unavailableRessourceCell));
     }
 
     public void setAvailableRessource(int cellId) {
@@ -61,11 +62,11 @@ public class MapState {
         unavailableRessources.remove(cellId);
         unavailableRessources.put(cellId, availableRessourceCell);
         //log.info("Ressource disponible : {}, {}", availableRessourceCell.getWindowRelativeX(), availableRessourceCell.getWindowRelativeY());
-        RetroTaskQueue.getInstance().addTask(new RecolterTaskEvent(availableRessourceCell));
+        retroTaskQueue.addTask(new RecolterTaskEvent(availableRessourceCell));
     }
 
     private void logAvailableRessources() {
-        this.availableRessources.keySet().stream().forEach(key -> {
+        this.availableRessources.keySet().forEach(key -> {
             RetroRessourceCell ressourceCell = availableRessources.get(key);
             log.debug("Ressource disponible : {}", ressourceCell.id());
         });
@@ -76,7 +77,6 @@ public class MapState {
             this.currentMap = newMap;
             return;
         }
-        CharacterState characterState = CharacterState.getInstance();
         if (currentMap != newMap) {
             currentMap.getTriggers().stream().filter(t -> t.id() == characterState.getCurrentCellTarget().id())
                     .findFirst().ifPresent(t -> characterState.setCurrentCellTarget(newMap.get(t.getNextCellId())));
@@ -89,7 +89,7 @@ public class MapState {
     public void resetMapState() {
         this.availableRessources = new HashMap<>();
         this.unavailableRessources = new HashMap<>();
-        RetroTaskQueue.getInstance().removeMapTask(this.currentMap);
+        retroTaskQueue.removeMapTask(this.currentMap);
     }
 
 }

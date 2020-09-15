@@ -2,6 +2,7 @@ package handler;
 
 import lombok.extern.slf4j.Slf4j;
 import processor.CharacterMovementProcessor;
+import processor.FightOnEndProcessor;
 import processor.FightTurnInformationProcessor;
 import processor.GatheringFinishedProcessor;
 import processor.GoingToGatherProcessor;
@@ -46,6 +47,7 @@ public class PacketHandler {
         //this.addPacketProcessor(new CharacterFightingProcessor());
         //this.addPacketProcessor(new MovementProcessor());
         this.addPacketProcessor(new FightTurnInformationProcessor());
+        this.addPacketProcessor(new FightOnEndProcessor());
     }
 
     public void handlePacket(String dofusPackets) {

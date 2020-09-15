@@ -16,7 +16,7 @@ public class GatheringFinishedProcessor extends PacketProcessor {
     @Override
     public void processPacket(String dofusPacket) {
         GatheringFinishedData gatheringFinishedData = new GatheringFinishedData(dofusPacket);
-        log.debug("Gathered qty : {}", gatheringFinishedData.getGatheredQty());
+        log.info("Gathered qty : {}", gatheringFinishedData.getGatheredQty());
         characterState.setGathering(false);
         try {
             BotServer.getInstance().emitMessage(new GatheredResourceFinished(gatheringFinishedData));

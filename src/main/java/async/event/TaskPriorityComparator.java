@@ -12,7 +12,7 @@ public class TaskPriorityComparator implements Comparator<RecolterTaskEvent> {
     public int compare(RecolterTaskEvent o1, RecolterTaskEvent o2) {
         RetroDofusCell currentCellTarget = CharacterState.getInstance().getCurrentCellTarget();
         if (currentCellTarget == null) {
-            return Integer.compare(o1.getRessourceCell().id(),o2.getRessourceCell().id());
+            return Integer.compare(o1.getRessourceCell().id(), o2.getRessourceCell().id());
         }
         int currentTargetX = currentCellTarget.getAbscisse();
         int currentTargetY = currentCellTarget.getOrdonnee();

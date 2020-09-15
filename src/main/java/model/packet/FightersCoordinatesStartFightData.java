@@ -17,6 +17,8 @@ public class FightersCoordinatesStartFightData extends PacketData {
 
     private final List<MonsterFightPositionData> monsterPositions = new ArrayList<>();
 
+    private final CharacterState characterState = CharacterState.getInstance();
+
     public FightersCoordinatesStartFightData(String fullPacket) {
         super(fullPacket);
         String[] fightersCoordinatesData = fullPacket.replace("GIC|", "").split("\\|");
@@ -24,7 +26,7 @@ public class FightersCoordinatesStartFightData extends PacketData {
             String[] fighterData = fighterCoordinatesData.split(";");
             int fighterId = Integer.parseInt(fighterData[0]);
             int cellId = Integer.parseInt(fighterData[1]);
-            if (CharacterState.getInstance().getPlayerId() == fighterId) {
+            if (characterState.getPlayerId() == fighterId) {
                 this.playerId = fighterId;
                 this.playerCellId = cellId;
             } else if (fighterId < 0) {

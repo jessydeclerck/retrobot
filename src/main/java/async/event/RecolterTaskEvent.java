@@ -9,6 +9,7 @@ import model.dofus.RetroRessourceCell;
 import service.RecolteService;
 import state.CharacterState;
 import state.MapState;
+import utils.TimeUtils;
 
 @Slf4j
 @Getter
@@ -24,6 +25,8 @@ public class RecolterTaskEvent {
     private final MapState mapState = MapState.getInstance();
     @EqualsAndHashCode.Exclude
     private final RecolteService recolteService = RecolteService.getInstance();
+    @EqualsAndHashCode.Exclude
+    private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
 
     private final RetroRessourceCell ressourceCell;
 
@@ -35,17 +38,18 @@ public class RecolterTaskEvent {
 
     public void execute() {
         if (!isCoherent()) {
-            log.debug("Incoherent task, discarding");
+            log.info("Incoherent task, discarding");
             return;
         }
         processCount++;
         if (!isStateOk()) {
-            RetroTaskQueue.getInstance().addTask(this);
+            retroTaskQueue.addTask(this);
             return;
         }
         executeTask();
         waitTaskFinished();
         resetState();
+        log.info("Recolte terminée");
     }
 
     private boolean isCoherent() {
@@ -61,19 +65,15 @@ public class RecolterTaskEvent {
             return false;
         }
         if (ressourceCell.equals(characterState.getCurrentCellTarget())) {
-            log.debug("La prochaine ressource est trop proche du personnage");
+            log.info("La prochaine ressource est trop proche du personnage");
             return false;
         }
         return true;
     }
 
     private void executeTask() {
-        try {
-            Thread.sleep(200);
-            recolteService.recolterRessource(this.ressourceCell);
-        } catch (InterruptedException e) {
-            log.error("", e);
-        }
+        TimeUtils.sleep(200);
+        recolteService.recolterRessource(this.ressourceCell);
         characterState.setGathering(true);
     }
 
@@ -81,11 +81,11 @@ public class RecolterTaskEvent {
         long startTime = System.currentTimeMillis();
         while (characterState.isGathering()) {
             if ((System.currentTimeMillis() - startTime) > 20000) {
-                log.debug("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
-                RetroTaskQueue.getInstance().addTask(this);
+                log.info("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
+                retroTaskQueue.addTask(this);
                 break;
             }
-            //TimeUtils.sleep(200);
+            TimeUtils.sleep(200);
         }
     }
 

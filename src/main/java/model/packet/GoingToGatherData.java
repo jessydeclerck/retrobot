@@ -7,14 +7,16 @@ import state.MapState;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class GoingToGatherData extends PacketData{
+public class GoingToGatherData extends PacketData {
 
-    private RetroRessourceCell cell;
+    RetroRessourceCell cell;
+
+    MapState mapState = MapState.getInstance();
 
     public GoingToGatherData(String fullPacket) {
         super(fullPacket);
         int cellId = Integer.parseInt(fullPacket.replace("GA500", "").split(";")[0]);
-        this.cell = MapState.getInstance().getCurrentMap().getRessourceCell(cellId);
+        this.cell = mapState.getCurrentMap().getRessourceCell(cellId);
     }
 
 }

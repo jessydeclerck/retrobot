@@ -3,6 +3,7 @@ package processor;
 import lombok.extern.slf4j.Slf4j;
 import model.packet.MapPacketData;
 import state.MapState;
+import utils.TimeUtils;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,17 +18,12 @@ public class MapProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         MapPacketData mapPacketData = new MapPacketData(dofusPacket);
         log.info(mapPacketData.toString());
-        //TimeUtils.sleep(1000);
         mapState.setCurrentMap(mapPacketData.getMap());
         mapState.addAvailableRessources(mapPacketData.getMap().getRessources());
+        mapState.getCurrentMap().getTriggers()
+                .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
         CompletableFuture.runAsync(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                log.error("", e);
-            }
-            mapState.getCurrentMap().getTriggers()
-                    .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
+            TimeUtils.sleep(2000);
             mapState.startRecolte();
         });
     }

@@ -29,7 +29,7 @@ public class NativeWindowsEvents {
     public static void clic(double x, double y) {
         int roundedX = (int) Math.round(x);
         int roundedY = (int) Math.round(y);
-        log.info("Clic {}, {}", roundedX, roundedY);
+        log.debug("Clic {}, {}", roundedX, roundedY);
         long param = roundedX + (roundedY << 16);
         WinDef.LPARAM lparam = new WinDef.LPARAM(param);
         WinDef.WPARAM wparam = new WinDef.WPARAM(0);

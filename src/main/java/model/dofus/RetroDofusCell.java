@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static automation.PixelConstants.X_UNIT;
+import static automation.PixelConstants.Y_OFFSET_MENU;
 import static automation.PixelConstants.Y_UNIT;
 
 @Getter
@@ -58,7 +59,7 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
     }
 
     public double getWindowRelativeY() {
-        return this.getOrdonnee() * Y_UNIT + 20; //offset menu haut
+        return this.getOrdonnee() * Y_UNIT + Y_OFFSET_MENU; //offset menu haut
     }
 
 }

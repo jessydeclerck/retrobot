@@ -7,7 +7,7 @@ public class TimeUtils {
 
     public static void sleep(int ms) {
         try {
-            Thread.sleep(200);
+            Thread.sleep(ms);
         } catch (InterruptedException e) {
             log.error("", e);
         }
