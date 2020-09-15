@@ -1,16 +1,17 @@
 package model.packet;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Value
 public class FightTurnInformationData extends PacketData {
 
-    private final List<FighterTurnInformationData> fighterTurnInformationDataList = new ArrayList<>();
+    List<FighterTurnInformationData> fighterTurnInformationDataList = new ArrayList<>();
 
 
     public FightTurnInformationData(String fullPacket) {

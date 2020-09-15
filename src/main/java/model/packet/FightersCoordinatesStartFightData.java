@@ -1,7 +1,6 @@
 package model.packet;
 
 import lombok.Getter;
-import processor.MonsterFightPositionData;
 import state.CharacterState;
 
 import java.util.ArrayList;

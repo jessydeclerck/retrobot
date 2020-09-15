@@ -1,12 +1,12 @@
-package processor;
+package model.packet;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class MonsterFightPositionData  {
 
-    private final int monsterId;
-    private final int cellId;
+    int monsterId;
+    int cellId;
 
     public MonsterFightPositionData(int monsterId, int cellId) {
         this.monsterId = monsterId;

@@ -1,23 +1,18 @@
 package processor;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.packet.RessourcesUpdatesData;
-import state.CharacterState;
 import state.MapState;
 
-@Log4j2
+@Slf4j
 public class RessourceProcessor extends PacketProcessor {
 
-    private final CharacterState characterState;
     private final MapState mapState = MapState.getInstance();
-
-    public RessourceProcessor() {
-        this.characterState = CharacterState.getInstance();
-    }
 
     @Override
     public void processPacket(String dofusPacket) {
         RessourcesUpdatesData ressourcesUpdatesData = new RessourcesUpdatesData(dofusPacket);
+        //TODO put in gatheringState
         ressourcesUpdatesData.getUpdatedRessources().forEach(ressourceUpdateData -> {
             if (ressourceUpdateData.isAvailable()) {
                 mapState.setAvailableRessource(ressourceUpdateData.getCellId());

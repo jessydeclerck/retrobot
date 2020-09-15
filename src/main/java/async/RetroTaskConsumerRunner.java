@@ -1,8 +1,8 @@
 package async;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j2
+@Slf4j
 public class RetroTaskConsumerRunner {
 
     private static final RetroTaskEventConsumer retroTaskEventConsumer = new RetroTaskEventConsumer();

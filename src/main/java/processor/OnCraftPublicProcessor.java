@@ -1,21 +1,22 @@
 package processor;
 
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.packet.OnCraftPublicData;
 import state.CharacterState;
 
-@Log4j2
+@Slf4j
 public class OnCraftPublicProcessor extends PacketProcessor {
+
+    private final CharacterState characterState = CharacterState.getInstance();
 
     @Override
     public void processPacket(String dofusPacket) {
         OnCraftPublicData onCraftPublicData = new OnCraftPublicData(dofusPacket);
-        if (CharacterState.getInstance().getPlayerId() == 0){
-            CharacterState.getInstance().setPlayerId(onCraftPublicData.getPlayerId());
+        if (characterState.getPlayerId() == 0) {
+            log.info("Player id has been set : {}", onCraftPublicData.getPlayerId());
+            characterState.setPlayerId(onCraftPublicData.getPlayerId());
         }
-
-        log.debug("Fight accomplished/Entered new map");
     }
 
     @Override

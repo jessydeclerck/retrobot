@@ -9,16 +9,20 @@ import state.MapState;
 @Slf4j
 public class PlayerCoordinatesStartFightProcessor extends PacketProcessor {
 
+    private final CharacterState characterState = CharacterState.getInstance();
+    private final MapState mapState = MapState.getInstance();
+
     @Override
     public void processPacket(String dofusPacket) {
         FightersCoordinatesStartFightData startFightData = new FightersCoordinatesStartFightData(dofusPacket);
         log.info("Player current fighting cell id : {}", startFightData.getPlayerCellId());
-        RetroDofusCell currentFightCell = MapState.getInstance().getCurrentMap().get(startFightData.getPlayerCellId());
-        CharacterState.getInstance().setCurrentFightCell(currentFightCell);
+        RetroDofusCell currentFightCell = mapState.getCurrentMap().get(startFightData.getPlayerCellId());
+        //TODO put in fightstate
+        characterState.setCurrentFightCell(currentFightCell);
         startFightData.getMonsterPositions().forEach(monsterFightPositionData -> {
-            RetroDofusCell monsterFightCell = MapState.getInstance().getCurrentMap().get(monsterFightPositionData.getCellId());
+            RetroDofusCell monsterFightCell = mapState.getCurrentMap().get(monsterFightPositionData.getCellId());
             log.info("Monster current fighting cell id : {}", monsterFightPositionData.getCellId());
-            CharacterState.getInstance().getCurrentFightMonsterCells().put(monsterFightPositionData.getMonsterId(), monsterFightCell);
+            characterState.getCurrentFightMonsterCells().put(monsterFightPositionData.getMonsterId(), monsterFightCell);
         });
     }
 

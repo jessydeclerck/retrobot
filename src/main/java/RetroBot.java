@@ -1,7 +1,7 @@
 import async.RetroTaskConsumerRunner;
 import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.pcap4j.core.BpfProgram;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PacketListener;
@@ -12,7 +12,7 @@ import org.pcap4j.util.NifSelector;
 
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 public class RetroBot {
 
     public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class RetroBot {
             handle = device.openLive(snapshotLength, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
             handle.setFilter(filter, BpfProgram.BpfCompileMode.OPTIMIZE);
         } catch (PcapNativeException | NotOpenException e) {
-            log.error(e);
+            log.error("", e);
         }
         // Create a listener that defines what to do with the received packets
         RetroTaskConsumerRunner.getInstance().startEventConsumer();
@@ -47,7 +47,7 @@ public class RetroBot {
         try {
             handle.loop(-1, listener);
         } catch (InterruptedException | PcapNativeException | NotOpenException e) {
-            log.error(e);
+            log.error("", e);
         }
     }
 

@@ -5,10 +5,12 @@ import state.CharacterState;
 
 public class GoingToGatherProcessor extends PacketProcessor {
 
+    private final CharacterState characterState = CharacterState.getInstance();
+
     @Override
     public void processPacket(String dofusPacket) {
         GoingToGatherData goingToGatherData = new GoingToGatherData(dofusPacket);
-        CharacterState.getInstance().setCurrentGatheringTarget(goingToGatherData.getCell());
+        characterState.setCurrentGatheringTarget(goingToGatherData.getCell());
     }
 
     @Override

@@ -4,14 +4,13 @@ import async.RetroTaskQueue;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroRessourceCell;
 import service.RecolteService;
 import state.CharacterState;
 import state.MapState;
-import utils.TimeUtils;
 
-@Log4j2
+@Slf4j
 @Getter
 @EqualsAndHashCode
 @ToString
@@ -35,7 +34,7 @@ public class RecolterTaskEvent {
     }
 
     public void execute() {
-        if(!isCoherent()){
+        if (!isCoherent()) {
             log.debug("Incoherent task, discarding");
             return;
         }
@@ -73,7 +72,7 @@ public class RecolterTaskEvent {
             Thread.sleep(200);
             recolteService.recolterRessource(this.ressourceCell);
         } catch (InterruptedException e) {
-            log.error(e);
+            log.error("", e);
         }
         characterState.setGathering(true);
     }
@@ -86,7 +85,7 @@ public class RecolterTaskEvent {
                 RetroTaskQueue.getInstance().addTask(this);
                 break;
             }
-            TimeUtils.sleep(200);
+            //TimeUtils.sleep(200);
         }
     }
 

@@ -6,12 +6,12 @@ import fr.arakne.utils.maps.serializer.DefaultMapDataSerializer;
 import fr.arakne.utils.value.Dimensions;
 import loader.dto.MapDto;
 import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j2
+@Slf4j
 public class RetroDofusMap implements DofusMap<RetroDofusCell> {
 
     @Getter
@@ -36,15 +36,6 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
 
     @Getter
     final private List<RetroRessourceCell> ressources = new ArrayList<>();
-
-    /**
-     * interactive 1.29 GDF|cell_id|etat_id
-     * <p>
-     * statut 1: disponible
-     * statut 2: en attente
-     * statut 3: no disponible
-     * statut 4: rechargé - Si vous êtes sur la carte, vous recevrez le 4
-     */
 
     public RetroDofusMap(MapDto mapDto) {
         this.id = mapDto.getId();

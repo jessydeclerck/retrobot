@@ -1,6 +1,6 @@
 package model.packet;
 
-//GM|+240;1;0;60049072;Nit-Ultoko-[HOG];11;110^100;0;87;1,0,0,60049159;14a9ea;306fb;-1;,1964,309,1fd7,;1490;8;5;0;0;0;8;0;23;23;0;;
+//TODO ?
 public class CharacterFightingData extends PacketData {
 
     int charId;

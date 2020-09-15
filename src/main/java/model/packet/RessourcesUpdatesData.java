@@ -12,20 +12,10 @@ public class RessourcesUpdatesData extends PacketData {
 
     private final MapState mapState = MapState.getInstance();
 
-    /**
-     * GDF|162;2;0
-     * GDF : Packet name
-     * 162 : cellID
-     * 2 : status
-     * 0 : ???
-     */
-
     private List<RessourceUpdateData> updatedRessources = new ArrayList<>();
 
     public RessourcesUpdatesData(String fullPacket){
         super(fullPacket);
-        // entree de map : GDF|161;4;0|162;4;0|146;4;0 => 4 revert status
-        // entree de map : 162;5;1 => repousse
         String[] parsedPacket = fullPacket.split("\\|")[1].split(";");
         List<String> ressourcesStatusUpdates = new ArrayList<>(Arrays.asList(fullPacket.split("\\|")));
         ressourcesStatusUpdates.remove(0);//Remove packet id

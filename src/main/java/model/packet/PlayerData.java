@@ -1,11 +1,13 @@
 package model.packet;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Value
 public class PlayerData extends PacketData {
 
-    private final int playerId;
+    int playerId;
 
     public PlayerData(String fullPacket) {
         super(fullPacket);

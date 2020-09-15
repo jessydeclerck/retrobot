@@ -1,7 +1,6 @@
 package handler;
 
-import lombok.extern.log4j.Log4j2;
-import processor.CharacterFightingProcessor;
+import lombok.extern.slf4j.Slf4j;
 import processor.CharacterMovementProcessor;
 import processor.FightTurnInformationProcessor;
 import processor.GatheringFinishedProcessor;
@@ -14,7 +13,6 @@ import processor.PacketProcessor;
 import processor.PlayerCoordinatesStartFightProcessor;
 import processor.PlayerDataProcessor;
 import processor.RessourceProcessor;
-import processor.StartsToPlayFightProcessor;
 import processor.TurnBeginsProcessor;
 
 import java.util.HashMap;
@@ -24,16 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * interactive 1.29 GDF|cell_id|etat_id
- * <p>
- * statut 1: disponible
- * statut 2: en attente
- * statut 3: no disponible
- * statut 4: rechargé - Si vous êtes sur la carte, vous recevrez le 4
- * 5 déjà fauché ?
- */
-@Log4j2
+@Slf4j
 public class PacketHandler {
 
     final private Map<String, PacketProcessor> packetProcessorMap;
@@ -51,10 +40,10 @@ public class PacketHandler {
         this.addPacketProcessor(new TurnBeginsProcessor());
         this.addPacketProcessor(new PlayerCoordinatesStartFightProcessor());
         this.addPacketProcessor(new OnCraftPublicProcessor());
-        this.addPacketProcessor(new StartsToPlayFightProcessor());
+        //this.addPacketProcessor(new StartsToPlayFightProcessor());
         //this.addPacketProcessor(new StartsLandingOnCellProcessor());
         this.addPacketProcessor(new NewMessageProcessor());
-        this.addPacketProcessor(new CharacterFightingProcessor());
+        //this.addPacketProcessor(new CharacterFightingProcessor());
         //this.addPacketProcessor(new MovementProcessor());
         this.addPacketProcessor(new FightTurnInformationProcessor());
     }

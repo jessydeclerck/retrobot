@@ -1,12 +1,14 @@
 package model.packet;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Value
 public class GatheringFinishedData extends PacketData {
 
-    private final int playerId;
-    private final int gatheredQty;
+    int playerId;
+    int gatheredQty;
 
     public GatheringFinishedData(String fullPacket) {
         super(fullPacket);

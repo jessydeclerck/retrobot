@@ -10,21 +10,18 @@ import state.MapState;
 @Slf4j
 public class CharacterMovementProcessor extends PacketProcessor {
 
+    private final CharacterState characterState = CharacterState.getInstance();
+    private final MapState mapState = MapState.getInstance();
+
     @Override
     public void processPacket(String dofusPacket) {
         CharacterMovementData characterMovementData = new CharacterMovementData(dofusPacket);
-        RetroDofusMap currentMap = MapState.getInstance().getCurrentMap();
-        if(currentMap == null || CharacterState.getInstance().isFighting()) {
+        RetroDofusMap currentMap = mapState.getCurrentMap();
+        if (currentMap == null || characterState.isFighting()) {
             return;
         }
         RetroDofusCell targetedCell = currentMap.get(characterMovementData.getTargetCellId());
-        //TODO do not update when in combat
-        //TODO check monster movement also
-        CharacterState.getInstance().setCurrentCellTarget(targetedCell);
-        /**if(CharacterState.getInstance().isFighting()) { handled by GTM
-            log.info("Player current fighting cell {}", targetedCell.id());
-            CharacterState.getInstance().setCurrentFightCell(targetedCell);
-        }*/
+        characterState.setCurrentCellTarget(targetedCell);
     }
 
     @Override

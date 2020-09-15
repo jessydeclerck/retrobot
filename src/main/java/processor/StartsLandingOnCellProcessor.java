@@ -1,10 +1,10 @@
 package processor;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.packet.StartsLandingOnCellData;
 
-
-@Log4j2
+@SuppressWarnings("unused")
+@Slf4j
 public class StartsLandingOnCellProcessor extends PacketProcessor {
     @Override
     public void processPacket(String dofusPacket) {

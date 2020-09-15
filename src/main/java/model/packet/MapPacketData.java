@@ -8,14 +8,6 @@ public class MapPacketData extends PacketData {
 
     private static MapService mapService = MapService.getInstance();
 
-    /**
-     * GDM|7454|0706131721|7e3b4646573b7b7971...
-     * GDM : Packet Name
-     * 7454 : MapId
-     * 0706131721 : ???
-     * 7e3b4646573b7b7971: ???
-     */
-
     @Getter
     private RetroDofusMap map;
 

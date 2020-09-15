@@ -3,7 +3,7 @@ package state;
 import async.RetroTaskQueue;
 import async.event.RecolterTaskEvent;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroDofusMap;
 import model.dofus.RetroRessourceCell;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Data
-@Log4j2
+@Slf4j
 public class MapState {
 
     private static final MapState instance = new MapState();
@@ -21,7 +21,7 @@ public class MapState {
     private Map<Integer, RetroRessourceCell> availableRessources = new ConcurrentHashMap<>();
     private Map<Integer, RetroRessourceCell> unavailableRessources = new ConcurrentHashMap<>();
 
-    synchronized public static final MapState getInstance() {
+    synchronized public static MapState getInstance() {
         return instance;
     }
 
@@ -72,7 +72,7 @@ public class MapState {
     }
 
     public void setCurrentMap(RetroDofusMap newMap) {
-        if(currentMap == null) {
+        if (currentMap == null) {
             this.currentMap = newMap;
             return;
         }

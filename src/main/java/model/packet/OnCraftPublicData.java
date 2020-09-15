@@ -1,13 +1,15 @@
 package model.packet;
 
-import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j2
-@Data
-public class OnCraftPublicData extends PacketData{
+@EqualsAndHashCode(callSuper = true)
+@Slf4j
+@Value
+public class OnCraftPublicData extends PacketData {
 
-    private int playerId;
+    int playerId;
 
     public OnCraftPublicData(String fullPacket) {
         super(fullPacket);

@@ -2,7 +2,7 @@ package service;
 
 import loader.MapsLoader;
 import loader.dto.MapsDto;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroDofusMap;
 
 import java.io.IOException;
@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Log4j2
+@Slf4j
 public class MapService {
 
     private static final MapService instance = new MapService();
 
-    synchronized public static final MapService getInstance() {
+    synchronized public static MapService getInstance() {
         return instance;
     }
 
@@ -28,7 +28,7 @@ public class MapService {
         try {
             mapsDto = MapsLoader.loadMapsData();
         } catch (URISyntaxException | IOException e) {
-            log.error(e);
+            log.error("", e);
         }
         assert mapsDto != null;
         log.info("Starting init");

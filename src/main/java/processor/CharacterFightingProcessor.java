@@ -1,6 +1,5 @@
 package processor;
 
-import model.packet.CharacterFightingData;
 import state.CharacterState;
 
 public class CharacterFightingProcessor extends PacketProcessor {

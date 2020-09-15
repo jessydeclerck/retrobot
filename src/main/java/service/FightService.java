@@ -1,6 +1,7 @@
 package service;
 
 import automation.NativeWindowsEvents;
+import fr.arakne.utils.maps.AbstractCellDataAdapter;
 import fr.arakne.utils.maps.path.Decoder;
 import fr.arakne.utils.maps.path.Path;
 import fr.arakne.utils.maps.path.Pathfinder;
@@ -11,18 +12,23 @@ import state.MapState;
 @Slf4j
 public class FightService {
 
-    private Decoder<RetroDofusCell> decoder;
+
+    private static final FightService instance = new FightService();
+
+    private final MapState mapState = MapState.getInstance();
+
+    synchronized public static FightService getInstance() {
+        return instance;
+    }
+
 
     //TODO WIP
     private Path<RetroDofusCell> calculatePath(RetroDofusCell currentCell, RetroDofusCell targetCell) {
-        decoder = new Decoder<>(MapState.getInstance().getCurrentMap());
-        Pathfinder<RetroDofusCell> pathfinder = decoder.pathfinder() //portee sort
-                .targetDistance(1)
-                .walkablePredicate(r -> r.walkable());
-        Path<RetroDofusCell> path = pathfinder.findPath(currentCell, targetCell).truncate(4);// number of pm
-
-
-        return path;
+        Decoder<RetroDofusCell> decoder = new Decoder<>(mapState.getCurrentMap());
+        Pathfinder<RetroDofusCell> pathfinder = decoder.pathfinder()
+                .targetDistance(1)//TODO portee sort
+                .walkablePredicate(AbstractCellDataAdapter::walkable);
+        return pathfinder.findPath(currentCell, targetCell).truncate(4); //TODO number of pm
     }
 
     public void moveTowardMonster(RetroDofusCell playerCell, RetroDofusCell monsterCell) {

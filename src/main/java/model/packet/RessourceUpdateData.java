@@ -13,12 +13,12 @@ public class RessourceUpdateData {
 
     private final RessourceStatus ressourceStatus;
 
-    private boolean unknwon;
+    private boolean unknown;
 
     public RessourceUpdateData(int cellId, RessourceStatus ressourceStatus, boolean unknown) {
         this.cellId = cellId;
         this.ressourceStatus = ressourceStatus;
-        this.unknwon = unknown;
+        this.unknown = unknown;
     }
 
     public boolean isAvailable() {

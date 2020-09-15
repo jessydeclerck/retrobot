@@ -1,8 +1,8 @@
 package model.packet;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j2
+@Slf4j
 public class NewMessageData extends PacketData {
 
     String content;
@@ -13,7 +13,7 @@ public class NewMessageData extends PacketData {
     public NewMessageData(String fullPacket) {
         super(fullPacket);
         String[] parsedPacket = fullPacket.split("\\|");
-        type = parsedPacket[0].split("cMK").length > 1 ?  MessageType.labelOfType(parsedPacket[0].split("cMK")[1]) : MessageType.labelOfType("");//MessageType.labelOfType([1]);
+        type = parsedPacket[0].split("cMK").length > 1 ? MessageType.labelOfType(parsedPacket[0].split("cMK")[1]) : MessageType.labelOfType("");//MessageType.labelOfType([1]);
         fromId = parsedPacket[1];
         fromName = parsedPacket[2];
         content = parsedPacket[3];

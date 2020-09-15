@@ -1,8 +1,10 @@
 package model.packet;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Value
 public class TurnBeginsData extends PacketData {
 
     private final int playerId;
