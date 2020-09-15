@@ -1,10 +1,15 @@
 package network;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import network.message.WSMessage;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import service.RecolteService;
 
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -12,18 +17,26 @@ import java.util.Collections;
 
 public class BotServer extends WebSocketServer {
 
-    public BotServer(int port) throws UnknownHostException {
+    private static final BotServer instance = new BotServer(new InetSocketAddress(80));
+
+    synchronized public static BotServer getInstance() {
+        return instance;
+    }
+
+
+    private BotServer(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
     }
 
-    public BotServer(InetSocketAddress address) {
+    private BotServer(InetSocketAddress address) {
         super(address);
     }
 
-    public BotServer(int port, Draft_6455 draft) {
+    private BotServer(int port, Draft_6455 draft) {
         super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
     }
 
+    @SneakyThrows
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
         webSocket.send("Welcome to the server!"); //This method sends a message to the new client
@@ -58,5 +71,11 @@ public class BotServer extends WebSocketServer {
         System.out.println("Server started!");
         setConnectionLostTimeout(0);
         setConnectionLostTimeout(100);
+    }
+
+    public void emitMessage(WSMessage wsMessage) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String converteDMessage = objectMapper.writeValueAsString(wsMessage);
+        broadcast(converteDMessage);
     }
 }

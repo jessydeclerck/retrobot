@@ -2,6 +2,7 @@ import async.RetroTaskConsumerRunner;
 import automation.NativeWindowsEvents;
 import listener.RetroBotListener;
 import lombok.extern.slf4j.Slf4j;
+import network.BotServer;
 import org.pcap4j.core.BpfProgram;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PacketListener;
@@ -11,11 +12,15 @@ import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.util.NifSelector;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 @Slf4j
 public class RetroBot {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnknownHostException {
+
+        BotServer.getInstance().start();
+
         NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.32.1");
         PcapNetworkInterface device = null;
 

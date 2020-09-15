@@ -1,7 +1,10 @@
 package model.packet;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
+
+@Data
 @Slf4j
 public class NewMessageData extends PacketData {
 

@@ -1,8 +1,14 @@
 package processor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import model.packet.GoingToGatherData;
+import network.BotServer;
+import network.message.going.GatheredResourceFinished;
+import network.message.going.GatheringResourceStarted;
 import state.CharacterState;
 
+@Slf4j
 public class GoingToGatherProcessor extends PacketProcessor {
 
     private final CharacterState characterState = CharacterState.getInstance();
@@ -11,6 +17,12 @@ public class GoingToGatherProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         GoingToGatherData goingToGatherData = new GoingToGatherData(dofusPacket);
         characterState.setCurrentGatheringTarget(goingToGatherData.getCell());
+        try {
+            BotServer.getInstance().emitMessage(new GatheringResourceStarted(goingToGatherData));
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de l'émission du socket de fin de récolte", e);
+        }
+
     }
 
     @Override
