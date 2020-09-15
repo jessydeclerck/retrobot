@@ -4,6 +4,10 @@ import lombok.Data;
 import model.dofus.RetroDofusCell;
 import model.dofus.RetroRessourceCell;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class CharacterState {
 
@@ -13,7 +17,11 @@ public class CharacterState {
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
     private RetroDofusCell currentCellTarget;
+
+    //TODO refactor
     private RetroDofusCell currentFightCell;
+
+    private Map<Integer, RetroDofusCell> currentFightMonsterCells = new HashMap<>();
 
     private static final CharacterState instance = new CharacterState();
 

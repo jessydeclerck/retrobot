@@ -11,7 +11,7 @@ public class OnCraftPublicProcessor extends PacketProcessor {
     @Override
     public void processPacket(String dofusPacket) {
         OnCraftPublicData onCraftPublicData = new OnCraftPublicData(dofusPacket);
-        if (CharacterState.getInstance().getPlayerId() != 0){
+        if (CharacterState.getInstance().getPlayerId() == 0){
             CharacterState.getInstance().setPlayerId(onCraftPublicData.getPlayerId());
         }
 

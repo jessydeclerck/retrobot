@@ -2,6 +2,7 @@ package processor;
 
 import lombok.extern.slf4j.Slf4j;
 import model.packet.TurnBeginsData;
+import service.FightService;
 import state.CharacterState;
 
 @Slf4j
@@ -12,8 +13,16 @@ public class TurnBeginsProcessor extends PacketProcessor {
         TurnBeginsData turnBeginsData = new TurnBeginsData(dofusPacket);
         if (turnBeginsData.getPlayerId() == CharacterState.getInstance().getPlayerId()) {
             log.info("Tour du joueur detecté");
+            try {
+                Thread.sleep(2000);
+                new FightService().moveTowardMonster(CharacterState.getInstance().getCurrentFightCell(), CharacterState.getInstance().getCurrentFightMonsterCells().get(-1));
+                //TODO update player and monster position
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
     @Override
     public String getPacketId() {

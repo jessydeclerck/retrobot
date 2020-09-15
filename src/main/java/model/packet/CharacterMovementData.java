@@ -1,11 +1,11 @@
 package model.packet;
 
 import fr.arakne.utils.encoding.Base64;
-import lombok.Data;
+import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@Data
+@Value
 public class CharacterMovementData extends PacketData {
 
     private final int targetCellId;
@@ -19,6 +19,7 @@ public class CharacterMovementData extends PacketData {
         log.debug("Character targetedCell : {}", targetCellId);
     }
 
+    //TODO refacto externalize
     private int getCellId(String lastCellInfo) {
         char lastCellInfoArray[] = lastCellInfo.toCharArray();
         //char direction = lastCellInfoArray[0];

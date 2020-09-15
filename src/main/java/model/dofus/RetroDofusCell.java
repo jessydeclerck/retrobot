@@ -2,12 +2,14 @@ package model.dofus;
 
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
 import fr.arakne.utils.maps.serializer.CellData;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import static automation.PixelConstants.X_UNIT;
 import static automation.PixelConstants.Y_UNIT;
 
-@Data
+@Getter
+@Setter
 public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
 
     private int abscisse;
@@ -24,23 +26,23 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
         int width = this.map().getWidth();
         int impairWidth = width - 1;
         for (int i = 0; true; i++) {
-            if(i == 0 && id < width) {
-                this.setAbscisse(id*2);
+            if (i == 0 && id < width) {
+                this.setAbscisse(id * 2);
                 this.setOrdonnee(i);
                 return;
             }
             if (isPair(i)) {
                 id = id - width;
-                if (id < impairWidth){
-                    this.setAbscisse(id*2+1);
-                    this.setOrdonnee(i+1);
+                if (id < impairWidth) {
+                    this.setAbscisse(id * 2 + 1);
+                    this.setOrdonnee(i + 1);
                     return;
                 }
             } else {
                 id = id - impairWidth;
-                if (id < width){
-                    this.setAbscisse(id*2);
-                    this.setOrdonnee(i+1);
+                if (id < width) {
+                    this.setAbscisse(id * 2);
+                    this.setOrdonnee(i + 1);
                     return;
                 }
             }
@@ -56,7 +58,7 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
     }
 
     public double getWindowRelativeY() {
-        return this.getOrdonnee() * Y_UNIT;
+        return this.getOrdonnee() * Y_UNIT + 20; //offset menu haut
     }
 
 }

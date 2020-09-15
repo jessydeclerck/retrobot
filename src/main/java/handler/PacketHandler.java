@@ -1,7 +1,21 @@
 package handler;
 
 import lombok.extern.log4j.Log4j2;
-import processor.*;
+import processor.CharacterFightingProcessor;
+import processor.CharacterMovementProcessor;
+import processor.FightTurnInformationProcessor;
+import processor.GatheringFinishedProcessor;
+import processor.GoingToGatherProcessor;
+import processor.JoinCombatProcessor;
+import processor.MapProcessor;
+import processor.NewMessageProcessor;
+import processor.OnCraftPublicProcessor;
+import processor.PacketProcessor;
+import processor.PlayerCoordinatesStartFightProcessor;
+import processor.PlayerDataProcessor;
+import processor.RessourceProcessor;
+import processor.StartsToPlayFightProcessor;
+import processor.TurnBeginsProcessor;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,12 +55,14 @@ public class PacketHandler {
         //this.addPacketProcessor(new StartsLandingOnCellProcessor());
         this.addPacketProcessor(new NewMessageProcessor());
         this.addPacketProcessor(new CharacterFightingProcessor());
+        //this.addPacketProcessor(new MovementProcessor());
+        this.addPacketProcessor(new FightTurnInformationProcessor());
     }
 
     public void handlePacket(String dofusPackets) {
         List<String> gamePackets = List.of(dofusPackets.split("\0"));
         gamePackets.forEach(gamePacket -> {
-            log.info(gamePacket);
+            //log.info(gamePacket);
             if (gamePacket.length() < 3) return;
             String packetId = getPacketId(gamePacket);
             Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> packetProcessor.processPacket(gamePacket));

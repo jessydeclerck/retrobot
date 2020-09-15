@@ -5,7 +5,9 @@ import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.win32.W32APIOptions;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NativeWindowsEvents {
 
     public static final int WM_LBUTTONUP = 514;
@@ -20,7 +22,6 @@ public class NativeWindowsEvents {
         WinDef.WPARAM wparam = new WinDef.WPARAM(0);
 
 
-
         user32.SendMessage(hwnd, WM_LBUTTONDOWN, wparam, lparam);
         user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
     }
@@ -28,17 +29,17 @@ public class NativeWindowsEvents {
     public static void clic(double x, double y) {
         int roundedX = (int) Math.round(x);
         int roundedY = (int) Math.round(y);
+        log.info("Clic {}, {}", roundedX, roundedY);
         long param = roundedX + (roundedY << 16);
         WinDef.LPARAM lparam = new WinDef.LPARAM(param);
         WinDef.WPARAM wparam = new WinDef.WPARAM(0);
-
 
 
         user32.SendMessage(hwnd, WM_LBUTTONDOWN, wparam, lparam);
         user32.SendMessage(hwnd, WM_LBUTTONUP, wparam, lparam);
     }
 
-    public static void prepareForAutomation(String winTitle){
+    public static void prepareForAutomation(String winTitle) {
         hwnd = user32.FindWindow(null, winTitle);
         /**
          * i = x

@@ -1,11 +1,13 @@
 package processor;
 
 import model.packet.CharacterFightingData;
+import state.CharacterState;
 
 public class CharacterFightingProcessor extends PacketProcessor {
     @Override
     public void processPacket(String dofusPacket) {
-        CharacterFightingData characterFightingData = new CharacterFightingData(dofusPacket);
+        if (!CharacterState.getInstance().isFighting()) return;
+        //CharacterFightingData characterFightingData = new CharacterFightingData(dofusPacket);
     }
 
     @Override
