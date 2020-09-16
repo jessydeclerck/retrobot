@@ -25,12 +25,13 @@ public class RecolteService {
         return instance;
     }
 
+    //TODO only works for cereals
     public void recolterRessource(RetroRessourceCell ressourceCell) {
         log.info("Recolte de la ressource {}", ressourceCell.id());
+        //TODO handle right extrremity ressources
         TimeUtils.sleep(200);
-        double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X; //TODO handle ressources on the very right side of the map
-        double y = ressourceCell.getWindowRelativeY() - OFFSET_MILIEU_CASE_Y;
-        NativeWindowsEvents.clic(x, y);//on evite de cliquer au milieu de la case todo refacto
+        double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X, y = ressourceCell.getWindowRelativeY() - OFFSET_MILIEU_CASE_Y;
+        NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
         NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
         TimeUtils.sleep(1000);

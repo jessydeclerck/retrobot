@@ -6,20 +6,20 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings("unused")
 @Slf4j
 @Value
 public class MovementData extends PacketData {
 
-    int monsterId;
-    int monsterCellId;
+    int entityId;
+    int entityCellId;
 
     public MovementData(String fullPacket) {
         super(fullPacket);
-        String movementData = fullPacket.replace("GA0", "");
-        String lastCellInfo = movementData.substring(movementData.length() - 4);
-        this.monsterCellId = getCellId(lastCellInfo);
-        this.monsterId = Integer.parseInt(movementData.split(";")[1]);
+        String movementData = fullPacket.replace("GA0;", "");
+        String[] movementDataArray = movementData.split(";");
+        this.entityId = Integer.parseInt(movementDataArray[1]);
+        String lastCellInfo = movementDataArray[2].substring(movementDataArray[2].length() - 3);
+        this.entityCellId = getCellId(lastCellInfo);
     }
 
     private int getCellId(String lastCellInfo) {

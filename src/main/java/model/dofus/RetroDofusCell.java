@@ -2,7 +2,6 @@ package model.dofus;
 
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
 import fr.arakne.utils.maps.BattlefieldCell;
-import fr.arakne.utils.maps.constant.CellMovement;
 import fr.arakne.utils.maps.serializer.CellData;
 import lombok.Getter;
 import lombok.Setter;

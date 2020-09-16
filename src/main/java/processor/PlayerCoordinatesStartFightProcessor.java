@@ -24,6 +24,8 @@ public class PlayerCoordinatesStartFightProcessor extends PacketProcessor {
             log.info("Monster current fighting cell id : {}", monsterFightPositionData.getCellId());
             characterState.getCurrentFightMonsterCells().put(monsterFightPositionData.getMonsterId(), monsterFightCell);
         });
+        characterState.setFightMonstersNumber(startFightData.getMonsterPositions().size());
+        //TODO we need number on monster to validate end of combat interface
     }
 
     @Override

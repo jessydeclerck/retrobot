@@ -13,7 +13,7 @@ public class RetroTriggerCell extends RetroDofusCell {
 
     public RetroTriggerCell(RetroDofusMap map, CellData data, int id, int nextMapId, int nextCellId) {
         super(map, data, id);
-        this.nextMapId=nextMapId;
-        this.nextCellId=nextCellId;
+        this.nextMapId = nextMapId;
+        this.nextCellId = nextCellId;
     }
 }

@@ -16,11 +16,13 @@ public class CharacterState {
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
     private RetroDofusCell currentCellTarget;
+    private RetroDofusCell currentPlayerCell;
 
     //TODO refactor
     private RetroDofusCell currentFightCell;
 
     private Map<Integer, RetroDofusCell> currentFightMonsterCells = new HashMap<>();
+    private int fightMonstersNumber;
 
     private static final CharacterState instance = new CharacterState();
 

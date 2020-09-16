@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static automation.PixelConstants.OFFSET_PAR_MONSTRE_MENU_FERMER_Y;
+
 @Slf4j
 public class FightService {
 
@@ -62,7 +64,7 @@ public class FightService {
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
         NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY()); //TODO refacto externalize
         TimeUtils.sleep(2000);
-        NativeWindowsEvents.clic(	388, 631); //move cursor elsewhere so we can select spell
+        NativeWindowsEvents.clic(453, 583); //move cursor elsewhere so we can select spell
     }
 
     public void attackMonster(RetroDofusCell monsterCell) {
@@ -70,7 +72,7 @@ public class FightService {
         NativeWindowsEvents.clic(678, 653); //TODO select spell
         TimeUtils.sleep(1000);//TODO refacto externalize
         NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY()); //TODO refacto externalize
-        NativeWindowsEvents.clic(	388, 631); //move cursor elsewhere so we can select spell
+        NativeWindowsEvents.clic(453, 583); //move cursor elsewhere so we can select spell
     }
 
     public void passerTour() {
@@ -79,8 +81,18 @@ public class FightService {
     }
 
     public void fermerFenetreFinCombat() {
-        TimeUtils.sleep(3000);
-        NativeWindowsEvents.clic(769, 435); //TODO refacto externalize
+        TimeUtils.sleep(4000); //TODO handle window stuck in front => if more than 1 monster, button wont be at the same place
+        int yFor1Monster = 435; //TODO might need to handle number of allies
+        double yComputedForNMonsters;
+        if (characterState.getFightMonstersNumber() > 1 && characterState.getFightMonstersNumber() < 6) {
+            yComputedForNMonsters = yFor1Monster + (characterState.getFightMonstersNumber()) * OFFSET_PAR_MONSTRE_MENU_FERMER_Y;
+        } else if (characterState.getFightMonstersNumber() == 1) {
+            yComputedForNMonsters = yFor1Monster;
+        } else {
+            yComputedForNMonsters = 497;
+        }
+        log.info("yComputed fin combat : {}", yComputedForNMonsters);
+        NativeWindowsEvents.clic(769, yComputedForNMonsters); //TODO refacto externalize
     }
 
     public void prepareFight() {

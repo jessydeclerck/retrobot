@@ -32,7 +32,7 @@ public class FightersCoordinatesStartFightData extends PacketData {
             } else if (fighterId < 0) {
                 this.monsterPositions.add(new MonsterFightPositionData(fighterId, cellId));
             }
-
         });
+
     }
 }

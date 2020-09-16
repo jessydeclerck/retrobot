@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroRessourceCell;
+import service.FightService;
 import service.RecolteService;
 import state.CharacterState;
 import state.MapState;
@@ -24,6 +25,8 @@ public class RecolterTaskEvent {
     @EqualsAndHashCode.Exclude
     private final MapState mapState = MapState.getInstance();
     @EqualsAndHashCode.Exclude
+    private final FightService fightService = FightService.getInstance();
+    @EqualsAndHashCode.Exclude
     private final RecolteService recolteService = RecolteService.getInstance();
     @EqualsAndHashCode.Exclude
     private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
@@ -41,6 +44,10 @@ public class RecolterTaskEvent {
             log.info("Incoherent task, discarding");
             return;
         }
+        if (isRessourceToRightExtremity()) {  //ignore right extremity of the map
+            log.info("On ignore la ressource car elle est à l'extrémité droite de la carte");
+            return;
+        }
         processCount++;
         if (!isStateOk()) {
             retroTaskQueue.addTask(this);
@@ -50,6 +57,10 @@ public class RecolterTaskEvent {
         waitTaskFinished();
         resetState();
         log.info("Recolte terminée");
+    }
+
+    private boolean isRessourceToRightExtremity() {
+        return ressourceCell.getAbscisse() >= mapState.getCurrentMap().getWidth() * 2 - 3;
     }
 
     private boolean isCoherent() {
@@ -64,7 +75,7 @@ public class RecolterTaskEvent {
         if (characterState.isFighting() || characterState.isGathering() || characterState.isMoving()) {
             return false;
         }
-        if (ressourceCell.equals(characterState.getCurrentCellTarget())) {
+        if (characterState.getCurrentPlayerCell() != null && ressourceCell.id() == characterState.getCurrentPlayerCell().id()) {
             log.info("La prochaine ressource est trop proche du personnage");
             return false;
         }

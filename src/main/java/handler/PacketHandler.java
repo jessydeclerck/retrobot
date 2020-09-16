@@ -8,6 +8,7 @@ import processor.GatheringFinishedProcessor;
 import processor.GoingToGatherProcessor;
 import processor.JoinCombatProcessor;
 import processor.MapProcessor;
+import processor.MovementProcessor;
 import processor.NewMessageProcessor;
 import processor.OnCraftPublicProcessor;
 import processor.PacketProcessor;
@@ -45,7 +46,7 @@ public class PacketHandler {
         //this.addPacketProcessor(new StartsLandingOnCellProcessor());
         this.addPacketProcessor(new NewMessageProcessor());
         //this.addPacketProcessor(new CharacterFightingProcessor());
-        //this.addPacketProcessor(new MovementProcessor());
+        this.addPacketProcessor(new MovementProcessor());
         this.addPacketProcessor(new FightTurnInformationProcessor());
         this.addPacketProcessor(new FightOnEndProcessor());
     }
