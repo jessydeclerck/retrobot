@@ -19,6 +19,9 @@ public class FightTurnInformationData extends PacketData {
         String[] fightTurnInformationData = fullPacket.replace("GTM|", "").split("\\|");
         Arrays.stream(fightTurnInformationData).forEach(fighterInformations -> {
             String[] fighterData = fighterInformations.split(";");
+            if (fighterData.length < 8) {
+                return;
+            }
             int fighterId = Integer.parseInt(fighterData[0]);
             int unknown = Integer.parseInt(fighterData[1]);
             int currentHp = Integer.parseInt(fighterData[2]);

@@ -19,7 +19,7 @@ public class TurnBeginsProcessor extends PacketProcessor {
             log.info("Tour du joueur detecté");
             TimeUtils.sleep(1500);
             //TODO
-            fightService.moveTowardMonster(characterState.getCurrentFightCell(), characterState.getCurrentFightMonsterCells().get(-1));
+            fightService.playTurn();
             //TODO update player and monster position
         }
     }

@@ -14,6 +14,7 @@ public class FightTurnInformationProcessor extends PacketProcessor {
     @Override
     public void processPacket(String dofusPacket) {
         FightTurnInformationData fightTurnInformationData = new FightTurnInformationData(dofusPacket);
+        characterState.getCurrentFightMonsterCells().clear();
         fightTurnInformationData.getFighterTurnInformationDataList().forEach(fighterData -> {
             if (fighterData.getFighterId() < 0) {
                 log.info("Monster {} currentCell : {}", fighterData.getFighterId(), fighterData.getCellId());

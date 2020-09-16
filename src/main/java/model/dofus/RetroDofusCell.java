@@ -1,6 +1,8 @@
 package model.dofus;
 
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
+import fr.arakne.utils.maps.BattlefieldCell;
+import fr.arakne.utils.maps.constant.CellMovement;
 import fr.arakne.utils.maps.serializer.CellData;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import static automation.PixelConstants.Y_UNIT;
 
 @Getter
 @Setter
-public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
+public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> implements BattlefieldCell {
 
     private int abscisse;
 
@@ -62,4 +64,8 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> {
         return this.getOrdonnee() * Y_UNIT + Y_OFFSET_MENU; //offset menu haut
     }
 
+    @Override
+    public boolean sightBlocking() {
+        return !this.data.lineOfSight();
+    }
 }

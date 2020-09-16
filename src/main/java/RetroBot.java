@@ -21,7 +21,7 @@ public class RetroBot {
 
         BotServer.getInstance().start();
 
-        NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.32.1");
+        NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.33.0");
         PcapNetworkInterface device = null;
 
         try {

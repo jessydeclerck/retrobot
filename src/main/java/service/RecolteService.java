@@ -19,7 +19,7 @@ public class RecolteService {
     private final CharacterState characterState = CharacterState.getInstance();
     private final MapState mapState = MapState.getInstance();
     private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
-    private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 20;
+    private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
 
     synchronized public static RecolteService getInstance() {
         return instance;
@@ -28,7 +28,7 @@ public class RecolteService {
     public void recolterRessource(RetroRessourceCell ressourceCell) {
         log.info("Recolte de la ressource {}", ressourceCell.id());
         TimeUtils.sleep(200);
-        double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X;
+        double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X; //TODO handle ressources on the very right side of the map
         double y = ressourceCell.getWindowRelativeY() - OFFSET_MILIEU_CASE_Y;
         NativeWindowsEvents.clic(x, y);//on evite de cliquer au milieu de la case todo refacto
         TimeUtils.sleep(500);
