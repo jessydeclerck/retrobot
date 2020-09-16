@@ -16,6 +16,7 @@ public class MapProcessor extends PacketProcessor {
     }
 
     public void processPacket(String dofusPacket) {
+        log.info(dofusPacket);
         MapPacketData mapPacketData = new MapPacketData(dofusPacket);
         log.info(mapPacketData.toString());
         mapState.setCurrentMap(mapPacketData.getMap());
@@ -24,8 +25,17 @@ public class MapProcessor extends PacketProcessor {
                 .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
         CompletableFuture.runAsync(() -> {
             TimeUtils.sleep(2000);
-            mapState.startRecolte();
+            //mapState.startRecolte();
+            /**if (!CharacterState.getInstance().isGoingBank()) {
+             DeplacementService.getInstance().goNextMap();
+             if (mapState.getCurrentMap().getId() == 7454) {
+             DeplacementService.getInstance().goToBank();
+             }
+             } else {
+             DeplacementService.getInstance().goToBank();
+             }*/
         });
+        log.info("Current map id : {}", mapPacketData.getMap().getId());
     }
 
     @Override

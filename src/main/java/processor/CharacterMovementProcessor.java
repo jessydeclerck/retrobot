@@ -21,7 +21,7 @@ public class CharacterMovementProcessor extends PacketProcessor {
             return;
         }
         RetroDofusCell targetedCell = currentMap.get(characterMovementData.getTargetCellId());
-        log.info("Character current target cell : {}", targetedCell.id());
+        //log.info("Character current target cell : {}", targetedCell.id());
         characterState.setCurrentCellTarget(targetedCell);
     }
 

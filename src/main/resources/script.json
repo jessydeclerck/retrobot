@@ -1,0 +1,40 @@
+{
+  "toGather" : ["168"],
+  "startMap" : {"mapId":"7411", "pos": "4,-19", "nextMapId":"7410"},
+  "bankMapId" : "",
+  "gatherPath" : [
+    {"pos" : "4,-19", "nextMapId":"7410"},
+    {"pos" : "4,-20", "nextMapId":"7409"},
+    {"pos" : "4,-21", "nextMapId":"7408"},
+    {"pos" : "4,-22", "nextMapId":"7424"},
+    {"pos" : "5,-22", "nextMapId":"7440"},
+    {"pos" : "6,-22", "nextMapId":"7456"},
+    {"pos" : "7,-22", "nextMapId":"7455"},
+    {"pos" : "7,-23", "nextMapId":"7454"},
+    {"pos" : "7,-24", "nextMapId":"7453", "gather":  true},
+    {"pos" : "7,-25", "nextMapId":"7437", "gather":  true},
+    {"pos" : "6,-25", "nextMapId":"7438", "gather":  true},
+    {"pos" : "6,-24", "nextMapId":"7454", "gather":  true},
+    {"pos" : "4,-16", "nextMapId":"7413"},
+    {"pos" : "4,-17", "nextMapId":"7412"},
+    {"pos" : "4,-18", "nextMapId":"7411"}
+  ],
+  "bankPath" : [
+    {"pos" : "6,-25", "nextMapId":"7421"},
+    {"pos" : "7,-25", "nextMapId":"7437"},
+    {"pos" : "7,-24", "nextMapId":"7438"},
+    {"pos" : "6,-24", "nextMapId":"7422"},
+    {"pos" : "5,-25", "nextMapId":"7422"},
+    {"pos" : "5,-24", "nextMapId":"7423"},
+    {"pos" : "5,-23", "nextMapId":"7424"},
+    {"pos" : "5,-22", "nextMapId":"7425"},
+    {"pos" : "5,-21", "nextMapId":"7426"},
+    {"pos" : "5,-20", "nextMapId":"7427"},
+    {"pos" : "5,-19", "nextMapId":"7428"},
+    {"pos" : "5,-18", "nextMapId":"7429"},
+    {"pos" : "5,-17", "nextMapId":"7430"},
+    {"pos" : "5,-16", "nextMapId":"7414"},
+    {"pos" : "4,-16", "nextMapId":"7414", "bankMapId" : 7549}
+  ]
+
+}

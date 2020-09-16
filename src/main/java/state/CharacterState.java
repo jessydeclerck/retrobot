@@ -13,10 +13,14 @@ public class CharacterState {
     private boolean gathering;
     private boolean fighting;
     private boolean moving;
+    private boolean goingBank;
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
     private RetroDofusCell currentCellTarget;
     private RetroDofusCell currentPlayerCell;
+
+    private int currentPods;
+    private int maxPods;
 
     //TODO refactor
     private RetroDofusCell currentFightCell;

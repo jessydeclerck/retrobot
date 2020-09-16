@@ -7,6 +7,7 @@ import fr.arakne.utils.value.Dimensions;
 import loader.dto.MapDto;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

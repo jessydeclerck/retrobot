@@ -6,6 +6,7 @@ import processor.FightOnEndProcessor;
 import processor.FightTurnInformationProcessor;
 import processor.GatheringFinishedProcessor;
 import processor.GoingToGatherProcessor;
+import processor.JobLevelProcessor;
 import processor.JoinCombatProcessor;
 import processor.MapProcessor;
 import processor.MovementProcessor;
@@ -14,6 +15,7 @@ import processor.OnCraftPublicProcessor;
 import processor.PacketProcessor;
 import processor.PlayerCoordinatesStartFightProcessor;
 import processor.PlayerDataProcessor;
+import processor.PodsUpdateProcessor;
 import processor.RessourceProcessor;
 import processor.TurnBeginsProcessor;
 
@@ -49,6 +51,10 @@ public class PacketHandler {
         this.addPacketProcessor(new MovementProcessor());
         this.addPacketProcessor(new FightTurnInformationProcessor());
         this.addPacketProcessor(new FightOnEndProcessor());
+        this.addPacketProcessor(new PodsUpdateProcessor());
+        this.addPacketProcessor(new JobLevelProcessor());
+        //DeplacementService.getInstance().startDeplacement();
+        //TODO pods et passage niveau
     }
 
     public void handlePacket(String dofusPackets) {

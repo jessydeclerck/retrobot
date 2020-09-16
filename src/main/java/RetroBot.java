@@ -10,6 +10,7 @@ import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.util.NifSelector;
+import service.DeplacementService;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -18,7 +19,6 @@ import java.net.UnknownHostException;
 public class RetroBot {
 
     public static void main(String[] args) throws UnknownHostException {
-
         BotServer.getInstance().start();
 
         NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.33.0");

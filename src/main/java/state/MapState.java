@@ -78,12 +78,12 @@ public class MapState {
             return;
         }
         if (currentMap != newMap) {
-            currentMap.getTriggers().stream().filter(t -> t.id() == characterState.getCurrentPlayerCell().id())
+            currentMap.getTriggers().stream().filter(t -> t.id() == characterState.getCurrentCellTarget().id())
                     .findFirst().ifPresent(t -> {
                 characterState.setCurrentPlayerCell(newMap.get(t.getNextCellId()));
                 characterState.setCurrentCellTarget(newMap.get(t.getNextCellId()));
             });
-            log.info("New map character cell id : {}", characterState.getCurrentPlayerCell().id());
+//            log.info("New map character cell id : {}", characterState.getCurrentPlayerCell().id());
         }
         this.resetMapState();
         this.currentMap = newMap;

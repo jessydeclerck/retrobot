@@ -44,4 +44,10 @@ public class RecolteService {
         }
         characterState.setCurrentGatheringTarget(null);
     }
+
+    public void fermerPopupNiveauMetier() {
+        TimeUtils.sleep(1000);
+        NativeWindowsEvents.clic(473, 328);
+
+    }
 }
