@@ -39,16 +39,12 @@ public class BotServer extends WebSocketServer {
     @SneakyThrows
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        webSocket.send("Welcome to the server!"); //This method sends a message to the new client
-        broadcast("new connection: " + clientHandshake
-                .getResourceDescriptor()); //This method sends a message to all clients connected
         System.out.println(
                 webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        broadcast(webSocket + " has left the room!");
         System.out.println(webSocket + " has left the room!");
     }
 
