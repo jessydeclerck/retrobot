@@ -3,16 +3,12 @@ package script.model;
 import lombok.Data;
 
 @Data
-public class MapAction {
-
-    private Integer mapId;
+public abstract class MapAction {
 
     private String pos;
 
+    private DirectionEnum direction;
+
     private Integer nextMapId;
-
-    private boolean gather;
-
-    private Integer bankMapId;
 
 }

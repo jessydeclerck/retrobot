@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ScriptPath {
@@ -11,12 +12,12 @@ public class ScriptPath {
     @JsonProperty("toGather")
     private List<Integer> ressourcesToGather;
 
-    private MapAction startMap;
+    private int startMapId;
 
     private int bankMapId;
 
-    private List<MapAction> gatherPath;
+    private Map<Integer, GatherMapAction> gatherPath;
 
-    private List<MapAction> bankPath;
+    private Map<Integer, BankMapAction> bankPath;
 
 }

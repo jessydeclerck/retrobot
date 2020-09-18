@@ -7,7 +7,6 @@ import fr.arakne.utils.value.Dimensions;
 import loader.dto.MapDto;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +45,9 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
         this.height = mapDto.getHeight();
         DefaultMapDataSerializer serializer = new DefaultMapDataSerializer();
         this.cells = serializer.deserialize(mapDto.getData().getValue());
-        if (!mapDto.getData().getValue().isBlank()) { //exclude maps without data value
-            mapDto.getTriggers().forEach(triggerDto ->
-                    triggers.add(this.getTriggerCell(triggerDto.getCell(), triggerDto.getNextMap(), triggerDto.getNextCell()))
-            );
-        }
+        mapDto.getTriggers().forEach(triggerDto ->
+                triggers.add(this.getTriggerCell(triggerDto.getCell(), triggerDto.getNextMap(), triggerDto.getNextCell()))
+        );
         for (int i = 0; i < cells.length; i++) {
             CellData cell = cells[i];
             if (cell.layer2().interactive()) {

@@ -32,7 +32,6 @@ public class MapService {
         }
         assert mapsDto != null;
         log.info("Starting init");
-        //TODO update maps.xml
         maps = mapsDto.getMaps().stream()
                 .map(RetroDofusMap::new)
                 .collect(Collectors.toMap(RetroDofusMap::getId, Function.identity()));

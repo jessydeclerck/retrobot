@@ -1,23 +1,8 @@
 package handler;
 
 import lombok.extern.slf4j.Slf4j;
-import processor.CharacterMovementProcessor;
-import processor.FightOnEndProcessor;
-import processor.FightTurnInformationProcessor;
-import processor.GatheringFinishedProcessor;
-import processor.GoingToGatherProcessor;
-import processor.JobLevelProcessor;
-import processor.JoinCombatProcessor;
-import processor.MapProcessor;
-import processor.MovementProcessor;
-import processor.NewMessageProcessor;
-import processor.OnCraftPublicProcessor;
-import processor.PacketProcessor;
-import processor.PlayerCoordinatesStartFightProcessor;
-import processor.PlayerDataProcessor;
-import processor.PodsUpdateProcessor;
-import processor.RessourceProcessor;
-import processor.TurnBeginsProcessor;
+import processor.*;
+import service.DeplacementService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,14 +38,15 @@ public class PacketHandler {
         this.addPacketProcessor(new FightOnEndProcessor());
         this.addPacketProcessor(new PodsUpdateProcessor());
         this.addPacketProcessor(new JobLevelProcessor());
-        //DeplacementService.getInstance().startDeplacement();
+        this.addPacketProcessor(new CharacterMapProcessor());
+        DeplacementService.getInstance().startDeplacement(); //TODO is it the right place to start ?
         //TODO pods et passage niveau
     }
 
     public void handlePacket(String dofusPackets) {
         List<String> gamePackets = List.of(dofusPackets.split("\0"));
         gamePackets.forEach(gamePacket -> {
-            //log.info(gamePacket);
+            log.info(gamePacket);
             if (gamePacket.length() < 3) return;
             String packetId = getPacketId(gamePacket);
             Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> packetProcessor.processPacket(gamePacket));
