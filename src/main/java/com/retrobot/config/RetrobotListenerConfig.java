@@ -4,12 +4,14 @@ import com.retrobot.bot.listener.RetroBotListener;
 import com.retrobot.bot.processor.PacketProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.pcap4j.core.*;
-import org.pcap4j.util.NifSelector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 @Slf4j
@@ -25,15 +27,20 @@ public class RetrobotListenerConfig {
     @Bean
     public PcapHandle pcapHandle() {
         PcapNetworkInterface device = null;
-        try {
-            device = new NifSelector().selectNetworkInterface();
-        } catch (IOException e) {
-            e.printStackTrace();
+        InetAddress ip = null;
+        try (final DatagramSocket socket = new DatagramSocket()) {
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress();
+        } catch (SocketException | UnknownHostException e) {
+            log.error("Error while getting host ip : ", e);
         }
-        System.out.println("You chose: " + device);
-
+        try {
+            device = Pcaps.getDevByAddress(ip);
+        } catch (PcapNativeException e) {
+            log.error("", e);
+        }
         if (device == null) {
-            log.error("No device chosen.");
+            log.error("No device could be selected.");
             System.exit(1);
         }
         int snapshotLength = 65536; // in bytes
