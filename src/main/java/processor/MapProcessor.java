@@ -1,7 +1,11 @@
 package processor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import model.packet.MapPacketData;
+import network.BotServer;
+import network.message.going.GatheringResourceStarted;
+import network.message.going.NewMap;
 import service.DeplacementService;
 import state.CharacterState;
 import state.MapState;
@@ -36,6 +40,11 @@ public class MapProcessor extends PacketProcessor {
             }
         });
         log.info("Current map id : {}", mapPacketData.getMap().getId());
+        try {
+            BotServer.getInstance().emitMessage(new NewMap(mapPacketData));
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de l'émission du socket de nouvelle map", e);
+        }
     }
 
     @Override
