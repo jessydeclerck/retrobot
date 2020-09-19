@@ -1,14 +1,14 @@
 package network.message.going;
 
-import lombok.Data;
-import model.packet.MapPacketData;
-import network.message.WSMessage;
+import com.retrobot.bot.processor.packet.MapPacketData;
+import com.retrobot.network.message.WSMessage;
+import lombok.Value;
 
-@Data
+@Value
 public class NewMap extends WSMessage {
 
-    private int x;
-    private int y;
+    int x;
+    int y;
 
     public NewMap(MapPacketData mapPacketData) {
         super("map");

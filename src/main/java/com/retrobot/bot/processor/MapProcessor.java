@@ -1,14 +1,16 @@
 package com.retrobot.bot.processor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.retrobot.bot.processor.packet.MapPacketData;
 import com.retrobot.bot.service.BotService;
 import com.retrobot.bot.service.DeplacementService;
 import com.retrobot.bot.service.MapService;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
+import com.retrobot.network.BotServer;
 import com.retrobot.utils.TimeUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import network.message.going.NewMap;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -28,12 +30,15 @@ public class MapProcessor extends PacketProcessor {
 
     private final MapState mapState;
 
-    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState) {
+    private final BotServer botServer;
+
+    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState, BotServer botServer) {
         this.mapService = mapService;
         this.characterState = characterState;
         this.deplacementService = deplacementService;
         this.botService = botService;
         this.mapState = mapState;
+        this.botServer = botServer;
     }
 
     public void processPacket(String dofusPacket) {
@@ -55,7 +60,7 @@ public class MapProcessor extends PacketProcessor {
         });
         log.info("Current map id : {}", mapPacketData.getMap().getId());
         try {
-            BotServer.getInstance().emitMessage(new NewMap(mapPacketData));
+            botServer.emitMessage(new NewMap(mapPacketData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de nouvelle map", e);
         }
