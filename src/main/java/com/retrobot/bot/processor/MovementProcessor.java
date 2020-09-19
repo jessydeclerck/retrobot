@@ -22,7 +22,6 @@ public class MovementProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         MovementData movementData = new MovementData(dofusPacket);
         if (characterState.getPlayerId() == movementData.getEntityId() && !characterState.isFighting()) {
-            //TODO seems not accurate
             log.info("Current player position cell : {}", movementData.getEntityCellId());
             characterState.setCurrentPlayerCell(mapState.getCurrentMap().get(movementData.getEntityCellId()));
         }

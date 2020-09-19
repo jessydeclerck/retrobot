@@ -4,6 +4,7 @@ import fr.arakne.utils.encoding.Base64;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
@@ -17,8 +18,13 @@ public class MovementData extends PacketData {
         super(fullPacket);
         String movementData = fullPacket.replace("GA0;", "");
         String[] movementDataArray = movementData.split(";");
-        this.entityId = Integer.parseInt(movementDataArray[1]);
         String lastCellInfo = movementDataArray[2].substring(movementDataArray[2].length() - 3);
+        if (StringUtils.isNumeric(lastCellInfo)) { //data cant be extracted
+            entityId = 0;
+            entityCellId = 0;
+            return;
+        }
+        this.entityId = Integer.parseInt(movementDataArray[1]);
         this.entityCellId = getCellId(lastCellInfo);
     }
 
