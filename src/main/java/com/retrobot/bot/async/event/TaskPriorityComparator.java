@@ -20,20 +20,20 @@ public class TaskPriorityComparator implements Comparator<RecolterTaskEvent> {
         if (o1.getProcessCount() > 0) { // should put the event at the end of the queue
             return Integer.compare(o2.getProcessCount(), o1.getProcessCount());
         }
-        RetroDofusCell currentPlayerPositionCell = characterState.getCurrentPlayerCell();
-        if (currentPlayerPositionCell == null) {
+        RetroDofusCell currentTargetCell = characterState.getCurrentCellTarget();
+        if (currentTargetCell == null) {
             return Integer.compare(o1.getRessourceCell().id(), o2.getRessourceCell().id());
         }
-        double currentPlayerCellX = currentPlayerPositionCell.getWindowRelativeX();
-        double currentPlayerCellY = currentPlayerPositionCell.getWindowRelativeY();
+        double currentTargetCellX = currentTargetCell.getAbscisse();
+        double currentTargetCellY = currentTargetCell.getOrdonnee();
         RetroRessourceCell nextTarget1 = o1.getRessourceCell();
-        double nextTarget1X = nextTarget1.getWindowRelativeX();
-        double nextTarget1Y = nextTarget1.getWindowRelativeY();
+        double nextTarget1X = nextTarget1.getAbscisse();
+        double nextTarget1Y = nextTarget1.getOrdonnee();
         RetroRessourceCell nextTarget2 = o2.getRessourceCell();
-        double nextTarget2X = nextTarget2.getWindowRelativeX();
-        double nextTarget2Y = nextTarget2.getWindowRelativeY();
-        double distance1 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget1X, nextTarget1Y);
-        double distance2 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget2X, nextTarget2Y);
-        return Double.compare(distance1, distance2);
+        double nextTarget2X = nextTarget2.getAbscisse();
+        double nextTarget2Y = nextTarget2.getOrdonnee();
+        Double distance1 = Point2D.distanceSq(currentTargetCellX, currentTargetCellY, nextTarget1X, nextTarget1Y);
+        Double distance2 = Point2D.distanceSq(currentTargetCellX, currentTargetCellY, nextTarget2X, nextTarget2Y);
+        return distance1.compareTo(distance2);
     }
 }
