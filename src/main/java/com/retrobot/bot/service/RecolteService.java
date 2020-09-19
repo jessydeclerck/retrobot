@@ -5,7 +5,6 @@ import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +17,13 @@ public class RecolteService {
 
     private final CharacterState characterState;
     private final MapState mapState;
-    @Setter
-    private TaskService taskService;
+    private final TaskService taskService;
     private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
 
-    public RecolteService(CharacterState characterState, MapState mapState) {
+    public RecolteService(CharacterState characterState, MapState mapState, TaskService taskService) {
         this.characterState = characterState;
         this.mapState = mapState;
+        this.taskService = taskService;
     }
 
     //TODO only works for cereals
