@@ -64,7 +64,8 @@ public class BotService {
         RetroRessourceCell availableRessourceCell = mapState.getUnavailableRessources().get(cellId);
         if (availableRessourceCell == null) return;
         mapState.getUnavailableRessources().remove(cellId);
-        mapState.getUnavailableRessources().put(cellId, availableRessourceCell);
+        mapState.getAvailableRessources().put(cellId, availableRessourceCell);
+        retroTaskQueue.addTask(new RecolterTaskEvent(availableRessourceCell, BotService.class));
     }
 
     private void logAvailableRessources() {
