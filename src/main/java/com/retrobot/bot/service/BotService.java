@@ -1,5 +1,7 @@
 package com.retrobot.bot.service;
 
+import com.retrobot.bot.async.RetroTaskQueue;
+import com.retrobot.bot.async.event.RecolterTaskEvent;
 import com.retrobot.bot.model.dofus.RetroDofusMap;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
 import com.retrobot.bot.state.CharacterState;
@@ -20,15 +22,15 @@ public class BotService {
 
     private final ScriptPath scriptPath;
 
-    private final TaskService taskService;
+    private final RetroTaskQueue retroTaskQueue;
 
     private final DeplacementService deplacementService;
 
-    public BotService(MapState mapState, CharacterState characterState, ScriptPath scriptPath, TaskService taskService, DeplacementService deplacementService) {
+    public BotService(MapState mapState, CharacterState characterState, ScriptPath scriptPath, RetroTaskQueue retroTaskQueue, DeplacementService deplacementService) {
         this.mapState = mapState;
         this.characterState = characterState;
         this.scriptPath = scriptPath;
-        this.taskService = taskService;
+        this.retroTaskQueue = retroTaskQueue;
         this.deplacementService = deplacementService;
     }
 
@@ -55,7 +57,7 @@ public class BotService {
         mapState.getUnavailableRessources().put(cellId, unavailableRessourceCell);
         log.debug("Ressource indisponible : {}", unavailableRessourceCell.id());
         logAvailableRessources();
-        taskService.removeQueueTask(unavailableRessourceCell);
+        retroTaskQueue.removeTask(new RecolterTaskEvent(unavailableRessourceCell, BotService.class));
     }
 
     public void setAvailableRessource(int cellId) {
@@ -63,8 +65,6 @@ public class BotService {
         if (availableRessourceCell == null) return;
         mapState.getUnavailableRessources().remove(cellId);
         mapState.getUnavailableRessources().put(cellId, availableRessourceCell);
-        //log.info("Ressource disponible : {}, {}", availableRessourceCell.getWindowRelativeX(), availableRessourceCell.getWindowRelativeY());
-        taskService.queueTaskRecolte(availableRessourceCell);
     }
 
     private void logAvailableRessources() {
@@ -86,6 +86,7 @@ public class BotService {
                 characterState.setCurrentCellTarget(newMap.get(t.getNextCellId()));
             });
         }
+        mapState.resetMapState();
         mapState.setCurrentMap(newMap);
     }
 

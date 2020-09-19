@@ -14,14 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 public class RecolterTaskEvent {
 
+    private final Class producer;
+
     private final RetroBotTask retroBotTask = RetroBotTask.RECOLTER;
 
     private final RetroRessourceCell ressourceCell;
 
     private int processCount = 0; //number of time we tried to process this event
 
-    public RecolterTaskEvent(RetroRessourceCell ressourceCell) {
+    public RecolterTaskEvent(RetroRessourceCell ressourceCell, Class producer) {
         this.ressourceCell = ressourceCell;
+        this.producer=producer;
     }
 
     public void incrementProcessCount() {

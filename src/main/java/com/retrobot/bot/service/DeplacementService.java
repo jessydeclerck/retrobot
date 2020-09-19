@@ -1,5 +1,7 @@
 package com.retrobot.bot.service;
 
+import com.retrobot.bot.async.RetroTaskQueue;
+import com.retrobot.bot.async.event.RecolterTaskEvent;
 import com.retrobot.bot.model.dofus.RetroTriggerCell;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
@@ -16,7 +18,6 @@ import java.util.Map;
 @Service
 public class DeplacementService {
 
-    //TODO use dependency injection
     private final ScriptPath scriptPath;
 
     private final CharacterState characterState;
@@ -25,7 +26,7 @@ public class DeplacementService {
 
     private final MapState mapState;
 
-    private final TaskService taskService;
+    private final RetroTaskQueue retroTaskQueue;
 
     private Map<Integer, GatherMapAction> gatherMapActions;
 
@@ -33,12 +34,12 @@ public class DeplacementService {
 
     public int bankMapId;
 
-    public DeplacementService(ScriptPath scriptPath, CharacterState characterState, MapService mapService, MapState mapState, TaskService taskService) {
+    public DeplacementService(ScriptPath scriptPath, CharacterState characterState, MapService mapService, MapState mapState, RetroTaskQueue retroTaskQueue) {
         this.scriptPath = scriptPath;
         this.characterState = characterState;
         this.mapService = mapService;
         this.mapState = mapState;
-        this.taskService = taskService;
+        this.retroTaskQueue = retroTaskQueue;
     }
 
     @PostConstruct
@@ -95,28 +96,17 @@ public class DeplacementService {
         NativeWindowsEvents.clic(triggerCell.getWindowRelativeX(), triggerCell.getWindowRelativeY());
     }
 
-    public void goToGather() {
-        characterState.setGoingBank(false);
-        MapAction mapActionToExecute = gatherMapActions.get(mapState.getCurrentMap().getId());
-        goNextGatherMap(mapActionToExecute);
-    }
-
-    private String getPos() {
-        return mapState.getCurrentMap().getX() + "," + mapState.getCurrentMap().getY();
-    }
-
     public void startRecolte(GatherMapAction nextMapAction) {
         characterState.setGathering(false); //interrompt l'exécution de la recolte en cours
         if (mapState.getAvailableRessources().isEmpty()) {
             goNextGatherMap(nextMapAction);
         } else {
-            mapState.getAvailableRessources().forEach((integer, ressourceCell) -> taskService.queueTaskRecolte(ressourceCell));
+            mapState.getAvailableRessources().forEach((integer, ressourceCell) -> retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, DeplacementService.class)));
         }
     }
 
     public void stopRecolte() {
         mapState.resetMapState();
-        taskService.removeMapTask(mapState.getCurrentMap());
     }
 
 }

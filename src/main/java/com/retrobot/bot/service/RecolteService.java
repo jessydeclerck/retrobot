@@ -1,5 +1,7 @@
 package com.retrobot.bot.service;
 
+import com.retrobot.bot.async.RetroTaskQueue;
+import com.retrobot.bot.async.event.RecolterTaskEvent;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
@@ -17,13 +19,13 @@ public class RecolteService {
 
     private final CharacterState characterState;
     private final MapState mapState;
-    private final TaskService taskService;
+    private final RetroTaskQueue retroTaskQueue;
     private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
 
-    public RecolteService(CharacterState characterState, MapState mapState, TaskService taskService) {
+    public RecolteService(CharacterState characterState, MapState mapState, RetroTaskQueue retroTaskQueue) {
         this.characterState = characterState;
         this.mapState = mapState;
-        this.taskService = taskService;
+        this.retroTaskQueue = retroTaskQueue;
     }
 
     //TODO only works for cereals
@@ -40,7 +42,7 @@ public class RecolteService {
         if (targetedRessourceCell != null && !ressourceCell.equals(targetedRessourceCell)) {
             log.info("La ressource ciblée est différente de celle prévue : {} vs {}", ressourceCell.id(), targetedRessourceCell.id());
             if (mapState.getAvailableRessources().containsKey(ressourceCell.id())) {
-                taskService.queueTaskRecolte(ressourceCell);
+                retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, RecolteService.class));
             }
         }
         characterState.setCurrentGatheringTarget(null);
