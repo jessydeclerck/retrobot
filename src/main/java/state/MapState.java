@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroDofusMap;
 import model.dofus.RetroRessourceCell;
+import script.ScriptLoader;
+import script.model.GatherMapAction;
+import script.model.ScriptPath;
+import service.DeplacementService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +23,8 @@ public class MapState {
     private static final MapState instance = new MapState();
     private final CharacterState characterState = CharacterState.getInstance();
     private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
+    private final DeplacementService deplacementService = DeplacementService.getInstance();
+    private final ScriptPath scriptPath = ScriptLoader.getInstance().loadScript(); //TODO shouldn't be reloaded here
     private RetroDofusMap currentMap;
     private Map<Integer, RetroRessourceCell> availableRessources = new ConcurrentHashMap<>();
     private Map<Integer, RetroRessourceCell> unavailableRessources = new ConcurrentHashMap<>();
@@ -29,7 +35,7 @@ public class MapState {
 
     public void addAvailableRessources(List<RetroRessourceCell> ressourcesCells) {
         ressourcesCells.forEach(ressourceCell -> {
-            if (availableRessources.containsKey(ressourceCell.id())) {
+            if (availableRessources.containsKey(ressourceCell.id()) || !scriptPath.getRessourcesToGather().contains(ressourceCell.getIdRessource())) {
                 return;
             }
             availableRessources.put(ressourceCell.id(), ressourceCell);
@@ -37,13 +43,18 @@ public class MapState {
         });
     }
 
-    public void startRecolte() {
+    public void startRecolte(GatherMapAction nextMapAction) {
         characterState.setGathering(false); //interrompt l'exécution de la recolte en cours
-        availableRessources.forEach((integer, ressourceCell) -> retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell)));
+        if (availableRessources.isEmpty()) {
+            deplacementService.goNextGatherMap(nextMapAction);
+        } else {
+            availableRessources.forEach((integer, ressourceCell) -> retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell)));
+        }
     }
 
     public void stopRecolte() {
         retroTaskQueue.removeAll();
+        this.resetMapState();
     }
 
     public void setUnavailableRessource(int cellId) {

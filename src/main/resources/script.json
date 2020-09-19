@@ -1,5 +1,5 @@
 {
-  "toGather" : ["168"],
+  "toGather" : ["7511", "7512", "7515", "7517"],
   "startMapId" : "7411",
   "bankMapId"  : "7549",
   "gatherPath" : {

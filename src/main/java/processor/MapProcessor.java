@@ -23,18 +23,14 @@ public class MapProcessor extends PacketProcessor {
         MapPacketData mapPacketData = new MapPacketData(dofusPacket);
         log.info(mapPacketData.toString());
         mapState.setCurrentMap(mapPacketData.getMap());
+        CharacterState.getInstance().setMoving(false);
         mapState.addAvailableRessources(mapPacketData.getMap().getRessources());
         mapState.getCurrentMap().getTriggers()
                 .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
         CompletableFuture.runAsync(() -> {
-            TimeUtils.sleep(2000);
-            //mapState.startRecolte();
-            //TODO externalize
+            TimeUtils.sleep(2000); //TODO check gathering
             if (!CharacterState.getInstance().isGoingBank()) {
-                if (mapState.getCurrentMap().getId() == 7454) {
-                    DeplacementService.getInstance().goToBank();
-                }
-                DeplacementService.getInstance().goNextMap();
+                DeplacementService.getInstance().goNextGatherMap();
             } else {
                 DeplacementService.getInstance().goToBank();
             }

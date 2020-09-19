@@ -40,4 +40,8 @@ public class RetroTaskQueue {
         taskQueue.clear();
     }
 
+    public boolean isEmpty() {
+        return taskQueue.isEmpty();
+    }
+
 }

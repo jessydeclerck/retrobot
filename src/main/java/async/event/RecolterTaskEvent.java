@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import model.dofus.RetroRessourceCell;
+import service.DeplacementService;
 import service.FightService;
 import service.RecolteService;
 import state.CharacterState;
@@ -30,6 +31,8 @@ public class RecolterTaskEvent {
     private final RecolteService recolteService = RecolteService.getInstance();
     @EqualsAndHashCode.Exclude
     private final RetroTaskQueue retroTaskQueue = RetroTaskQueue.getInstance();
+    @EqualsAndHashCode.Exclude
+    private final DeplacementService deplacementService = DeplacementService.getInstance();
 
     private final RetroRessourceCell ressourceCell;
 
@@ -57,6 +60,9 @@ public class RecolterTaskEvent {
         waitTaskFinished();
         resetState();
         log.info("Recolte terminée");
+        if (retroTaskQueue.isEmpty()) { //TODO refacto
+            deplacementService.goNextGatherMap();
+        }
     }
 
     private boolean isRessourceToRightExtremity() {

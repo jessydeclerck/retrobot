@@ -20,7 +20,7 @@ public class RetroTaskEventConsumer implements Runnable {
                 RecolterTaskEvent event = taskQueue.take();
                 log.debug("Processing task {} : {}", event.getRessourceCell().id(), event);
                 if (event.getProcessCount() > 1) {
-                    log.debug("Discarding task (too many retries) {} : {}", event.getRessourceCell().id(), event);
+                    log.info("Discarding task (too many retries) {} : {}", event.getRessourceCell().id(), event);
                 } else {
                     event.execute();
                 }
