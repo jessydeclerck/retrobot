@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.retrobot.network.message.WSMessage;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -13,6 +14,7 @@ import org.java_websocket.server.WebSocketServer;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 
+@Slf4j
 public class BotServer extends WebSocketServer {
 
     public BotServer(int port) {
@@ -30,24 +32,23 @@ public class BotServer extends WebSocketServer {
     @SneakyThrows
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        System.out.println(
-                webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
+        log.info(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        System.out.println(webSocket + " has left the room!");
+        log.info(webSocket + " disconnected");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
         broadcast(s);
-        System.out.println(webSocket + ": " + s);
+        log.info((webSocket + ": " + s));
     }
 
     @Override
     public void onError(WebSocket webSocket, Exception e) {
-        e.printStackTrace();
+        log.info("WebSocketError :", e);
         if (webSocket != null) {
             // some errors like port binding failed may not be assignable to a specific websocket
         }
@@ -55,7 +56,7 @@ public class BotServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("Server started!");
+        log.info("WebSocketServer started");
         setConnectionLostTimeout(0);
         setConnectionLostTimeout(100);
     }

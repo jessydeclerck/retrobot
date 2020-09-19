@@ -5,15 +5,17 @@ import com.retrobot.bot.processor.packet.NewMessageData;
 import com.retrobot.network.BotServer;
 import com.retrobot.network.message.going.NewMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class NewMessageProcessor extends PacketProcessor {
 
-    @Autowired
-    private BotServer botServer;
+    private final BotServer botServer;
+
+    public NewMessageProcessor(BotServer botServer) {
+        this.botServer = botServer;
+    }
 
     @Override
     public void processPacket(String dofusPacket) {
