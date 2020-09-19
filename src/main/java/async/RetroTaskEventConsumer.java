@@ -2,6 +2,7 @@ package async;
 
 import async.event.RecolterTaskEvent;
 import lombok.extern.slf4j.Slf4j;
+import service.DeplacementService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,13 @@ public class RetroTaskEventConsumer implements Runnable {
 
     private final PriorityBlockingQueue<RecolterTaskEvent> taskQueue = RetroTaskQueue.getInstance().getTaskQueue();
 
+    private final DeplacementService deplacementService = DeplacementService.getInstance();
+
     @Override
     public void run() {
         while (true) {
             try {
+                this.sortQueue();
                 log.debug("Waiting for a task");
                 RecolterTaskEvent event = taskQueue.take();
                 log.debug("Processing task {} : {}", event.getRessourceCell().id(), event);
@@ -27,7 +31,9 @@ public class RetroTaskEventConsumer implements Runnable {
             } catch (InterruptedException e) {
                 log.error("Queue task has beeen interrupted", e);
             }
-            this.sortQueue();
+            if (taskQueue.isEmpty()) { //TODO refacto
+                deplacementService.goNextGatherMap();
+            }
         }
     }
 

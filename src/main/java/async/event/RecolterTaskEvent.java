@@ -60,9 +60,6 @@ public class RecolterTaskEvent {
         waitTaskFinished();
         resetState();
         log.info("Recolte terminée");
-        if (retroTaskQueue.isEmpty()) { //TODO refacto
-            deplacementService.goNextGatherMap();
-        }
     }
 
     private boolean isRessourceToRightExtremity() {
