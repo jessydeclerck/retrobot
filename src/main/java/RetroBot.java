@@ -1,11 +1,11 @@
-import async.RetroTaskConsumerRunner;
-import automation.NativeWindowsEvents;
-import listener.RetroBotListener;
+import bot.async.RetroTaskConsumerRunner;
+import utils.automation.NativeWindowsEvents;
+import bot.listener.RetroBotListener;
 import lombok.extern.slf4j.Slf4j;
 import network.BotServer;
 import org.pcap4j.core.*;
 import org.pcap4j.util.NifSelector;
-import service.MapService;
+import bot.service.MapService;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -15,7 +15,7 @@ public class RetroBot {
 
     public static void main(String[] args) throws UnknownHostException {
         NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.33.0");
-        MapService.getInstance();// initialize service
+        MapService.getInstance();// initialize bot.service
         BotServer.getInstance().start();
 
 
@@ -42,10 +42,10 @@ public class RetroBot {
         } catch (PcapNativeException | NotOpenException e) {
             log.error("", e);
         }
-        // Create a listener that defines what to do with the received packets
+        // Create a bot.listener that defines what to do with the received packets
         RetroTaskConsumerRunner.getInstance().startEventConsumer();
         PacketListener listener = new RetroBotListener();
-        // Tell the handle to loop using the listener we created
+        // Tell the handle to loop using the bot.listener we created
         try {
             handle.loop(-1, listener);
         } catch (InterruptedException | PcapNativeException | NotOpenException e) {

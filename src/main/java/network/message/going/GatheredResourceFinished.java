@@ -1,7 +1,7 @@
 package network.message.going;
 
 import lombok.Data;
-import model.packet.GatheringFinishedData;
+import bot.processor.packet.GatheringFinishedData;
 import network.message.WSMessage;
 
 @Data

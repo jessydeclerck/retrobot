@@ -9,7 +9,6 @@ import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import service.RecolteService;
 
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
