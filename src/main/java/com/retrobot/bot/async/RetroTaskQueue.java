@@ -4,7 +4,6 @@ import com.retrobot.bot.async.event.RecolterTaskEvent;
 import com.retrobot.bot.async.event.TaskPriorityComparator;
 import com.retrobot.bot.model.dofus.RetroDofusMap;
 import com.retrobot.bot.state.CharacterState;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +15,19 @@ import java.util.concurrent.PriorityBlockingQueue;
 @Service
 public class RetroTaskQueue {
 
-    @Getter
     private final PriorityBlockingQueue<RecolterTaskEvent> taskQueue;
 
     public RetroTaskQueue(CharacterState characterState) {
         this.taskQueue = new PriorityBlockingQueue<>(10, new TaskPriorityComparator(characterState));
+    }
+
+    public RecolterTaskEvent take() {
+        try {
+            return taskQueue.take();
+        } catch (InterruptedException e) {
+            log.error("Queue task has been interrupted", e);
+        }
+        return null;
     }
 
     public void addTask(RecolterTaskEvent task) {

@@ -20,18 +20,14 @@ public class RetroTaskEventConsumer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try {
-                retroTaskQueue.sortQueue();
-                log.debug("Waiting for a task");
-                RecolterTaskEvent event = retroTaskQueue.getTaskQueue().take();
-                log.debug("Processing task {} : {}", event.getRessourceCell().id(), event);
-                if (event.getProcessCount() > 1) {
-                    log.info("Discarding task (too many retries) {} : {}", event.getRessourceCell().id(), event);
-                } else {
-                    retroTaskEventExecutor.execute(event);
-                }
-            } catch (InterruptedException e) {
-                log.error("Queue task has beeen interrupted", e);
+            retroTaskQueue.sortQueue();
+            log.debug("Waiting for a task");
+            RecolterTaskEvent event = retroTaskQueue.take();
+            log.debug("Processing task {} : {}", event.getRessourceCell().id(), event);
+            if (event.getProcessCount() > 1) {
+                log.info("Discarding task (too many retries) {} : {}", event.getRessourceCell().id(), event);
+            } else {
+                retroTaskEventExecutor.execute(event);
             }
             if (retroTaskQueue.isEmpty()) {
                 deplacementService.goNextGatherMap();
