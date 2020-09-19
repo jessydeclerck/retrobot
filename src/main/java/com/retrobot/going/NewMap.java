@@ -1,4 +1,4 @@
-package network.message.going;
+package com.retrobot.going;
 
 import com.retrobot.bot.processor.packet.MapPacketData;
 import com.retrobot.network.message.WSMessage;

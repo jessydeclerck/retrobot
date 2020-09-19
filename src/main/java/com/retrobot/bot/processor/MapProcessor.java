@@ -7,10 +7,10 @@ import com.retrobot.bot.service.DeplacementService;
 import com.retrobot.bot.service.MapService;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
+import com.retrobot.going.NewMap;
 import com.retrobot.network.BotServer;
 import com.retrobot.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
-import network.message.going.NewMap;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
