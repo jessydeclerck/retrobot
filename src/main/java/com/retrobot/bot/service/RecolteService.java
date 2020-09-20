@@ -31,7 +31,6 @@ public class RecolteService {
     //TODO only works for cereals
     public void recolterRessource(RetroRessourceCell ressourceCell) {
         log.info("Recolte de la ressource {}", ressourceCell.id());
-        //TODO handle right extrremity ressources
         TimeUtils.sleep(200);
         double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X, y = ressourceCell.getWindowRelativeY() - OFFSET_MILIEU_CASE_Y;
         NativeWindowsEvents.clic(x, y);

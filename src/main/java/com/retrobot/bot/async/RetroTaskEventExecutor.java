@@ -2,6 +2,7 @@ package com.retrobot.bot.async;
 
 import com.retrobot.bot.async.event.RecolterTaskEvent;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
+import com.retrobot.bot.service.BotService;
 import com.retrobot.bot.service.RecolteService;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
@@ -17,21 +18,25 @@ public class RetroTaskEventExecutor {
     private final MapState mapState;
     private final RecolteService recolteService;
     private final RetroTaskQueue retroTaskQueue;
+    private final BotService botService;
 
-    public RetroTaskEventExecutor(CharacterState characterState, MapState mapState, RecolteService recolteService, RetroTaskQueue retroTaskQueue) {
+    public RetroTaskEventExecutor(CharacterState characterState, MapState mapState, RecolteService recolteService, RetroTaskQueue retroTaskQueue, BotService botService) {
         this.characterState = characterState;
         this.mapState = mapState;
         this.recolteService = recolteService;
         this.retroTaskQueue = retroTaskQueue;
+        this.botService = botService;
     }
 
     public void execute(RecolterTaskEvent retroTaskEvent) {
         if (!isCoherent(retroTaskEvent.getRessourceCell())) {
             log.info("Incoherent task, discarding");
+            botService.setUnavailableRessource(retroTaskEvent.getRessourceCell().id());
             return;
         }
         if (isRessourceToRightExtremity(retroTaskEvent.getRessourceCell())) {  //ignore right extremity of the map
             log.info("On ignore la ressource car elle est à l'extrémité droite de la carte");
+            botService.setUnavailableRessource(retroTaskEvent.getRessourceCell().id());
             return;
         }
         retroTaskEvent.incrementProcessCount();
