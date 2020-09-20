@@ -9,11 +9,16 @@ import com.retrobot.scriptloader.model.BankMapAction;
 import com.retrobot.scriptloader.model.GatherMapAction;
 import com.retrobot.scriptloader.model.MapAction;
 import com.retrobot.scriptloader.model.ScriptPath;
+import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Service
 public class DeplacementService {
 
@@ -49,6 +54,36 @@ public class DeplacementService {
         MapAction startMap = gatherMapActions.get(startMapId);
         mapState.setCurrentMap(mapService.getRetroDofusMap(startMapId));
         goNextGatherMap(startMap);
+    }
+
+    public void goNextMap() {
+        CompletableFuture.runAsync(() -> {
+            TimeUtils.sleep(2000);
+            if (!characterState.isGoingBank()) {
+                changeMapWithRetry(this::goNextGatherMap, mapState.getCurrentMap().getId()); //wont be compatible with gathering
+            } else {
+                changeMapWithRetry(this::goToBank, mapState.getCurrentMap().getId());
+            }
+        });
+    }
+
+    private void changeMapWithRetry(Runnable changeMapAction, int startMapId) {
+        changeMapAction.run();
+        CompletableFuture.runAsync(() -> {
+            TimeUtils.sleep(15000);
+            int currentMapId = mapState.getCurrentMap().getId();
+            Optional<GatherMapAction> gatherMapAction = Optional.ofNullable(scriptPath.getGatherPath().get(currentMapId));
+            if (startMapId == currentMapId) {
+                if (gatherMapAction.isPresent() && gatherMapAction.get().isGather()) {
+                    log.info("Map didn't change because we're on a gathering map, won't be retried");
+                } else {
+                    log.info("Map didn't change, let's retry");
+                    changeMapWithRetry(changeMapAction, startMapId);
+                }
+            } else {
+                log.info("Map has changed, won't be retried");
+            }
+        });
     }
 
     public void goNextGatherMap(MapAction mapAction) {

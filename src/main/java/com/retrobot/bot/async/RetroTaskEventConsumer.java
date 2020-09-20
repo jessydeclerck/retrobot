@@ -34,7 +34,7 @@ public class RetroTaskEventConsumer implements Runnable {
                 retroTaskEventExecutor.execute(event);
             }
             if (retroTaskQueue.isEmpty()) {
-                deplacementService.goNextGatherMap();
+                deplacementService.goNextMap();
             }
         }
     }

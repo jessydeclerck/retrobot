@@ -9,14 +9,9 @@ import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
 import com.retrobot.network.BotServer;
 import com.retrobot.network.message.going.NewMap;
-import com.retrobot.scriptloader.model.GatherMapAction;
 import com.retrobot.scriptloader.model.ScriptPath;
-import com.retrobot.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -55,39 +50,13 @@ public class MapProcessor extends PacketProcessor {
         botService.addAvailableRessources(mapPacketData.getMap().getRessources());
         mapState.getCurrentMap().getTriggers()
                 .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
-        CompletableFuture.runAsync(() -> {
-            TimeUtils.sleep(2000);
-            if (!characterState.isGoingBank()) {
-                changeMapWithRetry(deplacementService::goNextGatherMap, mapState.getCurrentMap().getId()); //wont be compatible with gathering
-            } else {
-                changeMapWithRetry(deplacementService::goToBank, mapState.getCurrentMap().getId());
-            }
-        });
+        deplacementService.goNextMap();
         log.info("Current map id : {}", mapPacketData.getMap().getId());
         try {
             botServer.emitMessage(new NewMap(mapPacketData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de nouvelle map", e);
         }
-    }
-
-    private void changeMapWithRetry(Runnable changeMapAction, int startMapId) {
-        changeMapAction.run();
-        CompletableFuture.runAsync(() -> {
-            TimeUtils.sleep(15000);
-            int currentMapId = mapState.getCurrentMap().getId();
-            Optional<GatherMapAction> gatherMapAction = Optional.ofNullable(scriptPath.getGatherPath().get(currentMapId));
-            if (startMapId == currentMapId) {
-                if (gatherMapAction.isPresent() && gatherMapAction.get().isGather()) {
-                    log.info("Map didn't change because we're on a gathering map, won't be retried");
-                } else {
-                    log.info("Map didn't change, let's retry");
-                    changeMapWithRetry(changeMapAction, startMapId);
-                }
-            } else {
-                log.info("Map has changed, won't be retried");
-            }
-        });
     }
 
     @Override
