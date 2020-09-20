@@ -1,7 +1,15 @@
 package com.retrobot.bot.state;
 
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
+
+@Setter
+@Getter
+@Service
 public class FightState {
 
     boolean cardsHidden;
-    //TODO handle new level interface, end of combat, new job level, reduce cards of monster at the start of a fight...
+    boolean challengeHidden;
 }

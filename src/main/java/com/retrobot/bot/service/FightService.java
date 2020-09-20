@@ -2,6 +2,7 @@ package com.retrobot.bot.service;
 
 import com.retrobot.bot.model.dofus.RetroDofusCell;
 import com.retrobot.bot.state.CharacterState;
+import com.retrobot.bot.state.FightState;
 import com.retrobot.bot.state.MapState;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
@@ -29,9 +30,12 @@ public class FightService {
 
     private final CharacterState characterState;
 
-    public FightService(MapState mapState, CharacterState characterState) {
+    private final FightState fightState;
+
+    public FightService(MapState mapState, CharacterState characterState, FightState fightState) {
         this.mapState = mapState;
         this.characterState = characterState;
+        this.fightState = fightState;
     }
 
     //TODO WIP
@@ -98,6 +102,7 @@ public class FightService {
     public void prepareFight() {
         setReady();
         hideCards();
+        hideChallenge();
     }
 
     private void setReady() {
@@ -109,6 +114,16 @@ public class FightService {
         //should be on first turn
         TimeUtils.sleep(3000);
         NativeWindowsEvents.clic(936, 540);
+    }
+
+    private void hideChallenge() {
+        //once per game session
+        if (fightState.isChallengeHidden()) {
+            return;
+        }
+        TimeUtils.sleep(2000);
+        NativeWindowsEvents.clic(18, 88);
+        fightState.setChallengeHidden(true);
     }
 
     private RetroDofusCell findNearestMonster() {
