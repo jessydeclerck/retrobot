@@ -2,8 +2,8 @@ package com.retrobot.bot.service;
 
 import com.retrobot.bot.model.dofus.RetroDofusCell;
 import com.retrobot.bot.processor.packet.CharacterData;
-import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
+import com.retrobot.utils.NotificationUtils;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import org.springframework.stereotype.Service;
@@ -13,17 +13,15 @@ public class BanqueService {
 
     private final MapState mapState;
 
-    private final CharacterState characterState;
-
     private final DeplacementService deplacementService;
 
-    public BanqueService(MapState mapState, CharacterState characterState, DeplacementService deplacementService) {
+    public BanqueService(MapState mapState, DeplacementService deplacementService) {
         this.mapState = mapState;
-        this.characterState = characterState;
         this.deplacementService = deplacementService;
     }
 
     public void viderInventaire(CharacterData banquier) {
+        NotificationUtils.displayMessage("La souris ne doit pas être bougée pendant le dépôt en banque");
         ouvrirBanque(banquier);
         TimeUtils.sleep(2000);
         deposerRessources();

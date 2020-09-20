@@ -9,11 +9,13 @@ import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
 import com.retrobot.network.BotServer;
 import com.retrobot.network.message.going.NewMap;
+import com.retrobot.scriptloader.model.GatherMapAction;
+import com.retrobot.scriptloader.model.ScriptPath;
 import com.retrobot.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -32,13 +34,16 @@ public class MapProcessor extends PacketProcessor {
 
     private final BotServer botServer;
 
-    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState, BotServer botServer) {
+    private final ScriptPath scriptPath;
+
+    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState, BotServer botServer, ScriptPath scriptPath) {
         this.mapService = mapService;
         this.characterState = characterState;
         this.deplacementService = deplacementService;
         this.botService = botService;
         this.mapState = mapState;
         this.botServer = botServer;
+        this.scriptPath = scriptPath;
     }
 
     public void processPacket(String dofusPacket) {
@@ -51,11 +56,11 @@ public class MapProcessor extends PacketProcessor {
         mapState.getCurrentMap().getTriggers()
                 .forEach(retroTriggerCell -> log.debug("Trigger {} Next map : {} Next cell : {}", retroTriggerCell.id(), retroTriggerCell.getNextMapId(), retroTriggerCell.getNextCellId()));
         CompletableFuture.runAsync(() -> {
-            TimeUtils.sleep(2000); //TODO check gathering
+            TimeUtils.sleep(2000);
             if (!characterState.isGoingBank()) {
-                deplacementService.goNextGatherMap();
+                changeMapWithRetry(deplacementService::goNextGatherMap, mapState.getCurrentMap().getId()); //wont be compatible with gathering
             } else {
-                deplacementService.goToBank();
+                changeMapWithRetry(deplacementService::goToBank, mapState.getCurrentMap().getId());
             }
         });
         log.info("Current map id : {}", mapPacketData.getMap().getId());
@@ -66,20 +71,30 @@ public class MapProcessor extends PacketProcessor {
         }
     }
 
+    private void changeMapWithRetry(Runnable changeMapAction, int startMapId) {
+        changeMapAction.run();
+        CompletableFuture.runAsync(() -> {
+            TimeUtils.sleep(15000);
+            int currentMapId = mapState.getCurrentMap().getId();
+            Optional<GatherMapAction> gatherMapAction = Optional.ofNullable(scriptPath.getGatherPath().get(currentMapId));
+            if (startMapId == currentMapId) {
+                if (gatherMapAction.isPresent() && gatherMapAction.get().isGather()) {
+                    log.info("Map didn't change because we're on a gathering map, won't be retried");
+                } else {
+                    log.info("Map didn't change, let's retry");
+                    changeMapWithRetry(changeMapAction, startMapId);
+                }
+            } else {
+                log.info("Map has changed, won't be retried");
+            }
+        });
+    }
+
     @Override
     public String getPacketId() {
         return "GDM";
     }
 
-    private void displayMapId(MapPacketData mapPacketData) {
-        SystemTray tray = SystemTray.getSystemTray();
-        TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().createImage(new byte[0]));
-        try {
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-        trayIcon.displayMessage(mapPacketData.getMap().getX() + "," + mapPacketData.getMap().getY(), "" + mapPacketData.getMap().getId(), TrayIcon.MessageType.INFO);
-    }
+
 
 }

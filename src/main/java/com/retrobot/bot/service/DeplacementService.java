@@ -12,7 +12,6 @@ import com.retrobot.scriptloader.model.ScriptPath;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @Service
@@ -40,11 +39,6 @@ public class DeplacementService {
         this.mapService = mapService;
         this.mapState = mapState;
         this.retroTaskQueue = retroTaskQueue;
-    }
-
-    @PostConstruct
-    public void init() {
-        startDeplacement();
     }
 
     public void startDeplacement() {

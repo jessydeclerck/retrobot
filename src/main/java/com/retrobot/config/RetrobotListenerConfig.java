@@ -3,7 +3,12 @@ package com.retrobot.config;
 import com.retrobot.bot.listener.RetroBotListener;
 import com.retrobot.bot.processor.PacketProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.pcap4j.core.*;
+import org.pcap4j.core.BpfProgram;
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNativeException;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.Pcaps;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +18,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Configuration
@@ -63,11 +69,14 @@ public class RetrobotListenerConfig {
 
     @PostConstruct
     public void init() {
-        try {
-            pcapHandle().loop(-1, retroBotListener());
-        } catch (PcapNativeException | InterruptedException | NotOpenException e) {
-            log.error("", e);
-        }
+        CompletableFuture.runAsync(() -> {
+            try {
+                pcapHandle().loop(-1, retroBotListener());
+            } catch (PcapNativeException | InterruptedException | NotOpenException e) {
+                log.error("", e);
+            }
+        });
+
     }
 
 }
