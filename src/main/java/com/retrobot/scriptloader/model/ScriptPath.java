@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 public class ScriptPath {
 
+    private String characterName;
+
     @JsonProperty("toGather")
     private List<Integer> ressourcesToGather;
 

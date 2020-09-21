@@ -1,6 +1,7 @@
 package com.retrobot.config;
 
 import com.retrobot.bot.service.DeplacementService;
+import com.retrobot.scriptloader.model.ScriptPath;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,12 @@ public class StartBotConfig {
 
     private final PcapHandle pcapHandle;
     private final DeplacementService deplacementService;
+    private final ScriptPath scriptPath;
 
-    public StartBotConfig(PcapHandle pcapHandle, DeplacementService deplacementService) {
+    public StartBotConfig(PcapHandle pcapHandle, DeplacementService deplacementService, ScriptPath scriptPath) {
         this.pcapHandle = pcapHandle;
         this.deplacementService = deplacementService;
+        this.scriptPath = scriptPath;
     }
 
     @PostConstruct
@@ -27,7 +30,7 @@ public class StartBotConfig {
             TimeUtils.sleep(100);
         }
         log.info("Listener is open, bot path can be started");
-        NativeWindowsEvents.prepareForAutomation("Carlatorium - Dofus Retro v1.33.0");
+        NativeWindowsEvents.prepareForAutomation(scriptPath.getCharacterName());
         TimeUtils.sleep(500);
         deplacementService.startDeplacement();
     }

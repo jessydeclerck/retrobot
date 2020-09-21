@@ -60,7 +60,17 @@ public class NativeWindowsEvents {
     }
 
     public static void prepareForAutomation(String winTitle) {
-        hwnd = user32.FindWindow(null, winTitle);
+        final String[] completeWinTitle = new String[1];
+        user32.EnumWindows((hwnd, pointer) -> {
+            char[] windowText = new char[512];
+            user32.GetWindowText(hwnd, windowText, 512);
+            String wText = Native.toString(windowText);
+            if (wText.startsWith(winTitle)) {
+                completeWinTitle[0] = wText;
+            }
+            return true;
+        }, null);
+        hwnd = user32.FindWindow(null, completeWinTitle[0]);
         /**
          * i = x
          * i1 = y
