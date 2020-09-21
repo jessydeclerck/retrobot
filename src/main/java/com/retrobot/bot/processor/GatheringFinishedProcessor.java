@@ -14,11 +14,8 @@ public class GatheringFinishedProcessor extends PacketProcessor {
 
     private final CharacterState characterState;
 
-    private final BotServer botServer;
-
-    public GatheringFinishedProcessor(CharacterState characterState, BotServer botServer) {
+    public GatheringFinishedProcessor(CharacterState characterState) {
         this.characterState = characterState;
-        this.botServer = botServer;
     }
 
     @Override
@@ -27,7 +24,7 @@ public class GatheringFinishedProcessor extends PacketProcessor {
         log.info("Gathered qty : {}", gatheringFinishedData.getGatheredQty());
         characterState.setGathering(false);
         try {
-            botServer.emitMessage(new GatheredResourceFinished(gatheringFinishedData));
+            BotServer.getInstance().emitMessage(new GatheredResourceFinished(gatheringFinishedData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de fin de récolte", e);
         }

@@ -11,17 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class NewMessageProcessor extends PacketProcessor {
 
-    private final BotServer botServer;
-
-    public NewMessageProcessor(BotServer botServer) {
-        this.botServer = botServer;
-    }
-
     @Override
     public void processPacket(String dofusPacket) {
         NewMessageData newMessageData = new NewMessageData(dofusPacket);
         try {
-            botServer.emitMessage(new NewMessage(newMessageData));
+            BotServer.getInstance().emitMessage(new NewMessage(newMessageData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de Nouveau message", e);
         }

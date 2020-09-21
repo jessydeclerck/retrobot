@@ -9,7 +9,6 @@ import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
 import com.retrobot.network.BotServer;
 import com.retrobot.network.message.going.NewMap;
-import com.retrobot.scriptloader.model.ScriptPath;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +26,12 @@ public class MapProcessor extends PacketProcessor {
 
     private final MapState mapState;
 
-    private final BotServer botServer;
-
-    private final ScriptPath scriptPath;
-
-    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState, BotServer botServer, ScriptPath scriptPath) {
+    public MapProcessor(MapService mapService, CharacterState characterState, DeplacementService deplacementService, BotService botService, MapState mapState) {
         this.mapService = mapService;
         this.characterState = characterState;
         this.deplacementService = deplacementService;
         this.botService = botService;
         this.mapState = mapState;
-        this.botServer = botServer;
-        this.scriptPath = scriptPath;
     }
 
     public void processPacket(String dofusPacket) {
@@ -53,7 +46,7 @@ public class MapProcessor extends PacketProcessor {
         deplacementService.goNextMap();
         log.info("Current map id : {}", mapPacketData.getMap().getId());
         try {
-            botServer.emitMessage(new NewMap(mapPacketData));
+            BotServer.getInstance().emitMessage(new NewMap(mapPacketData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de nouvelle map", e);
         }

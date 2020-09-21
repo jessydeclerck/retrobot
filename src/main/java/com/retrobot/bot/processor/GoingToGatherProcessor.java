@@ -15,13 +15,10 @@ public class GoingToGatherProcessor extends PacketProcessor {
 
     private final CharacterState characterState;
 
-    private final BotServer botServer;
-
     private final MapState mapState;
 
-    public GoingToGatherProcessor(CharacterState characterState, BotServer botServer, MapState mapState) {
+    public GoingToGatherProcessor(CharacterState characterState, MapState mapState) {
         this.characterState = characterState;
-        this.botServer = botServer;
         this.mapState = mapState;
     }
 
@@ -30,7 +27,7 @@ public class GoingToGatherProcessor extends PacketProcessor {
         GoingToGatherData goingToGatherData = new GoingToGatherData(dofusPacket, mapState);
         characterState.setCurrentGatheringTarget(goingToGatherData.getCell());
         try {
-            botServer.emitMessage(new GatheringResourceStarted(goingToGatherData));
+            BotServer.getInstance().emitMessage(new GatheringResourceStarted(goingToGatherData));
         } catch (JsonProcessingException e) {
             log.error("Erreur lors de l'émission du socket de fin de récolte", e);
         }

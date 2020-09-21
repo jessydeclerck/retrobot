@@ -17,6 +17,17 @@ import java.util.Collections;
 @Slf4j
 public class BotServer extends WebSocketServer {
 
+    private static BotServer instance;
+
+    public static void init(int port) {
+        instance = new BotServer(port);
+        instance.start();
+    }
+
+    public static BotServer getInstance() {
+        return instance;
+    }
+
     public BotServer(int port) {
         super(new InetSocketAddress(port));
     }
