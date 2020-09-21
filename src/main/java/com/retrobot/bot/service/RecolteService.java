@@ -10,6 +10,8 @@ import com.retrobot.utils.automation.NativeWindowsEvents;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.retrobot.utils.automation.PixelConstants.OFFSET_INTERACTION_X;
 import static com.retrobot.utils.automation.PixelConstants.OFFSET_INTERACTION_Y;
 
@@ -22,6 +24,8 @@ public class RecolteService {
     private final RetroTaskQueue retroTaskQueue;
     private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
 
+    private final static List<Integer> RESSOURCES_PAYSAN = List.of(7511, 7512, 7513, 7514, 7515, 7516, 7517, 7518, 7550);
+
     public RecolteService(CharacterState characterState, MapState mapState, RetroTaskQueue retroTaskQueue) {
         this.characterState = characterState;
         this.mapState = mapState;
@@ -32,7 +36,11 @@ public class RecolteService {
     public void recolterRessource(RetroRessourceCell ressourceCell) {
         log.info("Recolte de la ressource {}", ressourceCell.id());
         TimeUtils.sleep(200);
-        double x = ressourceCell.getWindowRelativeX() + OFFSET_MILIEU_CASE_X, y = ressourceCell.getWindowRelativeY() - OFFSET_MILIEU_CASE_Y;
+        double x = ressourceCell.getWindowRelativeX(), y = ressourceCell.getWindowRelativeY();
+        if (RESSOURCES_PAYSAN.contains(ressourceCell.getIdRessource())) {
+            x += OFFSET_MILIEU_CASE_X;
+            y -= OFFSET_MILIEU_CASE_Y;
+        }
         NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
         NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
