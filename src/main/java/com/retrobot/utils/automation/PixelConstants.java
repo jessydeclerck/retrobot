@@ -7,6 +7,7 @@ public interface PixelConstants {
     int OFFSET_INTERACTION_X = 20;
     int OFFSET_INTERACTION_Y = 40;
     double OFFSET_PAR_MONSTRE_MENU_FERMER_Y = 12.3;
-
+    double X_FACTOR_BIG_MAP = 1.27;
+    double Y_FACTOR_BIG_MAP = 1.294;
     //TODO ADD size for larger maps
 }

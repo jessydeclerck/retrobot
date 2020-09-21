@@ -6,7 +6,11 @@ import fr.arakne.utils.maps.serializer.CellData;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.retrobot.utils.automation.PixelConstants.*;
+import static com.retrobot.utils.automation.PixelConstants.X_FACTOR_BIG_MAP;
+import static com.retrobot.utils.automation.PixelConstants.X_UNIT;
+import static com.retrobot.utils.automation.PixelConstants.Y_FACTOR_BIG_MAP;
+import static com.retrobot.utils.automation.PixelConstants.Y_OFFSET_MENU;
+import static com.retrobot.utils.automation.PixelConstants.Y_UNIT;
 
 @Getter
 @Setter
@@ -54,10 +58,16 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> imple
     }
 
     public double getWindowRelativeX() {
+        if (this.map().getWidth() > 15) {
+            return this.getAbscisse() * X_UNIT * X_FACTOR_BIG_MAP;
+        }
         return this.getAbscisse() * X_UNIT; //TODO handle larger maps
     }
 
     public double getWindowRelativeY() {
+        if (this.map().getWidth() > 17) {
+            return this.getAbscisse() * Y_UNIT * Y_FACTOR_BIG_MAP;
+        }
         return this.getOrdonnee() * Y_UNIT + Y_OFFSET_MENU; //offset menu haut
     }
 
