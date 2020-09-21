@@ -66,7 +66,7 @@ public class RetroDofusCell extends AbstractCellDataAdapter<RetroDofusMap> imple
 
     public double getWindowRelativeY() {
         if (this.map().getWidth() > 17) {
-            return this.getAbscisse() * Y_UNIT * Y_FACTOR_BIG_MAP;
+            return this.getOrdonnee() * Y_UNIT * Y_FACTOR_BIG_MAP + Y_OFFSET_MENU;
         }
         return this.getOrdonnee() * Y_UNIT + Y_OFFSET_MENU; //offset menu haut
     }
