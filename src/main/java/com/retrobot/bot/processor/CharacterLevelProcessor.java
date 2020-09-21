@@ -12,7 +12,7 @@ public class CharacterLevelProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         log.info("Fermeture notification niveau personnage");
         TimeUtils.sleep(1000);
-        NativeWindowsEvents.clic(481, 387);
+        NativeWindowsEvents.clic(475, 355);
     }
 
     @Override
