@@ -13,12 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.io.EOFException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @Configuration
@@ -70,10 +72,11 @@ public class RetrobotListenerConfig {
     @PostConstruct
     public void init() {
         CompletableFuture.runAsync(() -> {
-            try {
-                pcapHandle().loop(-1, retroBotListener());
-            } catch (PcapNativeException | InterruptedException | NotOpenException e) {
-                log.error("", e);
+            while (true) {
+                try {
+                    retroBotListener().gotPacket(pcapHandle().getNextPacketEx());
+                } catch (PcapNativeException | NotOpenException | EOFException | TimeoutException ignored) {
+                }
             }
         });
 

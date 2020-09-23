@@ -1,11 +1,18 @@
 package com.retrobot.network.message;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public abstract class WSMessage {
+@Getter
+@Setter
+public class WSMessage {
 
     protected String type;
 
-    public WSMessage(String type){ this.type = type; }
+    public WSMessage() {
+    }
+
+    public WSMessage(String type) {
+        this.type = type;
+    }
 }

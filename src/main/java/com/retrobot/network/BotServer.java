@@ -2,6 +2,7 @@ package com.retrobot.network;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.retrobot.network.message.MessageHandler;
 import com.retrobot.network.message.WSMessage;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,11 @@ public class BotServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
-        broadcast(s);
+        try {
+            MessageHandler.handleMessage(s);
+        } catch (JsonProcessingException e) {
+            log.error("", e);
+        }
         log.info((webSocket + ": " + s));
     }
 

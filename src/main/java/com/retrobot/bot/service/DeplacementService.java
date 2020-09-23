@@ -12,6 +12,7 @@ import com.retrobot.scriptloader.model.ScriptPath;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -32,18 +33,21 @@ public class DeplacementService {
 
     private final RetroTaskQueue retroTaskQueue;
 
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
     private Map<Integer, GatherMapAction> gatherMapActions;
 
     private Map<Integer, BankMapAction> bankMapActions;
 
     public int bankMapId;
 
-    public DeplacementService(ScriptPath scriptPath, CharacterState characterState, MapService mapService, MapState mapState, RetroTaskQueue retroTaskQueue) {
+    public DeplacementService(ScriptPath scriptPath, CharacterState characterState, MapService mapService, MapState mapState, RetroTaskQueue retroTaskQueue, ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         this.scriptPath = scriptPath;
         this.characterState = characterState;
         this.mapService = mapService;
         this.mapState = mapState;
         this.retroTaskQueue = retroTaskQueue;
+        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
 
     public void startDeplacement() {
@@ -69,7 +73,7 @@ public class DeplacementService {
 
     private void changeMapWithRetry(Runnable changeMapAction, int startMapId) {
         changeMapAction.run();
-        CompletableFuture.runAsync(() -> {
+        threadPoolTaskExecutor.execute(() -> {
             TimeUtils.sleep(15000);
             int currentMapId = mapState.getCurrentMap().getId();
             Optional<GatherMapAction> gatherMapAction = Optional.ofNullable(scriptPath.getGatherPath().get(currentMapId));

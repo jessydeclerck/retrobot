@@ -1,4 +1,16 @@
 logging:
-  level: debug
   file:
     path: ./
+
+spring:
+  task:
+    execution:
+      shutdown:
+        await-termination: false
+      pool:
+        core-size: 5
+        queue-capacity: 10
+        max-size: 20
+    scheduling:
+      pool:
+        size: 10
