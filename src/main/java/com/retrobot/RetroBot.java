@@ -8,6 +8,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @Slf4j
 @SpringBootApplication
 public class RetroBot implements CommandLineRunner {
@@ -17,6 +22,13 @@ public class RetroBot implements CommandLineRunner {
     public static void main(String[] args) {
         //TODO port 80 might be used
         BotServer.init(80);
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI("http://localhost:4200/"));
+            } catch (IOException | URISyntaxException e) {
+                log.error("Error while opening UI", e);
+            }
+        }
     }
 
     public static void start(String[] args) {
