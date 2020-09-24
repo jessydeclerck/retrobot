@@ -1,22 +1,20 @@
-package com.retrobot.network.message.incoming;
+package com.retrobot.network.message.going;
 
 import com.retrobot.network.message.WSMessage;
 import com.retrobot.scriptloader.model.ScriptPath;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class LoadScriptMessage extends WSMessage {
+@NoArgsConstructor
+public class GetScriptMessage extends WSMessage {
 
-    public LoadScriptMessage() {
-        super("script");
-    }
 
     private String scriptName;
 
     private ScriptPath script;
 
-    private Object displayData;
 
 }

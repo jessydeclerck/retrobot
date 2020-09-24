@@ -24,7 +24,7 @@ public class MessageHandler {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            ScriptLoader.saveScript(loadScriptMessage.getScriptName(), loadScriptMessage.getScript());
+            ScriptLoader.saveScript(loadScriptMessage.getScriptName(), loadScriptMessage);
             RetroBot.start(new String[]{"--script=" + loadScriptMessage.getScriptName() + ".json"});
         }
 
