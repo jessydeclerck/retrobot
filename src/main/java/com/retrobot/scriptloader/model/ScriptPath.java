@@ -33,6 +33,7 @@ public class ScriptPath {
         this.bankMapId = loadScriptMessage.getScript().getBankMapId();
         this.gatherPath = loadScriptMessage.getScript().getGatherPath();
         this.bankPath = loadScriptMessage.getScript().getBankPath();
+        this.ressourcesToGather = loadScriptMessage.getScript().getRessourcesToGather();
         this.displayData = loadScriptMessage.getDisplayData();
     }
 }

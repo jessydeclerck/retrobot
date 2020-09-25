@@ -22,6 +22,7 @@ public class RetroBot implements CommandLineRunner {
     public static void main(String[] args) {
         //TODO port 80 might be used
         BotServer.init(80);
+        //start(args);
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("http://localhost:4200/"));
@@ -40,17 +41,16 @@ public class RetroBot implements CommandLineRunner {
     }
 
     public static void restart(String[] args) {
-        ConfigurableApplicationContext oldContext = context;
         Thread thread = new Thread(() -> {
             log.info("App will restart");
+            if(context != null) {
+                context.close();
+            }
             TimeUtils.sleep(1000);
             context = SpringApplication.run(RetroBot.class, args);
         });
         thread.setDaemon(false);
         thread.start();
-        if (oldContext != null) {
-            oldContext.close();
-        }
     }
 
     @Override

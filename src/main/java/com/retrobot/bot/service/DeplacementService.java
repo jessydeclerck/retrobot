@@ -93,8 +93,13 @@ public class DeplacementService {
     public void goNextGatherMap(MapAction mapAction) {
         characterState.setMoving(true);
         int nextMapId = mapAction.getNextMapId();
-        RetroTriggerCell triggerCell = mapState.getCurrentMap().getTriggers().stream().filter(t -> t.getNextMapId() == nextMapId).findAny().get();
-        NativeWindowsEvents.clic(triggerCell.getWindowRelativeX(), triggerCell.getWindowRelativeY());
+        Optional<RetroTriggerCell> triggerCell = mapState.getCurrentMap().getTriggers().stream().filter(t -> t.getNextMapId() == nextMapId).findAny();
+        if (!triggerCell.isPresent()) {
+            log.error("Cant find trigger to next map. Current map id : {}. Next map id : {}", mapState.getCurrentMap().getId(), nextMapId);
+        }
+        triggerCell.ifPresent(cell ->
+                NativeWindowsEvents.clic(cell.getWindowRelativeX(), cell.getWindowRelativeY())
+        );
     }
 
     public void goNextGatherMap() {

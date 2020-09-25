@@ -25,7 +25,7 @@ public class MessageHandler {
                 e.printStackTrace();
             }
             ScriptLoader.saveScript(loadScriptMessage.getScriptName(), loadScriptMessage);
-            RetroBot.start(new String[]{"--script=" + loadScriptMessage.getScriptName() + ".json"});
+            RetroBot.restart(new String[]{"--script=" + loadScriptMessage.getScriptName() + ".json"});
         }
 
     }
