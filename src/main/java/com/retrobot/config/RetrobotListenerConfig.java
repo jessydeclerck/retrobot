@@ -11,6 +11,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import java.io.EOFException;
@@ -19,7 +20,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
@@ -27,9 +27,11 @@ import java.util.concurrent.TimeoutException;
 public class RetrobotListenerConfig {
 
     private final List<PacketProcessor> packetProcessors;
+    private final ThreadPoolTaskExecutor taskExecutor;
 
-    public RetrobotListenerConfig(List<PacketProcessor> packetProcessors) {
+    public RetrobotListenerConfig(List<PacketProcessor> packetProcessors, ThreadPoolTaskExecutor taskExecutor) {
         this.packetProcessors = packetProcessors;
+        this.taskExecutor = taskExecutor;
     }
 
     @Bean
@@ -71,7 +73,7 @@ public class RetrobotListenerConfig {
 
     @PostConstruct
     public void init() {
-        CompletableFuture.runAsync(() -> {
+        taskExecutor.execute(() -> {
             while (true) {
                 try {
                     retroBotListener().gotPacket(pcapHandle().getNextPacketEx());

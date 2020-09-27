@@ -9,7 +9,7 @@ public class TimeUtils {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            log.error("", e);
+            log.info("Current thread has been interrupted");
         }
     }
 

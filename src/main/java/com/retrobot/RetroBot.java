@@ -1,5 +1,6 @@
 package com.retrobot;
 
+import com.retrobot.bot.async.RetroTaskEventConsumer;
 import com.retrobot.network.BotServer;
 import com.retrobot.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class RetroBot implements CommandLineRunner {
     }
 
     public static void stop() {
+        context.getBean(RetroTaskEventConsumer.class).stop();
         context.close();
     }
 

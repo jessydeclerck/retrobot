@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -61,7 +60,7 @@ public class DeplacementService {
     }
 
     public void goNextMap() {
-        CompletableFuture.runAsync(() -> {
+        threadPoolTaskExecutor.execute(() -> {
             TimeUtils.sleep(2000);
             if (!characterState.isGoingBank()) {
                 changeMapWithRetry(this::goNextGatherMap, mapState.getCurrentMap().getId()); //wont be compatible with gathering

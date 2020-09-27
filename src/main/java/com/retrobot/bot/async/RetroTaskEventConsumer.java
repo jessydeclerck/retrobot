@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RetroTaskEventConsumer implements Runnable {
 
+    private volatile boolean running = true;
+
     private final RetroTaskEventExecutor retroTaskEventExecutor;
     private final RetroTaskQueue retroTaskQueue;
     private final DeplacementService deplacementService;
@@ -22,10 +24,16 @@ public class RetroTaskEventConsumer implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             retroTaskQueue.sortQueue();
             log.debug("Waiting for a task");
-            RecolterTaskEvent event = retroTaskQueue.take();
+            RecolterTaskEvent event = null;
+            try {
+                event = retroTaskQueue.take();
+            } catch (InterruptedException e) {
+                log.info("Queue task has been interrupted");
+                break;
+            }
             log.debug("Processing task {} : {}", event.getRessourceCell().id(), event);
             if (event.getProcessCount() > 1) {
                 log.info("Discarding task (too many retries) {} : {}", event.getRessourceCell().id(), event);
@@ -37,6 +45,10 @@ public class RetroTaskEventConsumer implements Runnable {
                 deplacementService.goNextMap();
             }
         }
+    }
+
+    public void stop() {
+        this.running = false;
     }
 
 }

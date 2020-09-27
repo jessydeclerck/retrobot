@@ -7,6 +7,7 @@ spring:
     execution:
       shutdown:
         await-termination: false
+        await-termination-period: 3
       pool:
         core-size: 5
         queue-capacity: 10

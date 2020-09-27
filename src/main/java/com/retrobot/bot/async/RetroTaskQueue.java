@@ -21,13 +21,8 @@ public class RetroTaskQueue {
         this.taskQueue = new PriorityBlockingQueue<>(10, new TaskPriorityComparator(characterState));
     }
 
-    public RecolterTaskEvent take() {
-        try {
+    public RecolterTaskEvent take() throws InterruptedException {
             return taskQueue.take();
-        } catch (InterruptedException e) {
-            log.error("Queue task has been interrupted", e);
-        }
-        return null;
     }
 
     public void addTask(RecolterTaskEvent task) {
