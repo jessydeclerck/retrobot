@@ -56,7 +56,7 @@ public class DeplacementService {
         this.bankMapId = scriptPath.getBankMapId();
         MapAction startMap = gatherMapActions.get(startMapId);
         mapState.setCurrentMap(mapService.getRetroDofusMap(startMapId));
-        goNextGatherMap(startMap);
+        executeNextMapAction(startMap);
     }
 
     public void goNextMap() {
@@ -89,7 +89,8 @@ public class DeplacementService {
         });
     }
 
-    public void goNextGatherMap(MapAction mapAction) {
+    public void executeNextMapAction(MapAction mapAction) {
+        log.info("Going next map");
         characterState.setMoving(true);
         int nextMapId = mapAction.getNextMapId();
         Optional<RetroTriggerCell> triggerCell = mapState.getCurrentMap().getTriggers().stream().filter(t -> t.getNextMapId() == nextMapId).findAny();
@@ -106,28 +107,27 @@ public class DeplacementService {
         if (mapActionToExecute.isGather() && !characterState.isGoingBank()) {
             startRecolte(mapActionToExecute);
         } else {
-            goNextGatherMap(mapActionToExecute);
+            executeNextMapAction(mapActionToExecute);
         }
     }
 
     public void goToBank() {
+        log.info("Going bank");
         stopRecolte();
         characterState.setGoingBank(true);
         BankMapAction mapActionToExecute = bankMapActions.get(mapState.getCurrentMap().getId());
-        if (mapState.getCurrentMap().getId() == bankMapId && characterState.isGoingBank()) {
-            enterBank();
-        } else {
-            goNextGatherMap(mapActionToExecute);
-        }
+        executeNextMapAction(mapActionToExecute);
     }
 
     public void leaveBank() {
+        log.info("Leaving bank");
         characterState.setGoingBank(false);
         BankMapAction mapActionToExecute = bankMapActions.get(mapState.getCurrentMap().getId());
-        goNextGatherMap(mapActionToExecute);
+        executeNextMapAction(mapActionToExecute);
     }
 
     public void enterBank() {
+        log.info("Entering bank");
         characterState.setMoving(true);
         RetroTriggerCell triggerCell = mapState.getCurrentMap().getTriggers().stream().filter(t -> t.getNextMapId() == bankMapId).findAny().get();
         NativeWindowsEvents.clic(triggerCell.getWindowRelativeX(), triggerCell.getWindowRelativeY());
@@ -136,7 +136,7 @@ public class DeplacementService {
     public void startRecolte(GatherMapAction nextMapAction) {
         characterState.setGathering(false); //interrompt l'exécution de la recolte en cours
         if (mapState.getAvailableRessources().isEmpty()) {
-            goNextGatherMap(nextMapAction);
+            executeNextMapAction(nextMapAction);
         } else {
             mapState.getAvailableRessources().forEach((integer, ressourceCell) -> retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, DeplacementService.class)));
         }

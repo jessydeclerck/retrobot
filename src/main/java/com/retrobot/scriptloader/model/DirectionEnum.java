@@ -5,4 +5,6 @@ public enum DirectionEnum {
     left,
     right,
     bottom,
+    in,
+    out
 }
