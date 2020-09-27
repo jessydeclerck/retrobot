@@ -22,7 +22,9 @@ public class RetroBot implements CommandLineRunner {
     public static void main(String[] args) {
         //TODO port 80 might be used
         BotServer.init(80);
-        //start(args);
+        if (args.length > 0) {
+            start(args);
+        }
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("http://localhost:4200/"));
@@ -43,7 +45,7 @@ public class RetroBot implements CommandLineRunner {
     public static void restart(String[] args) {
         Thread thread = new Thread(() -> {
             log.info("App will restart");
-            if(context != null) {
+            if (context != null) {
                 context.close();
             }
             TimeUtils.sleep(1000);

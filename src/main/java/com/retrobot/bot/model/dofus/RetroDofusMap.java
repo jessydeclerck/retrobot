@@ -1,6 +1,6 @@
 package com.retrobot.bot.model.dofus;
 
-import com.retrobot.maploader.dto.MapDto;
+import com.retrobot.extresources.dto.MapDataDto;
 import fr.arakne.utils.maps.DofusMap;
 import fr.arakne.utils.maps.serializer.CellData;
 import fr.arakne.utils.maps.serializer.DefaultMapDataSerializer;
@@ -37,16 +37,16 @@ public class RetroDofusMap implements DofusMap<RetroDofusCell> {
     @Getter
     final private List<RetroRessourceCell> ressources = new ArrayList<>();
 
-    public RetroDofusMap(MapDto mapDto) {
-        this.id = mapDto.getId();
-        this.x = mapDto.getAbscissa();
-        this.y = mapDto.getOrdinate();
-        this.width = mapDto.getWidth();
-        this.height = mapDto.getHeight();
+    public RetroDofusMap(MapDataDto mapDataDto) {
+        this.id = mapDataDto.getMapId();
+        this.x = mapDataDto.getX();
+        this.y = mapDataDto.getY();
+        this.width = mapDataDto.getWidth();
+        this.height = mapDataDto.getHeight();
         DefaultMapDataSerializer serializer = new DefaultMapDataSerializer();
-        this.cells = serializer.deserialize(mapDto.getData().getValue());
-        mapDto.getTriggers().forEach(triggerDto ->
-                triggers.add(this.getTriggerCell(triggerDto.getCell(), triggerDto.getNextMap(), triggerDto.getNextCell()))
+        this.cells = serializer.deserialize(mapDataDto.getData());
+        mapDataDto.getTriggers().forEach(triggerDto ->
+                triggers.add(this.getTriggerCell(triggerDto.getCellId(), triggerDto.getNextMap(), triggerDto.getNextCell()))
         );
         for (int i = 0; i < cells.length; i++) {
             CellData cell = cells[i];

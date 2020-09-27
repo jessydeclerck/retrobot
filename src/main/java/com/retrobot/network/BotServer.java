@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.retrobot.network.message.MessageHandler;
 import com.retrobot.network.message.WSMessage;
 import com.retrobot.network.message.going.Scripts;
-import com.retrobot.scriptloader.ScriptLoader;
+import com.retrobot.scriptloader.FileLoader;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.WebSocket;
@@ -48,7 +48,7 @@ public class BotServer extends WebSocketServer {
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
         log.info(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
         Scripts scripts = new Scripts();
-        scripts.setScripts(ScriptLoader.getCurrentScripts());
+        scripts.setScripts(FileLoader.getCurrentScripts());
         emitMessage(scripts);
     }
 

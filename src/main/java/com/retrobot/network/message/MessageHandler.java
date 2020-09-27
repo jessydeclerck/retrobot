@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.retrobot.RetroBot;
 import com.retrobot.network.message.incoming.LoadScriptMessage;
-import com.retrobot.scriptloader.ScriptLoader;
+import com.retrobot.scriptloader.FileLoader;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MessageHandler {
 
     public static void handleMessage(String message) throws JsonProcessingException {
-        ObjectMapper objectMapper = ScriptLoader.objectMapper;
+        ObjectMapper objectMapper = FileLoader.objectMapper;
         final ObjectNode node = new ObjectMapper().readValue(message, ObjectNode.class);
         String type = node.get("type").asText(); //TODO refacto
         if ("stop".equals(type)) {
@@ -24,7 +24,7 @@ public class MessageHandler {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            ScriptLoader.saveScript(loadScriptMessage.getScriptName(), loadScriptMessage);
+            FileLoader.saveScript(loadScriptMessage.getScriptName(), loadScriptMessage);
             RetroBot.restart(new String[]{"--script=" + loadScriptMessage.getScriptName() + ".json"});
         }
 

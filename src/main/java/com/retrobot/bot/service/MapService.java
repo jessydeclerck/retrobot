@@ -1,14 +1,14 @@
 package com.retrobot.bot.service;
 
 import com.retrobot.bot.model.dofus.RetroDofusMap;
-import com.retrobot.maploader.MapsLoader;
-import com.retrobot.maploader.dto.MapsDto;
+import com.retrobot.extresources.GraphQLService;
+import com.retrobot.extresources.dto.MapsDataDto;
+import com.retrobot.scriptloader.FileLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -20,22 +20,28 @@ public class MapService {
 
     private Map<Integer, RetroDofusMap> maps = new HashMap<>();
 
+    private final GraphQLService graphQLService;
+
+    public MapService(GraphQLService graphQLService) {
+        this.graphQLService = graphQLService;
+    }
+
     @PostConstruct
     public void init() {
         log.info("Start");
-        MapsDto mapsDto = null;
+        MapsDataDto mapsData;
         try {
-            mapsDto = MapsLoader.loadMapsData();
-        } catch (URISyntaxException | IOException e) {
-            log.error("", e);
+            mapsData = FileLoader.loadMaps();
+        } catch (IOException e) {
+            log.info("Couldn't retrieve maps from file, calling api");
+            mapsData = graphQLService.getMaps();
+            FileLoader.saveMaps(mapsData);
         }
-        assert mapsDto != null;
         log.info("Starting init");
-        maps = mapsDto.getMaps().stream()
+        maps = mapsData.getMaps().stream()
                 .map(RetroDofusMap::new)
                 .collect(Collectors.toMap(RetroDofusMap::getId, Function.identity()));
         log.info("Init done");
-
     }
 
     public RetroDofusMap getRetroDofusMap(int id) {
