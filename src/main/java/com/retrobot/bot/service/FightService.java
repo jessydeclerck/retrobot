@@ -26,6 +26,7 @@ import static com.retrobot.utils.automation.PixelConstants.OFFSET_PAR_MONSTRE_ME
 public class FightService {
 
 
+    public static final int PERCEPTEUR_ID = -433;
     private final MapState mapState;
 
     private final CharacterState characterState;
@@ -84,7 +85,7 @@ public class FightService {
         NativeWindowsEvents.clic(624, 697); //TODO refacto externalize
     }
 
-    public void fermerFenetreFinCombat() {
+    public void fermerFenetreFinCombat(List<Integer> fighterId) {
         TimeUtils.sleep(4000); //TODO handle window stuck in front => if more than 1 monster, button wont be at the same place
         int yFor1Monster = 435; //TODO might need to handle number of allies
         double yComputedForNMonsters;
@@ -94,6 +95,9 @@ public class FightService {
             yComputedForNMonsters = yFor1Monster;
         } else {
             yComputedForNMonsters = 497;
+        }
+        if (fighterId.contains(PERCEPTEUR_ID)) {
+            yComputedForNMonsters += 45;
         }
         log.info("yComputed fin combat : {}", yComputedForNMonsters);
         NativeWindowsEvents.clic(769, yComputedForNMonsters); //TODO refacto externalize

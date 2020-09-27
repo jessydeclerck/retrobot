@@ -3,7 +3,13 @@ package com.retrobot.bot.handler;
 import com.retrobot.bot.processor.PacketProcessor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class PacketHandler {
@@ -18,10 +24,16 @@ public class PacketHandler {
     public void handlePacket(String dofusPackets) {
         List<String> gamePackets = Arrays.asList(dofusPackets.split("\0"));
         gamePackets.forEach(gamePacket -> {
-            log.trace(gamePacket);
+            log.info(gamePacket);
             if (gamePacket.length() < 3) return;
             String packetId = getPacketId(gamePacket);
-            Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> packetProcessor.processPacket(gamePacket));
+            Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> {
+                try {
+                    packetProcessor.processPacket(gamePacket);
+                } catch (Exception e) {
+                    log.error("Error while processing packet", e);
+                }
+            });
         });
     }
 
