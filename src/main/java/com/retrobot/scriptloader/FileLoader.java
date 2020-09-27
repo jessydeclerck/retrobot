@@ -60,7 +60,8 @@ public class FileLoader {
     public static List<GetScriptMessage> getCurrentScripts() {
         List<GetScriptMessage> scripts = new ArrayList<>();
         try {
-            Files.walk(Path.of(getScriptsDir())).forEach(scriptFile -> {
+            Files.walk(Path.of(getScriptsDir())).filter(p -> !Files.isDirectory(p)).forEach(scriptFile -> {
+                log.info("file {}", scriptFile.getFileName().toString());
                 try {
                     GetScriptMessage getScriptMessage = new GetScriptMessage();
                     ScriptPath scriptPath = objectMapper.readValue(scriptFile.toFile(), ScriptPath.class);
