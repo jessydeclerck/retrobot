@@ -28,7 +28,7 @@ public class RetroBot implements CommandLineRunner {
         }
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
-                Desktop.getDesktop().browse(new URI("http://localhost:4200/"));
+                Desktop.getDesktop().browse(new URI("https://retrobot-1bf51.web.app/home"));
             } catch (IOException | URISyntaxException e) {
                 log.error("Error while opening UI", e);
             }
