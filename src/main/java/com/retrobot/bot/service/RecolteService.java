@@ -42,7 +42,8 @@ public class RecolteService {
             x += OFFSET_MILIEU_CASE_X;
             y -= OFFSET_MILIEU_CASE_Y;
         } else if (RESSOURCES_BUCHERON.contains(ressourceCell.getIdRessource())) {
-            y -= OFFSET_MILIEU_CASE_Y;
+            x += 10;
+            y -= 15;
         }
         NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
