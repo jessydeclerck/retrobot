@@ -77,7 +77,7 @@ public class DeplacementService {
             int currentMapId = mapState.getCurrentMap().getId();
             Optional<GatherMapAction> gatherMapAction = Optional.ofNullable(scriptPath.getGatherPath().get(currentMapId));
             if (startMapId == currentMapId) {
-                if (gatherMapAction.isPresent() && gatherMapAction.get().isGather()) {
+                if (gatherMapAction.isPresent() && gatherMapAction.get().isGather() && !characterState.isGoingBank()) {
                     log.info("Map didn't change because we're on a gathering map, won't be retried");
                 } else {
                     log.info("Map didn't change, let's retry");

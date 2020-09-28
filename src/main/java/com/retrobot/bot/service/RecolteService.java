@@ -25,6 +25,7 @@ public class RecolteService {
     private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
 
     private final static List<Integer> RESSOURCES_PAYSAN = List.of(7511, 7512, 7513, 7514, 7515, 7516, 7517, 7518, 7550);
+    private final static List<Integer> RESSOURCES_BUCHERON = List.of(7500, 7501, 7502, 7503, 7504, 7505, 7506, 7507, 7508, 7509, 7541, 7542, 7552, 7553, 7554);
 
     public RecolteService(CharacterState characterState, MapState mapState, RetroTaskQueue retroTaskQueue) {
         this.characterState = characterState;
@@ -39,6 +40,8 @@ public class RecolteService {
         double x = ressourceCell.getWindowRelativeX(), y = ressourceCell.getWindowRelativeY();
         if (RESSOURCES_PAYSAN.contains(ressourceCell.getIdRessource())) {
             x += OFFSET_MILIEU_CASE_X;
+            y -= OFFSET_MILIEU_CASE_Y;
+        } else if (RESSOURCES_BUCHERON.contains(ressourceCell.getIdRessource())) {
             y -= OFFSET_MILIEU_CASE_Y;
         }
         NativeWindowsEvents.clic(x, y);
