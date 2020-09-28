@@ -79,6 +79,8 @@ public class DeplacementService {
             if (startMapId == currentMapId) {
                 if (gatherMapAction.isPresent() && gatherMapAction.get().isGather() && !characterState.isGoingBank()) {
                     log.info("Map didn't change because we're on a gathering map, won't be retried");
+                } else if (characterState.isGoingBank() && mapState.getCurrentMap().getId() == scriptPath.getBankMapId()) {
+                    log.info("Map didn't change because we're at the bank");
                 } else {
                     log.info("Map didn't change, let's retry");
                     changeMapWithRetry(changeMapAction, startMapId);
@@ -112,6 +114,10 @@ public class DeplacementService {
     }
 
     public void goToBank() {
+        if (mapState.getCurrentMap().getId() == scriptPath.getBankMapId()) {
+            log.info("We're in the bank");
+            return;
+        }
         log.info("Going bank");
         stopRecolte();
         characterState.setGoingBank(true);
