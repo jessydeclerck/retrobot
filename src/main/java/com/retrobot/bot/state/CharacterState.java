@@ -1,5 +1,6 @@
 package com.retrobot.bot.state;
 
+import com.retrobot.bot.constants.GatheringConstants;
 import com.retrobot.bot.model.dofus.RetroDofusCell;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
 import com.retrobot.utils.TimeUtils;
@@ -44,7 +45,7 @@ public class CharacterState {
         this.gathering = gathering;
         if (gathering) {
             taskExecutor.execute(() -> {
-                TimeUtils.sleep(5000);
+                TimeUtils.sleep(GatheringConstants.GATHERING_TIMEOUT);
                 if (!this.gatheringConfirmed) {
                     this.setGathering(false);
                 }

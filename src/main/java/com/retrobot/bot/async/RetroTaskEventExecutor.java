@@ -1,6 +1,7 @@
 package com.retrobot.bot.async;
 
 import com.retrobot.bot.async.event.RecolterTaskEvent;
+import com.retrobot.bot.constants.GatheringConstants;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
 import com.retrobot.bot.service.BotService;
 import com.retrobot.bot.service.RecolteService;
@@ -82,12 +83,12 @@ public class RetroTaskEventExecutor {
     private void waitTaskFinished(RecolterTaskEvent recolterTaskEvent) {
         long startTime = System.currentTimeMillis();
         while (characterState.isGathering()) {
-            if ((System.currentTimeMillis() - startTime) > 20000) {
+            TimeUtils.sleep(500);
+            if ((System.currentTimeMillis() - startTime) > GatheringConstants.GATHERING_TIMEOUT && !characterState.isGatheringConfirmed() && mapState.getAvailableRessources().containsKey(recolterTaskEvent.getRessourceCell().id())) {
                 log.info("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
                 retroTaskQueue.addTask(recolterTaskEvent);
                 break;
             }
-            TimeUtils.sleep(200);
         }
     }
 

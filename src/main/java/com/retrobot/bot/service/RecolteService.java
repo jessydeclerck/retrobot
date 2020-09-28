@@ -23,6 +23,7 @@ public class RecolteService {
     private final MapState mapState;
     private final RetroTaskQueue retroTaskQueue;
     private final static int OFFSET_MILIEU_CASE_X = 20, OFFSET_MILIEU_CASE_Y = 30;
+    private final static int BOTTOM_LIMIT_Y = 570;
 
     private final static List<Integer> RESSOURCES_PAYSAN = List.of(7511, 7512, 7513, 7514, 7515, 7516, 7517, 7518, 7550);
     private final static List<Integer> RESSOURCES_BUCHERON = List.of(7500, 7501, 7502, 7503, 7504, 7505, 7506, 7507, 7508, 7509, 7541, 7542, 7552, 7553, 7554);
@@ -47,6 +48,11 @@ public class RecolteService {
         }
         NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
+        if (y + OFFSET_INTERACTION_Y > BOTTOM_LIMIT_Y) {
+            log.info("Discarding task because it makes click on menu");
+            characterState.setCurrentGatheringTarget(null);
+            return;
+        }
         NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
         TimeUtils.sleep(1000);
         RetroRessourceCell targetedRessourceCell = characterState.getCurrentGatheringTarget();
