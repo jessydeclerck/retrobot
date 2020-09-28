@@ -37,7 +37,7 @@ public class GraphQLService {
                 .build();
         GraphQLQuery getMapsGraphQLQuery = new GraphQLQuery();
         getMapsGraphQLQuery.setQuery(getMapsQuery);
-        ResponseEntity<GraphQLMapsDataResponse> result = restTemplate.postForEntity("https://finer-gelding-78.hasura.app/v1/graphql", getMapsGraphQLQuery, GraphQLMapsDataResponse.class);
+        ResponseEntity<GraphQLMapsDataResponse> result = restTemplate.postForEntity("http://vps408293.ovh.net:8081/v1/graphql", getMapsGraphQLQuery, GraphQLMapsDataResponse.class);
         return result.getBody().getData();
     }
 
