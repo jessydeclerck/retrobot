@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:12-jdk
+
+    working_directory: ~/retrobot
+    
+    steps:
+      # git pull
+      - checkout
+      # package into a jar
+      - run: mvn clean package
+
+      # build and push docker image to docker hub
+
+      # store raw contents of src code
+      - store_artifacts:
+          path: target/*.jar
+          destination: retrobotbuild
