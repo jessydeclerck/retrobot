@@ -18,7 +18,7 @@ jobs:
       - run: echo "retrobot.exe" >> ./retrobotbuild/start-bot.bat
       - run: mv ./target/scripts ./retrobotbuild
       - run: zip -r retrobot.zip retrobotbuild/*
-      - run: curl -F file=@retrobot.zip https://srv-file1.gofile.io/uploadFile
+      - run: curl -F file=@retrobot.zip https://srv-store1.gofile.io/uploadFile
       - store_artifacts:
           path: retrobot.zip
 
