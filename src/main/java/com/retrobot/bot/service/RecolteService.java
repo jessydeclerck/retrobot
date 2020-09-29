@@ -27,6 +27,7 @@ public class RecolteService {
 
     private final static List<Integer> RESSOURCES_PAYSAN = List.of(7511, 7512, 7513, 7514, 7515, 7516, 7517, 7518, 7550);
     private final static List<Integer> RESSOURCES_BUCHERON = List.of(7500, 7501, 7502, 7503, 7504, 7505, 7506, 7507, 7508, 7509, 7541, 7542, 7552, 7553, 7554);
+    private final static List<Integer> RESSOURCES_ALCHIMISTE = List.of(7533, 7534, 7535, 7536, 7551);
 
     public RecolteService(CharacterState characterState, MapState mapState, RetroTaskQueue retroTaskQueue) {
         this.characterState = characterState;
@@ -45,6 +46,8 @@ public class RecolteService {
         } else if (RESSOURCES_BUCHERON.contains(ressourceCell.getIdRessource())) {
             x += 10;
             y -= 15;
+        } else if (RESSOURCES_ALCHIMISTE.contains(ressourceCell.getIdRessource())) {
+            y -= 20;
         }
         NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
@@ -66,7 +69,7 @@ public class RecolteService {
     }
 
     public void fermerPopupNiveauMetier() {
-        TimeUtils.sleep(1000);
+        TimeUtils.sleep(2000);
         NativeWindowsEvents.clic(473, 328);
     }
 
