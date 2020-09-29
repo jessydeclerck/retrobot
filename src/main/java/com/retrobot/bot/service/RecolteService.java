@@ -47,7 +47,7 @@ public class RecolteService {
             x += 10;
             y -= 15;
         } else if (RESSOURCES_ALCHIMISTE.contains(ressourceCell.getIdRessource())) {
-            y -= 20;
+            y -= 15;
         }
         NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(500);
