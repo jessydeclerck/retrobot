@@ -17,10 +17,10 @@ jobs:
       # store raw contents of src code
       - store_artifacts:
           path: target/retrobot-1.0-SNAPSHOT-spring-boot.jar
-          destination: retrobotbuild
+          destination: retrobotbuild/retrobot.jar
       - store_artifacts:
           path: target/scripts
-          destination: retrobotbuild
+          destination: retrobotbuild/scripts
       - run: wget https://github.com/libgdx/packr/releases/download/packr-2.7.0/packr-all-2.7.0.jar
       - run: mv ./retrobotbuild/retrobot-1.0-SNAPSHOT-spring-boot.jar ./retrobotbuild/retrobot.jar
       - run: java -jar packr-all-2.7.0.jar --platform windows64 --jdk openjdk-12.0.1_windows-x64_bin.zip --executable retrobot --classpath ./retrobotbuild/retrobot.jar --removelibs ./retrobotbuild/retrobot.jar --mainclass org.springframework.boot.loader.JarLauncher --vmargs Xmx1G --minimizejre soft --output build
