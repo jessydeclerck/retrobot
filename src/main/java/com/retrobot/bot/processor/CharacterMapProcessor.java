@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -29,16 +30,12 @@ public class CharacterMapProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         if (characterState.isGoingBank()) {
             CharacterMapData characterMapData = new CharacterMapData(dofusPacket);
-            findBankNpc(characterMapData).ifPresent(characterData -> {
-                banqueService.viderInventaire(characterData);
-            });
+            findBankNpc(characterMapData).ifPresent(banqueService::viderInventaire);
         }
-        //if (!CharacterState.getInstance().isFighting()) return;
-        //CharacterFightingData characterFightingData = new CharacterFightingData(dofusPacket);
     }
 
     private Optional<CharacterData> findBankNpc(CharacterMapData characterMapData) {
-        return characterMapData.getMapCharacters().stream().filter(c -> BANK_NPC_ID.contains(c.getCharacterName())).findAny();
+        return characterMapData.getMapCharacters().stream().filter(Objects::nonNull).filter(c -> BANK_NPC_ID.contains(c.getCharacterName())).findAny();
     }
 
     @Override
