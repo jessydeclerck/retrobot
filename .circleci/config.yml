@@ -17,6 +17,7 @@ jobs:
       - run: java -jar packr-all-2.7.0.jar --platform windows64 --jdk openjdk-12_windows-x64_bin.zip --executable retrobot --classpath ./target/retrobot.jar --removelibs ./target/retrobot.jar --mainclass org.springframework.boot.loader.JarLauncher --vmargs Xmx1G --minimizejre soft --output retrobotbuild
       - run: echo "retrobot.exe" >> ./retrobotbuild/start-bot.bat
       - run: mv ./target/scripts ./retrobotbuild
+      - run: zip -r retrobot.zip retrobotbuild
       - store_artifacts:
-          path: retrobotbuild
+          path: retrobot.zip
 
