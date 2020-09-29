@@ -12,6 +12,7 @@ jobs:
       # package into a jar
       - run: mvn clean package
       - run: wget https://github.com/libgdx/packr/releases/download/packr-2.7.0/packr-all-2.7.0.jar
+      - run: mv ./target/retrobot-1.0-SNAPSHOT-spring-boot.jar ./target/retrobot.jar
       - run: java -jar packr-all-2.7.0.jar --platform windows64 --jdk openjdk-12.0.1_windows-x64_bin.zip --executable retrobot --classpath ./target/retrobot.jar --removelibs ./target/retrobot.jar --mainclass org.springframework.boot.loader.JarLauncher --vmargs Xmx1G --minimizejre soft --output retrobotbuild
       - run: echo "retrobot.exe" >> ./retrobotbuild/start-bot.bat
       - run: mv ./target/scripts ./retrobotbuild
