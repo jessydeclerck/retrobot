@@ -1,11 +1,13 @@
 package com.retrobot.bot.processor.packet;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Getter
 public class CharacterMapData extends PacketData {
 
@@ -16,8 +18,12 @@ public class CharacterMapData extends PacketData {
         super(fullPacket);
         String[] characters = fullPacket.replace("GM|+", "").split("\\|");
         Arrays.stream(characters).forEach(character -> {
-            CharacterData characterData = new CharacterData(character);
-            mapCharacters.add(characterData);
+            try {
+                CharacterData characterData = new CharacterData(character);
+                mapCharacters.add(characterData);
+            } catch (Exception e) {
+                log.info("Character data (GM) couldn't be parsed");
+            }
         });
     }
 
