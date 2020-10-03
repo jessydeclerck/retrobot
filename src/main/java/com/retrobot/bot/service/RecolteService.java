@@ -56,7 +56,13 @@ public class RecolteService {
             characterState.setCurrentGatheringTarget(null);
             return;
         }
-        NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
+        //Gère la fauche des chanvre et lin, qui peuvent être soit fauchés soit cueillis
+        if (this.characterState.isPaysan()  && (ressourceCell.getIdRessource() == 7513 || ressourceCell.getIdRessource() == 7514 ))  {
+            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y * 1.5);
+        } else {
+            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
+        }
+
         TimeUtils.sleep(1000);
         RetroRessourceCell targetedRessourceCell = characterState.getCurrentGatheringTarget();
         if (targetedRessourceCell != null && !ressourceCell.equals(targetedRessourceCell)) {
