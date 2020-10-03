@@ -126,6 +126,7 @@ public class DeplacementService {
     }
 
     public void leaveBank() {
+        TimeUtils.sleep(2000);
         log.info("Leaving bank");
         characterState.setGoingBank(false);
         BankMapAction mapActionToExecute = bankMapActions.get(mapState.getCurrentMap().getId());
