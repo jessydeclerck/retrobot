@@ -21,6 +21,8 @@ public class ScriptPath {
 
     private int bankMapId;
 
+    private boolean isPaysan;
+
     private Map<Integer, GatherMapAction> gatherPath;
 
     private Map<Integer, BankMapAction> bankPath;
@@ -35,5 +37,6 @@ public class ScriptPath {
         this.bankPath = loadScriptMessage.getScript().getBankPath();
         this.ressourcesToGather = loadScriptMessage.getScript().getRessourcesToGather();
         this.displayData = loadScriptMessage.getDisplayData();
+        this.isPaysan = loadScriptMessage.getScript().isPaysan();
     }
 }
