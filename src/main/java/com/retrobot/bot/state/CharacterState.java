@@ -22,6 +22,7 @@ public class CharacterState {
     private boolean fighting;
     private boolean moving;
     private boolean goingBank;
+    private boolean paysan;
     private int playerId;
     private RetroRessourceCell currentGatheringTarget;
     private RetroDofusCell currentCellTarget;

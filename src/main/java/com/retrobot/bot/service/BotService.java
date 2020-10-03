@@ -29,6 +29,7 @@ public class BotService {
     public BotService(MapState mapState, CharacterState characterState, ScriptPath scriptPath, RetroTaskQueue retroTaskQueue, DeplacementService deplacementService) {
         this.mapState = mapState;
         this.characterState = characterState;
+        this.characterState.setPaysan(scriptPath.isPaysan());
         this.scriptPath = scriptPath;
         this.retroTaskQueue = retroTaskQueue;
         this.deplacementService = deplacementService;
