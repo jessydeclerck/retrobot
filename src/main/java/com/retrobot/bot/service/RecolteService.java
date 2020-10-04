@@ -44,7 +44,7 @@ public class RecolteService {
             x += OFFSET_MILIEU_CASE_X;
             y -= OFFSET_MILIEU_CASE_Y;
         } else if (RESSOURCES_BUCHERON.contains(ressourceCell.getIdRessource())) {
-            x += 10;
+            //x += 10;
             y -= 15;
         } else if (RESSOURCES_ALCHIMISTE.contains(ressourceCell.getIdRessource())) {
             y -= 15;
