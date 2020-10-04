@@ -96,7 +96,7 @@ public class FightService {
         } else {
             yComputedForNMonsters = 497;
         }
-        if (fighterId.contains(PERCEPTEUR_ID)) {
+        if (fighterId.stream().anyMatch(f -> f < -100)) {//check percepteur on map
             yComputedForNMonsters += 45;
         }
         log.info("yComputed fin combat : {}", yComputedForNMonsters);
