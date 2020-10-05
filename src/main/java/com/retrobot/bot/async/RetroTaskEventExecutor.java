@@ -71,6 +71,7 @@ public class RetroTaskEventExecutor {
             log.info("La prochaine ressource est trop proche du personnage");
             return false;
         }
+        mapState.getMonsterPositions().values().forEach(monsterPosition -> log.info("Groupe de monstre sur la cellule : {}", monsterPosition));
         if (mapState.getMonsterPositions().values().contains(ressourceCell.id())) {
             log.info("Un groupe de monstre est sur la case de la ressource");
             return false;
