@@ -5,11 +5,11 @@ jobs:
       - image: circleci/openjdk:11.0.8-jdk
 
     working_directory: ~/retrobot
-    
     steps:
       # git pull
       - checkout
       # package into a jar
+      - run: echo `git log --format=oneline -n 1 $CIRCLE_SHA1` >> lastcommit.txt
       - run: mvn clean package
       - run: wget https://github.com/libgdx/packr/releases/download/packr-2.7.0/packr-all-2.7.0.jar
       - run: mv ./target/retrobot-1.0-SNAPSHOT-spring-boot.jar ./target/retrobot.jar
@@ -18,7 +18,16 @@ jobs:
       - run: echo "retrobot.exe" >> ./retrobotbuild/start-bot.bat
       - run: mv ./target/scripts ./retrobotbuild
       - run: zip -r retrobot.zip retrobotbuild/*
-      - run: curl -F file=@retrobot.zip https://srv-store1.gofile.io/uploadFile
+      - run: curl -F file=@retrobot.zip https://srv-store1.gofile.io/uploadFile >> gofileresponse.json
+      - run: >-
+          curl -X POST https://discordapp.com/api/webhooks/762609217302822923/SPSxyT16-g7cwQHBb2blLERBY-pKIuuaiGZM6XIQ5Z6zfKDPbCU0GKvCkiw7Zn-0X4OT -H 'Content-Type: application/json' -H 'cache-control: no-cache' -d '{"username": "Retro Release CI", "content": "https://gofile.io/d/'$(cat gofileresponse.json | jq -r '.data.code')'" }'
+      - run: >-
+          curl -X POST https://discordapp.com/api/webhooks/762609217302822923/SPSxyT16-g7cwQHBb2blLERBY-pKIuuaiGZM6XIQ5Z6zfKDPbCU0GKvCkiw7Zn-0X4OT -H 'Content-Type: application/json' -H 'cache-control: no-cache' -d '{"username": "Retro Release CI", "content": "New retrobot release -  '"$(git --no-pager log -1 --pretty=%B)"'" }'
       - store_artifacts:
           path: retrobot.zip
-
+      - store_artifacts:
+          path: gofileresponse.json
+      - store_artifacts:
+          path: lastcommit.txt
+orbs:
+  jq: circleci/jq@2.2.0

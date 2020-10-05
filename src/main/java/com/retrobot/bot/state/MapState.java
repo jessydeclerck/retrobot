@@ -20,6 +20,7 @@ public class MapState {
     private RetroDofusMap currentMap;
     private Map<Integer, RetroRessourceCell> availableRessources = new ConcurrentHashMap<>();
     private Map<Integer, RetroRessourceCell> unavailableRessources = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> monsterPositions = new ConcurrentHashMap<>();
 
     private final RetroTaskQueue retroTaskQueue;
 
@@ -30,6 +31,7 @@ public class MapState {
     public void resetMapState() {
         this.availableRessources.clear();
         this.unavailableRessources.clear();
+        monsterPositions.clear();
         retroTaskQueue.removeMapTask(currentMap);
     }
 
