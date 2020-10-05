@@ -11,6 +11,8 @@ import com.retrobot.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class RetroTaskEventExecutor {
@@ -72,8 +74,10 @@ public class RetroTaskEventExecutor {
             return false;
         }
         mapState.getMonsterPositions().values().forEach(monsterPosition -> log.info("Groupe de monstre sur la cellule : {}", monsterPosition));
-        if (mapState.getMonsterPositions().values().contains(ressourceCell.id())) {
-            log.info("Un groupe de monstre est sur la case de la ressource");
+        int ressourceCellId = ressourceCell.id();
+        List<Integer> ressourceArea = List.of(ressourceCellId - 29, ressourceCellId - 15, ressourceCellId - 14, ressourceCellId - 1, ressourceCellId, ressourceCellId + 1, ressourceCellId + 14, ressourceCellId + 15, ressourceCellId + 29);
+        if (ressourceArea.stream().anyMatch(ressourceAreaCell -> mapState.getMonsterPositions().values().contains(ressourceAreaCell))) {
+            log.info("Un groupe de monstre est trop proche de la ressource");
             return false;
         }
         return true;
