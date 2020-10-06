@@ -46,8 +46,9 @@ public class CharacterState {
         this.gathering = gathering;
         if (gathering) {
             taskExecutor.execute(() -> {
+                Integer gatheringTargetId = currentGatheringTarget != null ? currentGatheringTarget.id() : null;
                 TimeUtils.sleep(GatheringConstants.GATHERING_TIMEOUT);
-                if (!this.gatheringConfirmed) {
+                if (!this.gatheringConfirmed && (gatheringTargetId == null || gatheringTargetId == currentGatheringTarget.id())) { // need to recheck as target could have change when gathering time < timeout
                     this.setGathering(false);
                 }
             });

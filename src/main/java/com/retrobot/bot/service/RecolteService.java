@@ -53,7 +53,6 @@ public class RecolteService {
         TimeUtils.sleep(500);
         if (y + OFFSET_INTERACTION_Y > BOTTOM_LIMIT_Y) {
             log.info("Discarding task because it makes click on menu");
-            characterState.setCurrentGatheringTarget(null);
             return;
         }
         //Gère la fauche des chanvre et lin, qui peuvent être soit fauchés soit cueillis
@@ -71,7 +70,6 @@ public class RecolteService {
                 retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, RecolteService.class));
             }
         }
-        characterState.setCurrentGatheringTarget(null);
     }
 
     public void fermerPopupNiveauMetier() {
