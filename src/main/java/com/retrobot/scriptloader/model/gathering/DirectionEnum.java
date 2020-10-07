@@ -1,4 +1,4 @@
-package com.retrobot.scriptloader.model;
+package com.retrobot.scriptloader.model.gathering;
 
 public enum DirectionEnum {
     top,

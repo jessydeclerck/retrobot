@@ -6,7 +6,7 @@ import com.retrobot.bot.model.dofus.RetroDofusMap;
 import com.retrobot.bot.model.dofus.RetroRessourceCell;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
-import com.retrobot.scriptloader.model.ScriptPath;
+import com.retrobot.scriptloader.model.gathering.ScriptPath;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

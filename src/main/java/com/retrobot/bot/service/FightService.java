@@ -4,17 +4,21 @@ import com.retrobot.bot.model.dofus.RetroDofusCell;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.FightState;
 import com.retrobot.bot.state.MapState;
+import com.retrobot.scriptloader.model.fighting.FightAI;
+import com.retrobot.scriptloader.model.fighting.Spell;
+import com.retrobot.scriptloader.model.fighting.TargetEnum;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
-import fr.arakne.utils.maps.LineOfSight;
 import fr.arakne.utils.maps.path.Decoder;
 import fr.arakne.utils.maps.path.Path;
 import fr.arakne.utils.maps.path.Pathfinder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import java.awt.geom.Point2D;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,18 +29,31 @@ import static com.retrobot.utils.automation.PixelConstants.OFFSET_PAR_MONSTRE_ME
 @Service
 public class FightService {
 
-
-    public static final int PERCEPTEUR_ID = -433;
     private final MapState mapState;
 
     private final CharacterState characterState;
 
     private final FightState fightState;
 
-    public FightService(MapState mapState, CharacterState characterState, FightState fightState) {
+    private final FightAI fightAI;
+
+    private static final Map<Integer, Pair<Integer, Integer>> spellPosition = new HashMap<>();
+
+    {
+        spellPosition.put(1, Pair.of(676, 655));
+        spellPosition.put(2, Pair.of(711, 653));
+        spellPosition.put(3, Pair.of(748, 652));
+        spellPosition.put(4, Pair.of(783, 654));
+        spellPosition.put(5, Pair.of(820, 655));
+        spellPosition.put(6, Pair.of(853, 653));
+        spellPosition.put(7, Pair.of(891, 653));
+    }
+
+    public FightService(MapState mapState, CharacterState characterState, FightState fightState, FightAI fightAI) {
         this.mapState = mapState;
         this.characterState = characterState;
         this.fightState = fightState;
+        this.fightAI = fightAI;
     }
 
     //TODO WIP
@@ -49,40 +66,73 @@ public class FightService {
     }
 
     public void playTurn() {
-        RetroDofusCell currentPlayerCell = characterState.getCurrentFightCell();
-        RetroDofusCell nearestMonster = findNearestMonster();
-        LineOfSight los = new LineOfSight(mapState.getCurrentMap());
-        moveTowardMonster(currentPlayerCell, nearestMonster);
-        //we need the cell the player moved on
-        if (los.between(characterState.getCurrentFightCell(), nearestMonster)) { //TODO check spell area
-            attackMonster(nearestMonster);
-        }
+        processAI();
         passerTour();
     }
 
-    public void moveTowardMonster(RetroDofusCell playerCell, RetroDofusCell monsterCell) {
-        log.info("Calculating path from player cell {} to monster cell {}", playerCell.id(), monsterCell.id());
-        Path<RetroDofusCell> path = calculatePath(playerCell, monsterCell);
+    public void processAI() {
+        RetroDofusCell nearestMonster = findNearestMonster();
+        moveTowardMonster(nearestMonster);
+        fightAI.getSpells().forEach(spell -> {
+            if (spell.getTurnsBeforeRecast() == 0 || fightState.getTurnNb() % spell.getTurnsBeforeRecast() == 1) {
+                useSpell(spell);
+                TimeUtils.sleep(500);
+            }
+        });
+    }
+
+    private void useSpell(Spell spell) {
+        if (TargetEnum.MONSTER.equals(spell.getTarget())) {
+            attackMonster(spell, findNearestMonster());
+        } else if (TargetEnum.SELF.equals((spell.getTarget()))) {
+            castSpellOnSelf(spell);
+        }
+    }
+
+    private void castSpellOnSelf(Spell spell) {
+        useSpell(spell, characterState.getCurrentFightCell());
+    }
+
+    public void attackMonster(Spell spell, RetroDofusCell monsterCell) {
+        useSpell(spell, monsterCell);
+    }
+
+    private void useSpell(Spell spell, RetroDofusCell target) {
+        int nbOfCast = 0;
+        do {
+            TimeUtils.sleep(500);
+            Pair<Integer, Integer> spellCoordinates = spellPosition.get(spell.getSpellPosition());
+            NativeWindowsEvents.clic(spellCoordinates.getLeft(), spellCoordinates.getRight()); //TODO select spell
+            TimeUtils.sleep(1000);//TODO refacto externalize
+            NativeWindowsEvents.clic(target.getWindowRelativeX(), target.getWindowRelativeY()); //TODO refacto externalize
+            resetCursor();
+            nbOfCast++;
+        } while (nbOfCast < spell.getCastNumber());
+    }
+
+    private void resetCursor() {
+        NativeWindowsEvents.clic(453, 583); //move cursor elsewhere so we can select spell
+    }
+
+    public void moveTowardMonster(RetroDofusCell monsterCell) {
+        log.info("Calculating path from player cell {} to monster cell {}", characterState.getCurrentFightCell().id(), monsterCell.id());
+        Path<RetroDofusCell> path = calculatePath(characterState.getCurrentFightCell(), monsterCell);
         RetroDofusCell targetCell = path.target();
         TimeUtils.sleep(500);
         log.info("Player movement towards cell {}", targetCell.id());
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
-        NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY()); //TODO refacto externalize
+        NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY());
+        characterState.setCurrentFightCell(targetCell);//TODO might not be accurate
         TimeUtils.sleep(2000);
-        NativeWindowsEvents.clic(453, 583); //move cursor elsewhere so we can select spell
+        resetCursor();
     }
 
-    public void attackMonster(RetroDofusCell monsterCell) {
-        TimeUtils.sleep(500);
-        NativeWindowsEvents.clic(678, 653); //TODO select spell
-        TimeUtils.sleep(1000);//TODO refacto externalize
-        NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY()); //TODO refacto externalize
-        NativeWindowsEvents.clic(453, 583); //move cursor elsewhere so we can select spell
-    }
 
     public void passerTour() {
         TimeUtils.sleep(1000);
-        NativeWindowsEvents.clic(624, 697); //TODO refacto externalize
+        if (characterState.isFighting()) {
+            NativeWindowsEvents.clic(624, 697); //TODO refacto externalize
+        }
     }
 
     public void fermerFenetreFinCombat(List<Integer> fighterId) {
@@ -107,6 +157,7 @@ public class FightService {
         setReady();
         hideCards();
         hideChallenge();
+        activateTacticMode();
     }
 
     private void setReady() {
@@ -128,6 +179,15 @@ public class FightService {
         TimeUtils.sleep(2000);
         NativeWindowsEvents.clic(18, 88);
         fightState.setChallengeHidden(true);
+    }
+
+    private void activateTacticMode() {
+        if (fightState.isTacticModeActivated()) {
+            return;
+        }
+        TimeUtils.sleep(2000);
+        NativeWindowsEvents.clic(848, 497);
+        fightState.setTacticModeActivated(true);
     }
 
     private RetroDofusCell findNearestMonster() {

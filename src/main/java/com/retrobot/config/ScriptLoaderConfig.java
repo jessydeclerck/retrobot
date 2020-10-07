@@ -1,7 +1,8 @@
 package com.retrobot.config;
 
 import com.retrobot.scriptloader.FileLoader;
-import com.retrobot.scriptloader.model.ScriptPath;
+import com.retrobot.scriptloader.model.fighting.FightAI;
+import com.retrobot.scriptloader.model.gathering.ScriptPath;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,11 @@ public class ScriptLoaderConfig {
         String scriptName = Optional.ofNullable(applicationArguments.getOptionValues("script")).orElse(List.of("script.json")).get(0);
         log.info("Loading {} script path...", scriptName);
         return FileLoader.loadScript(scriptName);
+    }
+
+    @Bean
+    public FightAI fightAI() {
+        return FileLoader.loadFightAi();
     }
 
 }

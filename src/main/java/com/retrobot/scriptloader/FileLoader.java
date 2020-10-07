@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.retrobot.extresources.dto.MapsDataDto;
 import com.retrobot.network.message.going.GetScriptMessage;
 import com.retrobot.network.message.incoming.LoadScriptMessage;
-import com.retrobot.scriptloader.model.ScriptPath;
+import com.retrobot.scriptloader.model.fighting.FightAI;
+import com.retrobot.scriptloader.model.fighting.Spell;
+import com.retrobot.scriptloader.model.fighting.TargetEnum;
+import com.retrobot.scriptloader.model.gathering.ScriptPath;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -22,6 +25,21 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class FileLoader {
 
     public static ObjectMapper objectMapper = new ObjectMapper();
+
+    public static FightAI loadFightAi() {
+        try {
+            File file = new File(URLDecoder.decode(getCurrentDir() + "/fightai.json", UTF_8.toString()));
+            log.info(file.getAbsolutePath());
+            return objectMapper.readValue(file, FightAI.class);
+        } catch (IOException e) {
+            log.error("Error while parsing script", e);
+        }
+        log.info("Default fight AI will be used");
+        FightAI defaultFightAi = new FightAI();
+        Spell spell = Spell.builder().castNumber(1).priority(1).spellPosition(1).turnsBeforeRecast(1).target(TargetEnum.MONSTER).build();
+        defaultFightAi.getSpells().add(spell);
+        return defaultFightAi;
+    }
 
     public static ScriptPath loadScript(String scriptName) {
         try {

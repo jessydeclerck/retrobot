@@ -1,7 +1,7 @@
 package com.retrobot.config;
 
 import com.retrobot.bot.service.DeplacementService;
-import com.retrobot.scriptloader.model.ScriptPath;
+import com.retrobot.scriptloader.model.gathering.ScriptPath;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import lombok.extern.slf4j.Slf4j;

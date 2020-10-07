@@ -56,7 +56,7 @@ public class RecolteService {
             return;
         }
         //Gère la fauche des chanvre et lin, qui peuvent être soit fauchés soit cueillis
-        if (this.characterState.isPaysan()  && (ressourceCell.getIdRessource() == 7513 || ressourceCell.getIdRessource() == 7514 ))  {
+        if (this.characterState.isPaysan() && (ressourceCell.getIdRessource() == 7513 || ressourceCell.getIdRessource() == 7514)) {
             NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y * 1.5);
         } else {
             NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
@@ -67,7 +67,11 @@ public class RecolteService {
         if (targetedRessourceCell != null && !ressourceCell.equals(targetedRessourceCell)) {
             log.info("La ressource ciblée est différente de celle prévue : {} vs {}", ressourceCell.id(), targetedRessourceCell.id());
             if (mapState.getAvailableRessources().containsKey(ressourceCell.id())) {
-                retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, RecolteService.class));
+                if (targetedRessourceCell.id() == characterState.getCurrentPlayerCell().id()) {
+                    log.info("La ressource ciblée est sur la case du personnage. L'événement ne sera pas ajouté dans la file d'action");
+                } else {
+                    retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, RecolteService.class));
+                }
             }
         }
     }
