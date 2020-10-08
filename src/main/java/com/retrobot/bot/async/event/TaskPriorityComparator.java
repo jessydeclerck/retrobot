@@ -17,9 +17,6 @@ public class TaskPriorityComparator implements Comparator<RecolterTaskEvent> {
 
     @Override
     public int compare(RecolterTaskEvent o1, RecolterTaskEvent o2) {
-        if (o1.getProcessCount() > 0) { // should put the event at the end of the queue
-            return Integer.compare(o1.getProcessCount(), o2.getProcessCount());
-        }
         RetroDofusCell currentPlayerPositionCell = characterState.getCurrentPlayerCell();
         if (currentPlayerPositionCell == null) {
             return Integer.compare(o1.getRessourceCell().id(), o2.getRessourceCell().id());
@@ -34,6 +31,9 @@ public class TaskPriorityComparator implements Comparator<RecolterTaskEvent> {
         double nextTarget2Y = nextTarget2.getWindowRelativeY();
         double distance1 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget1X, nextTarget1Y);
         double distance2 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget2X, nextTarget2Y);
+        if (o1.getProcessCount() > 0 && characterState.getCurrentPlayerCell().id() == o1.getRessourceCell().id()) { // should put the event at the end of the queue
+            return Integer.compare(o1.getProcessCount(), o2.getProcessCount());
+        }
         return Double.compare(distance1, distance2);
     }
 }

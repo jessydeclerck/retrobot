@@ -74,13 +74,16 @@ public class RetroTaskEventExecutor {
             return false;
         }
         mapState.getMonsterPositions().values().forEach(monsterPosition -> log.info("Groupe de monstre sur la cellule : {}", monsterPosition));
-        int ressourceCellId = ressourceCell.id();
-        List<Integer> ressourceArea = List.of(ressourceCellId - 29, ressourceCellId - 15, ressourceCellId - 14, ressourceCellId - 1, ressourceCellId, ressourceCellId + 1, ressourceCellId + 14, ressourceCellId + 15, ressourceCellId + 29);
-        if (ressourceArea.stream().anyMatch(ressourceAreaCell -> mapState.getMonsterPositions().values().contains(ressourceAreaCell))) {
-            log.info("Un groupe de monstre est trop proche de la ressource");
+        if (isRessourceSafe(ressourceCell.id())) {
+            log.info("Un groupe de monstre ou un joueur est trop proche de la ressource");
             return false;
         }
         return true;
+    }
+
+    private boolean isRessourceSafe(Integer ressourceCellId) {
+        List<Integer> ressourceArea = List.of(ressourceCellId - 29, ressourceCellId - 15, ressourceCellId - 14, ressourceCellId - 1, ressourceCellId, ressourceCellId + 1, ressourceCellId + 14, ressourceCellId + 15, ressourceCellId + 29);
+        return ressourceArea.stream().anyMatch(ressourceAreaCell -> mapState.getMonsterPositions().values().contains(ressourceAreaCell) || mapState.getPlayerPositions().values().contains(ressourceAreaCell));
     }
 
     private void executeTask(RecolterTaskEvent recolterTaskEvent) {

@@ -28,6 +28,8 @@ public class MovementProcessor extends PacketProcessor {
         if (characterState.getPlayerId() == movementData.getEntityId() && !characterState.isFighting()) {
             log.info("Current player position cell : {}", movementData.getEntityCellId());
             characterState.setCurrentPlayerCell(mapState.getCurrentMap().get(movementData.getEntityCellId()));
+        } else {
+            mapState.getPlayerPositions().put(movementData.getEntityId(), movementData.getEntityCellId());
         }
     }
 
