@@ -35,8 +35,8 @@ public class RecolteService {
         this.retroTaskQueue = retroTaskQueue;
     }
 
-    //TODO only works for cereals
-    public void recolterRessource(RetroRessourceCell ressourceCell) {
+    public void recolterRessource(RecolterTaskEvent recolterTaskEvent) {
+        RetroRessourceCell ressourceCell = recolterTaskEvent.getRessourceCell();
         log.info("Recolte de la ressource {}", ressourceCell.id());
         TimeUtils.sleep(200);
         double x = ressourceCell.getWindowRelativeX(), y = ressourceCell.getWindowRelativeY();
@@ -67,11 +67,7 @@ public class RecolteService {
         if (targetedRessourceCell != null && !ressourceCell.equals(targetedRessourceCell)) {
             log.info("La ressource ciblée est différente de celle prévue : {} vs {}", ressourceCell.id(), targetedRessourceCell.id());
             if (mapState.getAvailableRessources().containsKey(ressourceCell.id())) {
-                if (targetedRessourceCell.id() == characterState.getCurrentPlayerCell().id()) {
-                    log.info("La ressource ciblée est sur la case du personnage. L'événement ne sera pas ajouté dans la file d'action");
-                } else {
-                    retroTaskQueue.addTask(new RecolterTaskEvent(ressourceCell, RecolteService.class));
-                }
+                retroTaskQueue.addTask(recolterTaskEvent);
             }
         }
     }

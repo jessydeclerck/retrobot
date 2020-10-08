@@ -47,7 +47,7 @@ public class RetroTaskEventExecutor {
             retroTaskQueue.addTask(retroTaskEvent);
             return;
         }
-        executeTask(retroTaskEvent.getRessourceCell());
+        executeTask(retroTaskEvent);
         waitTaskFinished(retroTaskEvent);
         resetState();
         log.info("Recolte terminée");
@@ -83,16 +83,16 @@ public class RetroTaskEventExecutor {
         return true;
     }
 
-    private void executeTask(RetroRessourceCell ressourceCell) {
+    private void executeTask(RecolterTaskEvent recolterTaskEvent) {
         TimeUtils.sleep(200);
-        recolteService.recolterRessource(ressourceCell);
+        recolteService.recolterRessource(recolterTaskEvent);
         characterState.setGathering(true);
     }
 
     private void waitTaskFinished(RecolterTaskEvent recolterTaskEvent) {
         long startTime = System.currentTimeMillis();
         while (characterState.isGathering()) {
-            TimeUtils.sleep(500);
+            TimeUtils.sleep(10);
             if ((System.currentTimeMillis() - startTime) > GatheringConstants.GATHERING_TIMEOUT && !characterState.isGatheringConfirmed() && mapState.getAvailableRessources().containsKey(recolterTaskEvent.getRessourceCell().id())) {
                 log.info("La recolte n'a pas abouti, l'événement a été replacé dans la queue");
                 retroTaskQueue.addTask(recolterTaskEvent);
