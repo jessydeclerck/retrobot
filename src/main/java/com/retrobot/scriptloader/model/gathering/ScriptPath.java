@@ -1,5 +1,6 @@
 package com.retrobot.scriptloader.model.gathering;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.retrobot.network.message.incoming.LoadScriptMessage;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScriptPath {
 
     private String characterName;

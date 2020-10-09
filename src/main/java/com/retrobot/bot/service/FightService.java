@@ -129,9 +129,9 @@ public class FightService {
 
 
     public void passerTour() {
-        TimeUtils.sleep(1000);
+        TimeUtils.sleep(500);
         if (characterState.isFighting()) {
-            NativeWindowsEvents.clic(624, 697); //TODO refacto externalize
+            NativeWindowsEvents.clic(599, 710); //TODO refacto externalize
         }
     }
 
