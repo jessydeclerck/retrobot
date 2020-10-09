@@ -87,7 +87,6 @@ public class RetroTaskEventExecutor {
     }
 
     private void executeTask(RecolterTaskEvent recolterTaskEvent) {
-        TimeUtils.sleep(200);
         recolteService.recolterRessource(recolterTaskEvent);
         characterState.setGathering(true);
     }

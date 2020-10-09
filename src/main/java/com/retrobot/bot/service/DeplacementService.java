@@ -116,6 +116,7 @@ public class DeplacementService {
     public void goToBank() {
         if (mapState.getCurrentMap().getId() == scriptPath.getBankMapId()) {
             log.info("We're in the bank");
+            characterState.setGoingBank(false);
             return;
         }
         log.info("Going bank");
@@ -128,7 +129,6 @@ public class DeplacementService {
     public void leaveBank() {
         TimeUtils.sleep(2000);
         log.info("Leaving bank");
-        characterState.setGoingBank(false);
         BankMapAction mapActionToExecute = bankMapActions.get(mapState.getCurrentMap().getId());
         executeNextMapAction(mapActionToExecute);
     }

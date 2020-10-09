@@ -38,7 +38,6 @@ public class RecolteService {
     public void recolterRessource(RecolterTaskEvent recolterTaskEvent) {
         RetroRessourceCell ressourceCell = recolterTaskEvent.getRessourceCell();
         log.info("Recolte de la ressource {}", ressourceCell.id());
-        TimeUtils.sleep(200);
         double x = ressourceCell.getWindowRelativeX(), y = ressourceCell.getWindowRelativeY();
         if (RESSOURCES_PAYSAN.contains(ressourceCell.getIdRessource())) {
             x += OFFSET_MILIEU_CASE_X;
@@ -50,7 +49,7 @@ public class RecolteService {
             y -= 15;
         }
         NativeWindowsEvents.clic(x, y);
-        TimeUtils.sleep(500);
+        TimeUtils.sleep(300);
         if (y + OFFSET_INTERACTION_Y > BOTTOM_LIMIT_Y) {
             log.info("Discarding task because it makes click on menu");
             return;
