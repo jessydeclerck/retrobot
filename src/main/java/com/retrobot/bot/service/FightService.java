@@ -10,6 +10,8 @@ import com.retrobot.scriptloader.model.fighting.TargetEnum;
 import com.retrobot.utils.TimeUtils;
 import com.retrobot.utils.automation.NativeWindowsEvents;
 import fr.arakne.utils.maps.AbstractCellDataAdapter;
+import fr.arakne.utils.maps.CoordinateCell;
+import fr.arakne.utils.maps.LineOfSight;
 import fr.arakne.utils.maps.path.Decoder;
 import fr.arakne.utils.maps.path.Path;
 import fr.arakne.utils.maps.path.Pathfinder;
@@ -62,7 +64,7 @@ public class FightService {
         Pathfinder<RetroDofusCell> pathfinder = decoder.pathfinder()
                 .targetDistance(1)//TODO portee sort
                 .walkablePredicate(AbstractCellDataAdapter::walkable);
-        return pathfinder.findPath(currentCell, targetCell).truncate(4); //TODO number of pm
+        return pathfinder.findPath(currentCell, targetCell).truncate(characterState.getCurrentPm() + 1);
     }
 
     public void playTurn() {
@@ -71,19 +73,26 @@ public class FightService {
     }
 
     public void processAI() {
+        LineOfSight los = new LineOfSight(mapState.getCurrentMap());
         RetroDofusCell nearestMonster = findNearestMonster();
         moveTowardMonster(nearestMonster);
+        TimeUtils.sleep(500);
         fightAI.getSpells().forEach(spell -> {
             if (spell.getTurnsBeforeRecast() == 0 || fightState.getTurnNb() % spell.getTurnsBeforeRecast() == 1) {
-                useSpell(spell);
+                useSpell(spell, los);
                 TimeUtils.sleep(500);
             }
         });
     }
 
-    private void useSpell(Spell spell) {
-        if (TargetEnum.MONSTER.equals(spell.getTarget())) {
-            attackMonster(spell, findNearestMonster());
+    private void useSpell(Spell spell, LineOfSight los) {
+        RetroDofusCell nearestMonster = findNearestMonster();
+        if (TargetEnum.MONSTER.equals(spell.getTarget()) && los.between(characterState.getCurrentFightCell(), nearestMonster)) {
+            CoordinateCell<RetroDofusCell> playerCell = new CoordinateCell<>(characterState.getCurrentFightCell());
+            CoordinateCell<RetroDofusCell> monsterCell = new CoordinateCell<>(nearestMonster);
+            if (playerCell.distance(monsterCell) <= (spell.getRange() == 0 ? 1 : spell.getRange())) {
+                attackMonster(spell, nearestMonster);
+            }
         } else if (TargetEnum.SELF.equals((spell.getTarget()))) {
             castSpellOnSelf(spell);
         }
@@ -122,7 +131,6 @@ public class FightService {
         log.info("Player movement towards cell {}", targetCell.id());
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
         NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY());
-        characterState.setCurrentFightCell(targetCell);//TODO might not be accurate
         TimeUtils.sleep(2000);
         resetCursor();
     }

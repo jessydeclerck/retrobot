@@ -31,6 +31,8 @@ public class PodsUpdateProcessor extends PacketProcessor {
         if ((double) podsUpdateData.getCurrentPods() / podsUpdateData.getMaxPods() > 0.90 && !characterState.isGoingBank()) {
             threadPoolTaskExecutor.execute(() -> {
                 if (!characterState.isFighting()) {// let the bot fight if a fight happens just before going to bank
+                    deplacementService.stopRecolte();
+                    characterState.setGoingBank(true);
                     TimeUtils.sleep(2000);
                     deplacementService.goToBank();
                 }

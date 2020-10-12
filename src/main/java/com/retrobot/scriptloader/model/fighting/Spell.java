@@ -17,6 +17,7 @@ public class Spell implements Comparable<Spell> {
     private int spellPosition;
     private int castNumber;
     private int turnsBeforeRecast;
+    private int range;
     private TargetEnum target;
 
     @Override

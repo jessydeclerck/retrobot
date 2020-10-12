@@ -114,14 +114,12 @@ public class DeplacementService {
     }
 
     public void goToBank() {
-        if (mapState.getCurrentMap().getId() == scriptPath.getBankMapId()) {
+        if (mapState.getCurrentMap().getId() == scriptPath.getBankMapId() && characterState.isGoingBank()) {
             log.info("We're in the bank");
             characterState.setGoingBank(false);
             return;
         }
         log.info("Going bank");
-        stopRecolte();
-        characterState.setGoingBank(true);
         BankMapAction mapActionToExecute = bankMapActions.get(mapState.getCurrentMap().getId());
         executeNextMapAction(mapActionToExecute);
     }

@@ -29,6 +29,8 @@ public class CharacterState {
     private RetroDofusCell currentPlayerCell;
     private int currentPods;
     private int maxPods;
+    private int currentPa;
+    private int currentPm;
 
     private final TaskExecutor taskExecutor;
 

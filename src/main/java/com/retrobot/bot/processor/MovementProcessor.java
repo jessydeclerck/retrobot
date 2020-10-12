@@ -25,9 +25,13 @@ public class MovementProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         gatheringConfirmedUtils.updateGatheringConfirmed(dofusPacket);
         MovementData movementData = new MovementData(dofusPacket);
-        if (characterState.getPlayerId() == movementData.getEntityId() && !characterState.isFighting()) {
+        if (characterState.getPlayerId() == movementData.getEntityId()) {
             log.info("Current player position cell : {}", movementData.getEntityCellId());
-            characterState.setCurrentPlayerCell(mapState.getCurrentMap().get(movementData.getEntityCellId()));
+            if (!characterState.isFighting()) {
+                characterState.setCurrentPlayerCell(mapState.getCurrentMap().get(movementData.getEntityCellId()));
+            } else {
+                characterState.setCurrentFightCell(mapState.getCurrentMap().get(movementData.getEntityCellId()));
+            }
         } else {
             mapState.getPlayerPositions().put(movementData.getEntityId(), movementData.getEntityCellId());
         }
