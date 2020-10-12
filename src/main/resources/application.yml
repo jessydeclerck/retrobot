@@ -9,9 +9,9 @@ spring:
         await-termination: false
         await-termination-period: 3
       pool:
-        core-size: 5
+        core-size: 15
         queue-capacity: 10
         max-size: 20
     scheduling:
       pool:
-        size: 10
+        size: 15

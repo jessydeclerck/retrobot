@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.retrobot.utils.automation.PixelConstants.OFFSET_INTERACTION_X;
 import static com.retrobot.utils.automation.PixelConstants.OFFSET_INTERACTION_Y;
 
 @Slf4j
@@ -40,26 +39,26 @@ public class RecolteService {
         log.info("Recolte de la ressource {}", ressourceCell.id());
         double x = ressourceCell.getWindowRelativeX(), y = ressourceCell.getWindowRelativeY();
         if (RESSOURCES_PAYSAN.contains(ressourceCell.getIdRessource())) {
-            x += OFFSET_MILIEU_CASE_X;
-            y -= OFFSET_MILIEU_CASE_Y;
+            x -= 5;
+            //y -= OFFSET_MILIEU_CASE_Y;
         } else if (RESSOURCES_BUCHERON.contains(ressourceCell.getIdRessource())) {
             //x += 10;
             y -= 15;
         } else if (RESSOURCES_ALCHIMISTE.contains(ressourceCell.getIdRessource())) {
             y -= 15;
         }
-        NativeWindowsEvents.clic(x, y);
         TimeUtils.sleep(300);
+        NativeWindowsEvents.rightClic(x, y);
         if (y + OFFSET_INTERACTION_Y > BOTTOM_LIMIT_Y) {
             log.info("Discarding task because it makes click on menu");
             return;
         }
         //Gère la fauche des chanvre et lin, qui peuvent être soit fauchés soit cueillis
-        if (this.characterState.isPaysan() && (ressourceCell.getIdRessource() == 7513 || ressourceCell.getIdRessource() == 7514)) {
-            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y * 1.5);
-        } else {
-            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
-        }
+//        if (this.characterState.isPaysan() && (ressourceCell.getIdRessource() == 7513 || ressourceCell.getIdRessource() == 7514)) {
+//            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y * 1.5);
+//        } else {
+//            NativeWindowsEvents.clic(x + OFFSET_INTERACTION_X, y + OFFSET_INTERACTION_Y);
+//        }
 
         TimeUtils.sleep(1000);
         RetroRessourceCell targetedRessourceCell = characterState.getCurrentGatheringTarget();

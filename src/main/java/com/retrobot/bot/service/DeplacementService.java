@@ -61,7 +61,7 @@ public class DeplacementService {
 
     public void goNextMap() {
         threadPoolTaskExecutor.execute(() -> {
-            TimeUtils.sleep(2000);
+            TimeUtils.sleep(1000);
             if (!characterState.isGoingBank()) {
                 changeMapWithRetry(this::goNextGatherMap, mapState.getCurrentMap().getId()); //wont be compatible with gathering
             } else {

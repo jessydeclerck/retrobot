@@ -31,7 +31,7 @@ public class TaskPriorityComparator implements Comparator<RecolterTaskEvent> {
         double nextTarget2Y = nextTarget2.getWindowRelativeY();
         double distance1 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget1X, nextTarget1Y);
         double distance2 = Point2D.distance(currentPlayerCellX, currentPlayerCellY, nextTarget2X, nextTarget2Y);
-        if (o1.getProcessCount() > 0 && characterState.getCurrentPlayerCell().id() == o1.getRessourceCell().id()) { // should put the event at the end of the queue
+        if (o1.getProcessCount() > 0 && (characterState.getCurrentPlayerCell().id() == o1.getRessourceCell().id() || characterState.getCurrentPlayerCell().id() - 29 == o1.getRessourceCell().id())) { // should put the event at the end of the queue
             return Integer.compare(o1.getProcessCount(), o2.getProcessCount());
         }
         return Double.compare(distance1, distance2);

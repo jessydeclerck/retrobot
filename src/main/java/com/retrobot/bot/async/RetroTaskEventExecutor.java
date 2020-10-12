@@ -37,11 +37,11 @@ public class RetroTaskEventExecutor {
             botService.setUnavailableRessource(retroTaskEvent.getRessourceCell().id());
             return;
         }
-        if (isRessourceToRightExtremity(retroTaskEvent.getRessourceCell())) {  //ignore right extremity of the map
-            log.info("On ignore la ressource car elle est à l'extrémité droite de la carte");
-            botService.setUnavailableRessource(retroTaskEvent.getRessourceCell().id());
-            return;
-        }
+//        if (isRessourceToRightExtremity(retroTaskEvent.getRessourceCell())) {  //ignore right extremity of the map
+//            log.info("On ignore la ressource car elle est à l'extrémité droite de la carte");
+//            botService.setUnavailableRessource(retroTaskEvent.getRessourceCell().id());
+//            return;
+//        }
         retroTaskEvent.incrementProcessCount();
         if (!isStateOk(retroTaskEvent.getRessourceCell())) {
             retroTaskQueue.addTask(retroTaskEvent);
@@ -69,7 +69,7 @@ public class RetroTaskEventExecutor {
         if (characterState.isFighting() || characterState.isGathering() || characterState.isMoving()) {
             return false;
         }
-        if (characterState.getCurrentPlayerCell() != null && ressourceCell.id() == characterState.getCurrentPlayerCell().id()) {
+        if (characterState.getCurrentPlayerCell() != null && (ressourceCell.id() == characterState.getCurrentPlayerCell().id() || characterState.getCurrentPlayerCell().id() - 29 == ressourceCell.id())) {
             log.info("La prochaine ressource est trop proche du personnage");
             return false;
         }

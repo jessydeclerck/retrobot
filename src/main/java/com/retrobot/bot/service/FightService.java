@@ -127,6 +127,9 @@ public class FightService {
         log.info("Calculating path from player cell {} to monster cell {}", characterState.getCurrentFightCell().id(), monsterCell.id());
         Path<RetroDofusCell> path = calculatePath(characterState.getCurrentFightCell(), monsterCell);
         RetroDofusCell targetCell = path.target();
+        if(characterState.getCurrentFightCell().id() == targetCell.id()) {
+            return;
+        }
         TimeUtils.sleep(500);
         log.info("Player movement towards cell {}", targetCell.id());
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
