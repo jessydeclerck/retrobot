@@ -82,6 +82,8 @@ public class DeplacementService {
                     log.info("Map didn't change because we're on a gathering map, won't be retried");
                 } else if (characterState.isGoingBank() && mapState.getCurrentMap().getId() == scriptPath.getBankMapId()) {
                     log.info("Map didn't change because we're at the bank");
+                } else if (characterState.isFighting()) {
+                    log.info("Map didn't change because we're fighting");
                 } else {
                     log.info("Map didn't change, let's retry");
                     changeMapWithRetry(changeMapAction, startMapId);
@@ -117,7 +119,10 @@ public class DeplacementService {
     }
 
     private void startFight(GatherMapAction mapActionToExecute) {
-        mapState.getMonsterPositions().values().stream().findAny().ifPresent(monsterPos -> {
+        mapState.getMonsterPositions().values().stream().filter(monsterPos ->
+                !mapState.getCurrentMap().getTriggers().contains(monsterPos) && !mapState.getPlayerPositions().values().contains(monsterPos)
+        )
+                .findAny().ifPresent(monsterPos -> {
             RetroDofusCell monsterCell = mapState.getCurrentMap().get(monsterPos);
             NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY());
         });

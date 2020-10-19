@@ -37,6 +37,8 @@ public class CharacterMapProcessor extends PacketProcessor {
             if (characterData.getCharacterId() < 0 && characterData.getCharacterType() == -3) { //if monster
                 mapState.getMonsterPositions().put(characterData.getCharacterId(), characterData.getCellId());
                 mapState.getMonsterLevels().put(characterData.getCharacterId(), characterData.getGrpLevel());
+            } else {
+                mapState.getPlayerPositions().put(characterData.getCharacterId(), characterData.getCellId());
             }
         });
         if (characterState.isGoingBank()) {
