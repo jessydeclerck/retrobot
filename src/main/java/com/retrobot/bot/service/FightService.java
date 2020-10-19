@@ -158,7 +158,7 @@ public class FightService {
         TimeUtils.sleep(500);
         if (characterState.isFighting() && fightState.isPlayerTurn()) {
             threadPoolTaskExecutor.execute(() -> {
-                NativeWindowsEvents.clic(599, 710); //TODO refacto externalize
+                NativeWindowsEvents.clic(605, 710); //TODO refacto externalize
                 TimeUtils.sleep(1500);
                 if (fightState.isPlayerTurn()) {
                     log.info("Turn hasn't been end, retry");

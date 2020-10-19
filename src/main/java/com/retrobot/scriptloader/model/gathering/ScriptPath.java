@@ -19,6 +19,10 @@ public class ScriptPath {
     @JsonProperty("toGather")
     private List<Integer> ressourcesToGather;
 
+    private Integer monsterMinLevel;
+
+    private Integer monsterMaxLevel;
+
     private int startMapId;
 
     private int bankMapId;

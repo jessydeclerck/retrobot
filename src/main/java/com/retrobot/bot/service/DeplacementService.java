@@ -119,11 +119,13 @@ public class DeplacementService {
     }
 
     private void startFight(GatherMapAction mapActionToExecute) {
-        mapState.getMonsterPositions().values().stream().filter(monsterPos ->
-                !mapState.getCurrentMap().getTriggers().contains(monsterPos) && !mapState.getPlayerPositions().values().contains(monsterPos)
-        )
-                .findAny().ifPresent(monsterPos -> {
-            RetroDofusCell monsterCell = mapState.getCurrentMap().get(monsterPos);
+        mapState.getMonsterPositions().entrySet().stream().filter(entry -> {
+            int id = entry.getKey();
+            int monsterPos = entry.getValue();
+            return !mapState.getCurrentMap().getTriggers().contains(monsterPos) && !mapState.getPlayerPositions().values().contains(monsterPos) &&
+                    scriptPath.getMonsterMinLevel() != null && mapState.getMonsterLevels().get(id) > scriptPath.getMonsterMinLevel() || scriptPath.getMonsterMaxLevel() != null && mapState.getMonsterLevels().get(id) < scriptPath.getMonsterMaxLevel();
+        }).findAny().ifPresent(entry -> {
+            RetroDofusCell monsterCell = mapState.getCurrentMap().get(entry.getValue());
             NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY());
         });
     }
