@@ -13,10 +13,12 @@ public class FightState {
     boolean cardsHidden;
     boolean challengeHidden;
     boolean tacticModeActivated;
+    boolean playerTurn;
     int turnNb;//TODO increment when turn starts
 
     public void resetState() {
         cardsHidden = false;
+        playerTurn = false;
         turnNb = 0;
     }
 

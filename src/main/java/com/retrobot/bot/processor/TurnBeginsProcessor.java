@@ -30,6 +30,7 @@ public class TurnBeginsProcessor extends PacketProcessor {
         TurnBeginsData turnBeginsData = new TurnBeginsData(dofusPacket);
         if (turnBeginsData.getPlayerId() == characterState.getPlayerId()) {
             log.info("Tour du joueur detecté");
+            fightState.setPlayerTurn(true);
             taskExecutor.execute(() -> {
                 fightState.incrementTurnNb();
                 TimeUtils.sleep(1500);

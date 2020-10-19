@@ -24,7 +24,7 @@ public class PacketHandler {
     public void handlePacket(String dofusPackets) {
         List<String> gamePackets = Arrays.asList(dofusPackets.split("\0"));
         gamePackets.forEach(gamePacket -> {
-            log.trace(gamePacket);
+            log.info(gamePacket);
             if (gamePacket.length() < 3) return;
             String packetId = getPacketId(gamePacket);
             Optional.ofNullable(this.packetProcessorMap.get(packetId)).ifPresent(packetProcessor -> {

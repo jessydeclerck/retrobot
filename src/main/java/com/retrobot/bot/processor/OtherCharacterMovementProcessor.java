@@ -20,7 +20,9 @@ public class OtherCharacterMovementProcessor extends PacketProcessor {
         try {
             OtherCharacterMovementData otherCharacterMovementData = new OtherCharacterMovementData(dofusPacket);
             if (otherCharacterMovementData.getGroupId() < 0) {
-                mapState.getMonsterPositions().put(otherCharacterMovementData.getGroupId(), otherCharacterMovementData.getCellId());
+                if (mapState.getMonsterPositions().containsKey(otherCharacterMovementData.getGroupId())) {
+                    mapState.getMonsterPositions().put(otherCharacterMovementData.getGroupId(), otherCharacterMovementData.getCellId());
+                }
             }
         } catch (Exception e) {
             log.info("Couldn't parse GA; packet");

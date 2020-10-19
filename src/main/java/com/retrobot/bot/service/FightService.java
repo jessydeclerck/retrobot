@@ -17,6 +17,7 @@ import fr.arakne.utils.maps.path.Path;
 import fr.arakne.utils.maps.path.Pathfinder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.awt.geom.Point2D;
@@ -41,6 +42,8 @@ public class FightService {
 
     private static final Map<Integer, Pair<Integer, Integer>> spellPosition = new HashMap<>();
 
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
     {
         spellPosition.put(1, Pair.of(676, 655));
         spellPosition.put(2, Pair.of(711, 653));
@@ -51,11 +54,12 @@ public class FightService {
         spellPosition.put(7, Pair.of(891, 653));
     }
 
-    public FightService(MapState mapState, CharacterState characterState, FightState fightState, FightAI fightAI) {
+    public FightService(MapState mapState, CharacterState characterState, FightState fightState, FightAI fightAI, ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         this.mapState = mapState;
         this.characterState = characterState;
         this.fightState = fightState;
         this.fightAI = fightAI;
+        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
 
     public void regen() {
@@ -152,8 +156,15 @@ public class FightService {
 
     public void passerTour() {
         TimeUtils.sleep(500);
-        if (characterState.isFighting()) {
-            NativeWindowsEvents.clic(599, 710); //TODO refacto externalize
+        if (characterState.isFighting() && fightState.isPlayerTurn()) {
+            threadPoolTaskExecutor.execute(() -> {
+                NativeWindowsEvents.clic(599, 710); //TODO refacto externalize
+                TimeUtils.sleep(1500);
+                if (fightState.isPlayerTurn()) {
+                    log.info("Turn hasn't been end, retry");
+                    passerTour();
+                }
+            });
         }
     }
 
