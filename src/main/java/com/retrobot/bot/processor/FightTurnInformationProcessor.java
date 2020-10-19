@@ -29,6 +29,8 @@ public class FightTurnInformationProcessor extends PacketProcessor {
             } else if (fighterData.getFighterId() == characterState.getPlayerId()) {
                 log.info("Player current fighting cell {}", fighterData.getCellId());
                 characterState.setCurrentFightCell(mapState.getCurrentMap().get(fighterData.getCellId()));
+                characterState.setCurrentHp(fighterData.getCurrentHp());
+                characterState.setMaxHp(fighterData.getHpMax());
                 characterState.setCurrentPa(fighterData.getPa());
                 characterState.setCurrentPm(fighterData.getPm());
             }

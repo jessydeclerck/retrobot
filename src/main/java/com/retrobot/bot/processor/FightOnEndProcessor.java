@@ -29,6 +29,7 @@ public class FightOnEndProcessor extends PacketProcessor {
         botService.setFighting(false);
         fightState.resetState();
         fightService.fermerFenetreFinCombat(fightOnEndData.getFighterId());
+        fightService.regen();
     }
 
     @Override

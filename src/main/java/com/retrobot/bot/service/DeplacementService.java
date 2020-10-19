@@ -2,6 +2,7 @@ package com.retrobot.bot.service;
 
 import com.retrobot.bot.async.RetroTaskQueue;
 import com.retrobot.bot.async.event.RecolterTaskEvent;
+import com.retrobot.bot.model.dofus.RetroDofusCell;
 import com.retrobot.bot.model.dofus.RetroTriggerCell;
 import com.retrobot.bot.state.CharacterState;
 import com.retrobot.bot.state.MapState;
@@ -108,9 +109,18 @@ public class DeplacementService {
         GatherMapAction mapActionToExecute = gatherMapActions.get(mapState.getCurrentMap().getId());
         if (mapActionToExecute.isGather() && !characterState.isGoingBank()) {
             startRecolte(mapActionToExecute);
+        } else if (mapActionToExecute.isFight() && !mapState.getMonsterPositions().values().isEmpty()) {
+            startFight(mapActionToExecute);
         } else {
             executeNextMapAction(mapActionToExecute);
         }
+    }
+
+    private void startFight(GatherMapAction mapActionToExecute) {
+        mapState.getMonsterPositions().values().stream().findAny().ifPresent(monsterPos -> {
+            RetroDofusCell monsterCell = mapState.getCurrentMap().get(monsterPos);
+            NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY());
+        });
     }
 
     public void goToBank() {

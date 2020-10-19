@@ -5,9 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GatherMapAction extends MapAction {
-
-    private boolean gather;
-    private boolean fight;
+public class FightMapAction extends MapAction {
 
 }

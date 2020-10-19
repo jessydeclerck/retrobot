@@ -29,6 +29,8 @@ public class ScriptPath {
 
     private Map<Integer, BankMapAction> bankPath;
 
+    private Map<Integer, FightMapAction> fightPath;
+
     private Object displayData;
 
     public ScriptPath(LoadScriptMessage loadScriptMessage) {

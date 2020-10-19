@@ -34,8 +34,9 @@ public class CharacterMapProcessor extends PacketProcessor {
     public void processPacket(String dofusPacket) {
         CharacterMapData characterMapData = new CharacterMapData(dofusPacket);
         characterMapData.getMapCharacters().forEach(characterData -> {
-            if (characterData.getCharacterId() < 0) { //if monster
+            if (characterData.getCharacterId() < 0 && characterData.getCharacterType() == -3) { //if monster
                 mapState.getMonsterPositions().put(characterData.getCharacterId(), characterData.getCellId());
+                mapState.getMonsterLevels().put(characterData.getCharacterId(), characterData.getGrpLevel());
             }
         });
         if (characterState.isGoingBank()) {

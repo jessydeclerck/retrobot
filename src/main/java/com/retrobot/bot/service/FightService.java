@@ -58,6 +58,17 @@ public class FightService {
         this.fightAI = fightAI;
     }
 
+    public void regen() {
+        if ((double) characterState.getCurrentHp() / characterState.getMaxHp() < 0.9) {
+            int regenTimeSeconds = (characterState.getMaxHp() - characterState.getCurrentHp());
+            log.info("Regeneration : {} secondes", regenTimeSeconds);
+            TimeUtils.sleep(500);
+            NativeWindowsEvents.clic(64, 576); //sit
+            TimeUtils.sleep(regenTimeSeconds * 1000);
+            //TODO use bread if set
+        }
+    }
+
     //TODO WIP
     private Path<RetroDofusCell> calculatePath(RetroDofusCell currentCell, RetroDofusCell targetCell) {
         Decoder<RetroDofusCell> decoder = new Decoder<>(mapState.getCurrentMap());
@@ -127,7 +138,7 @@ public class FightService {
         log.info("Calculating path from player cell {} to monster cell {}", characterState.getCurrentFightCell().id(), monsterCell.id());
         Path<RetroDofusCell> path = calculatePath(characterState.getCurrentFightCell(), monsterCell);
         RetroDofusCell targetCell = path.target();
-        if(characterState.getCurrentFightCell().id() == targetCell.id()) {
+        if (characterState.getCurrentFightCell().id() == targetCell.id()) {
             return;
         }
         TimeUtils.sleep(500);

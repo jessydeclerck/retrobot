@@ -21,6 +21,7 @@ public class MapState {
     private Map<Integer, RetroRessourceCell> availableRessources = new ConcurrentHashMap<>();
     private Map<Integer, RetroRessourceCell> unavailableRessources = new ConcurrentHashMap<>();
     private Map<Integer, Integer> monsterPositions = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> monsterLevels = new ConcurrentHashMap<>();
     private Map<Integer, Integer> playerPositions = new ConcurrentHashMap<>();
 
     private final RetroTaskQueue retroTaskQueue;
@@ -33,6 +34,7 @@ public class MapState {
         this.availableRessources.clear();
         this.unavailableRessources.clear();
         monsterPositions.clear();
+        monsterLevels.clear();
         playerPositions.clear();
         retroTaskQueue.removeMapTask(currentMap);
     }

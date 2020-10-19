@@ -31,6 +31,8 @@ public class CharacterState {
     private int maxPods;
     private int currentPa;
     private int currentPm;
+    private int currentHp;
+    private int maxHp;
 
     private final TaskExecutor taskExecutor;
 
