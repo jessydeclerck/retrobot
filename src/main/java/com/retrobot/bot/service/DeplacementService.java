@@ -123,11 +123,11 @@ public class DeplacementService {
             int id = entry.getKey();
             int monsterPos = entry.getValue();
             return !mapState.getCurrentMap().getTriggers().contains(monsterPos) && !mapState.getPlayerPositions().values().contains(monsterPos) &&
-                    scriptPath.getMonsterMinLevel() != null && mapState.getMonsterLevels().get(id) > scriptPath.getMonsterMinLevel() || scriptPath.getMonsterMaxLevel() != null && mapState.getMonsterLevels().get(id) < scriptPath.getMonsterMaxLevel();
-        }).findAny().ifPresent(entry -> {
+                    scriptPath.getMonsterMinLevel() != null && mapState.getMonsterLevels().get(id) > scriptPath.getMonsterMinLevel() && scriptPath.getMonsterMaxLevel() != null && mapState.getMonsterLevels().get(id) < scriptPath.getMonsterMaxLevel();
+        }).findAny().ifPresentOrElse(entry -> {
             RetroDofusCell monsterCell = mapState.getCurrentMap().get(entry.getValue());
             NativeWindowsEvents.clic(monsterCell.getWindowRelativeX(), monsterCell.getWindowRelativeY());
-        });
+        }, () -> executeNextMapAction(mapActionToExecute));
     }
 
     public void goToBank() {

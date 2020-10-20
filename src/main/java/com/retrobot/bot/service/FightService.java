@@ -149,7 +149,7 @@ public class FightService {
         log.info("Player movement towards cell {}", targetCell.id());
         log.info("Cell pos : {}, {}", targetCell.getAbscisse(), targetCell.getOrdonnee());
         NativeWindowsEvents.clic(targetCell.getWindowRelativeX(), targetCell.getWindowRelativeY());
-        TimeUtils.sleep(2000);
+        TimeUtils.sleep(1000);
         resetCursor();
     }
 
