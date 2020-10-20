@@ -95,7 +95,7 @@ public class FightService {
         fightAI.getSpells().forEach(spell -> {
             if (spell.getTurnsBeforeRecast() == 0 || fightState.getTurnNb() % spell.getTurnsBeforeRecast() == 1) {
                 useSpell(spell, los);
-                TimeUtils.sleep(500);
+                TimeUtils.sleep(750);
             }
         });
     }
