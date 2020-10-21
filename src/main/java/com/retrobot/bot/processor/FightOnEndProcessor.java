@@ -24,6 +24,7 @@ public class FightOnEndProcessor extends PacketProcessor {
 
     @Override
     public void processPacket(String dofusPacket) {
+        //GE55392|190004801|0|2;190004801;Pepite;72;0;25209000;26375342;26707000;1078;0;;;10|0;-2;920;15;1;;;;;;;;|0;-1;922;10;1;;;;;;;;|5;-10;La Table Ronde;16;0;;;;;4;;;0
         log.info("Fin du combat detecté");
         FightOnEndData fightOnEndData = new FightOnEndData(dofusPacket);
         botService.setFighting(false);
