@@ -179,7 +179,7 @@ public class FightService {
         } else {
             yComputedForNMonsters = 497;
         }
-        if (fighterId.stream().anyMatch(f -> f < -100)) {//check percepteur on map
+        if (fighterId.stream().anyMatch(f -> f < -8)) {//check percepteur on map
             yComputedForNMonsters += 45;
         }
         log.info("yComputed fin combat : {}", yComputedForNMonsters);
