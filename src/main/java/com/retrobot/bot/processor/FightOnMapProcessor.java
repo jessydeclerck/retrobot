@@ -17,10 +17,14 @@ public class FightOnMapProcessor extends PacketProcessor {
 
     @Override
     public void processPacket(String dofusPacket) {
-        FightOnMapData fightOnMapData = new FightOnMapData(dofusPacket);
-        mapState.getMonsterPositions().remove(fightOnMapData.getMonsterId());
-        mapState.getMonsterLevels().remove(fightOnMapData.getMonsterId());
-        log.info("Monster group {} is now unavailable", fightOnMapData.getMonsterId());
+        try {
+            FightOnMapData fightOnMapData = new FightOnMapData(dofusPacket);
+            mapState.getMonsterPositions().remove(fightOnMapData.getMonsterId());
+            mapState.getMonsterLevels().remove(fightOnMapData.getMonsterId());
+            log.info("Monster group {} is now unavailable", fightOnMapData.getMonsterId());
+        } catch (Exception e) {
+            log.info("Gc packet couldn't be parsed");
+        }
     }
 
     @Override
